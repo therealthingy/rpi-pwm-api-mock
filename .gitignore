@@ -143,6 +143,11 @@ cython_debug/
 
 
 
+# -- IDEs --
+.vscode/
+
+
+
 # -- OS --
 # General
 .DS_Store
