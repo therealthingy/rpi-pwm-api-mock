@@ -8,17 +8,6 @@ info:
   license:
     name: GNU AGPLv3
     url: https://www.gnu.org/licenses/agpl.txt
-servers:
-- url: "http://{subdomain}.{localdomain}/api/"
-  description: Local raspberry using reverse proxy w/ dedicated local domain
-  variables:
-    subdomain:
-      default: rpipwm
-      description: Subdomain used by reverse proxy to map requests on same port to
-        specific webapps
-    localdomain:
-      default: rpi.lan
-      description: 'Local domain of raspberry '
 paths:
   /app/config:
     summary: Allows user to view config of app
@@ -433,7 +422,6 @@ components:
     AppConfigApp:
       title: Root Type for App
       description: Configuration flags pertaining the app itself
-      required: []
       type: object
       properties:
         fanOn:
