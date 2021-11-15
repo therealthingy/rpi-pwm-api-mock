@@ -12,12 +12,24 @@ def search():
 
 def post(body):
     '''
-    Handler for GET /app/fanCurves
+    Handler for POST /app/fanCurves
     '''
     return NoContent                        # TODO
 
 def get(id):
     '''
     Handler for GET /app/fanCurves/{id}
+    '''
+    return NoContent                        # TODO
+
+def put(id):
+    '''
+    Handler for PUT /app/fanCurves/{id}
+    '''
+    return NoContent                        # TODO
+
+def delete(id):
+    '''
+    Handler for DELETE /app/fanCurves/{id}
     '''
     return NoContent                        # TODO

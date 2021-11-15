@@ -12,6 +12,6 @@ def search():
 
 def put(body):
     '''
-    Handler for GET /app/config
+    Handler for PUT /app/config
     '''
     return NoContent                        # TODO
