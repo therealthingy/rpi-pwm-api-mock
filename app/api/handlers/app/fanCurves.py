@@ -22,7 +22,7 @@ def get(id):
     '''
     return NoContent                        # TODO
 
-def put(id):
+def put(id, body):
     '''
     Handler for PUT /app/fanCurves/{id}
     '''
