@@ -47,6 +47,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "connexion"
+version = "2.9.0"
+extras = ["swagger-ui"]
+requires_python = ">=3.6"
+summary = "Connexion - API first applications with OpenAPI/Swagger and Flask"
+dependencies = [
+    "PyYAML<6,>=5.1",
+    "clickclick<21,>=1.2",
+    "connexion",
+    "flask<2,>=1.0.4",
+    "inflection<0.6,>=0.3.1",
+    "jsonschema<4,>=2.5.1",
+    "openapi-spec-validator<0.4,>=0.2.4",
+    "requests<3,>=2.9.1",
+    "swagger-ui-bundle<0.1,>=0.0.2",
+    "werkzeug<2.0,>=1.0",
+]
+
+[[package]]
 name = "flask"
 version = "1.1.4"
 requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -170,6 +189,14 @@ requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 summary = "Python 2 and 3 compatibility utilities"
 
 [[package]]
+name = "swagger-ui-bundle"
+version = "0.0.9"
+summary = "swagger_ui_bundle - swagger-ui files in a pip package"
+dependencies = [
+    "Jinja2>=2.0",
+]
+
+[[package]]
 name = "urllib3"
 version = "1.26.7"
 requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
@@ -183,7 +210,7 @@ summary = "The comprehensive WSGI web application library."
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:39d58d0673224bb27bc20af39841ee1a9a5214e2113446abb92988525fce6c2f"
+content_hash = "sha256:aa1055b91f55c67acf4964c61bd2e97965a5e52c8180c5c4320ca55d7b94420a"
 
 [metadata.files]
 "attrs 21.2.0" = [
@@ -384,6 +411,10 @@ content_hash = "sha256:39d58d0673224bb27bc20af39841ee1a9a5214e2113446abb92988525
 "six 1.16.0" = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+"swagger-ui-bundle 0.0.9" = [
+    {file = "swagger_ui_bundle-0.0.9-py3-none-any.whl", hash = "sha256:cea116ed81147c345001027325c1ddc9ca78c1ee7319935c3c75d3669279d575"},
+    {file = "swagger_ui_bundle-0.0.9.tar.gz", hash = "sha256:b462aa1460261796ab78fd4663961a7f6f347ce01760f1303bbbdf630f11f516"},
 ]
 "urllib3 1.26.7" = [
     {file = "urllib3-1.26.7-py2.py3-none-any.whl", hash = "sha256:c4fdf4019605b6e5423637e01bc9fe4daef873709a7973e195ceba0a62bbc844"},
