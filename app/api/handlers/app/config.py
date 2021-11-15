@@ -7,13 +7,8 @@ Operation handlers for endpoint `/app/config`
 from connexion import NoContent
 
 
-
-def search(self):
+def search():
     '''
     Handler for GET /app/config
     '''
     return NoContent
-
-
-
-

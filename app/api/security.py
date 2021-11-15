@@ -1,11 +1,6 @@
-"""
-API authentication
-
-# TODO: ADD       x-basicInfoFunc: api.security.basic_auth2
-Example: https://github.com/zalando/connexion/tree/main/examples/openapi3/basicauth
-
-Documentation: https://connexion.readthedocs.io/en/latest/security.html
-"""
+'''
+Functions pertinent for API authentication
+'''
 
 import os
 from app import defaults
@@ -16,7 +11,6 @@ _password = (os.getenv('API_AUTH_PASS') or defaults.DEFAULT_API_AUTH_PASS)
 
 def basic_auth(username, password, required_scopes=None):
     if username == _username and password == _password:
-        return {'sub': 'admin', 'scope': 'secret'}
+        return {'sub': 'admin', 'scope': 'api-security'}
     else:
-        # optional: raise exception for custom error response
         return None

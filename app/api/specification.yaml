@@ -968,5 +968,6 @@ components:
       scheme: basic
       type: http
       description: Validated by webapp
+      x-basicInfoFunc: api.security.basic_auth
 security:
 - api-security: []
