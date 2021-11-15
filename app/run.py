@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
-import connexion
+from connexion import App as ConnexionApp, RestyResolver as ConnexionRestyResolver
 import os
 # import app
-
-
-_DEFAULT_PORT = 8080
+from defaults import DEFAULT_API_SERVER_PORT
 
 
 if __name__ == '__main__':
-    app = connexion.App(__name__, specification_dir='api/')
-    app.add_api('specification.yaml', resolver_error=501)
-    app.run(port=int(os.getenv('API_SERVER_PORT') or _DEFAULT_PORT))
+    app = ConnexionApp(__name__, specification_dir='api/')
+    app.add_api('specification.yaml', resolver=ConnexionRestyResolver('api.endpoints'), resolver_error=501)
+    app.run(port=int(os.getenv('API_SERVER_PORT') or DEFAULT_API_SERVER_PORT))
