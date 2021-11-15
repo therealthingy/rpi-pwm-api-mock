@@ -121,11 +121,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AppFanCurve'
+              $ref: '#/components/schemas/AppFanCurveBase'
             examples:
               singletonFanCurve:
                 value:
-                  name: some text
+                  name: Quiet-2
                   fanCurveSeries:
                   - tempInCels: 60
                     fanDCInPerc: 66
