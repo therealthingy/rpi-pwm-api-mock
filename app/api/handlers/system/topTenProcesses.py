@@ -9,3 +9,9 @@ def search():
     Handler for GET /system/topTenProcesses
     '''
     return NoContent                        # TODO
+
+def get(nr):
+    '''
+    Handler for GET /app/topTenProcesses/{id}
+    '''
+    return NoContent                        # TODO
