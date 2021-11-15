@@ -1,0 +1,297 @@
+{
+	"info": {
+		"_postman_id": "c1550223-5fc4-45ba-bc61-fed2d51a72d8",
+		"name": "rpi-pwm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/app/logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/logs",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"logs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/config",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/config",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/tempDCHistory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/tempDCHistory",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"tempDCHistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/system/info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/system/info",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"system",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/system/topTenProcesses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/system/topTenProcesses",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"system",
+						"topTenProcesses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/system/topTenProcesses/{nr}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/system/topTenProcesses/6",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"system",
+						"topTenProcesses",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/fanCurves",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"fanCurves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/fanCurves/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/3",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"fanCurves",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/fanCurves/{id}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fanCurveSeries\": [\n    {\n      \"fanDCInPerc\": 66,\n      \"tempInCels\": 60\n    },\n    {\n      \"fanDCInPerc\": 42,\n      \"tempInCels\": 44\n    },\n    {\n      \"fanDCInPerc\": 56,\n      \"tempInCels\": 53\n    }\n  ],\n  \"name\": \"Quiet-2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/3",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"fanCurves",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/fanCurves/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/3",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"fanCurves",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/config",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"app\": {\n        \"fanOn\": true,\n        \"loggingEnabled\": true,\n        \"loggingLevel\": \"WARN\",\n        \"DCUpdateIntervalInSec\": 3,\n        \"selectedFanCurve\": {\n            \"id\": \"916CD0EB-A755-4663-8410-461431039F74\",\n            \"name\": \"Quiet\",\n            \"fanCurveSeries\": [\n                {\n                    \"tempInCels\": 30,\n                    \"fanDCInPerc\": 40\n                },\n                {\n                    \"tempInCels\": 35,\n                    \"fanDCInPerc\": 50\n                }\n            ]\n        }\n    },\n    \"pwm\": {\n        \"gpioPin\": 12,\n        \"invertSignal\": true,\n        \"minDCInPerc\": 20,\n        \"maxDCInPerc\": 95\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/config",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/fanCurves",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"916CD0EB-A755-4663-8410-461431039F74\",\n    \"name\": \"Quiet\",\n    \"fanCurveSeries\": [\n        {\n            \"tempInCels\": 30,\n            \"fanDCInPerc\": 40\n        },\n        {\n            \"tempInCels\": 35,\n            \"fanDCInPerc\": 50\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"fanCurves"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "DEV_SERVER_URL",
+			"value": "http://127.0.0.1:8080/api/v1"
+		}
+	]
+}
