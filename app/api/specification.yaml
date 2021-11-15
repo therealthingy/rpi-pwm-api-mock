@@ -8,6 +8,22 @@ info:
   license:
     name: GNU AGPLv3
     url: https://www.gnu.org/licenses/agpl.txt
+servers:
+- url: "http://127.0.0.1:{port}/api/{api-version}"
+  description: Local dev server
+  variables:
+    port:
+      default: "8080"
+      description: Port of webserver
+    api-version:
+      default: v1
+      description: Version of API
+- url: "https://rpi-pwm.rpi.lan/api/{api-version}"
+  description: Local reverse proxy setup
+  variables:
+    api-version:
+      default: v1
+      description: Version of API
 paths:
   /app/config:
     summary: Allows user to view config of app
@@ -335,7 +351,7 @@ components:
           readOnly: true
           example: "30"
       example:
-        date: 2021-11-14T11:14:22+01:00
+        date: 2021-11-14T10:14:22.000Z
         tempInCels: 30
         fanDCInPerc: 40
     SystemProcess:
@@ -560,7 +576,7 @@ components:
           description: Date when log entry was logged
           type: string
           readOnly: true
-          example: 2021-11-14T11:14:22+01:00
+          example: 2021-11-14T10:14:22.000Z
         level:
           description: Level of log entry
           type: string
@@ -580,7 +596,7 @@ components:
           example: 6808e842-453b-11ec-af70-c75dcdc17c9e
       example:
         uuid: 6808e842-453b-11ec-af70-c75dcdc17c9e
-        date: 2021-11-14T11:14:22+01:00
+        date: 2021-11-14T10:14:22.000Z
         level: DEBUG
         message: "Current temp: 45.200000 ℃, calc. fan dutycycle: 30.000000, applied\
           \ dutycycle: 45.000000"
@@ -838,19 +854,19 @@ components:
           examples:
             tempDCHistory_collection:
               value:
-              - date: 2021-11-14T11:14:22+01:00
+              - date: 2021-11-14T10:14:22.000Z
                 tempInCels: 30
                 fanDCInPerc: 40
-              - date: 2021-11-14T11:14:25+01:00
+              - date: 2021-11-14T10:14:25.000Z
                 tempInCels: 33
                 fanDCInPerc: 42
-              - date: 2021-11-14T11:14:28+01:00
+              - date: 2021-11-14T10:14:28.000Z
                 tempInCels: 31
                 fanDCInPerc: 40
-              - date: 2021-11-14T11:14:31+01:00
+              - date: 2021-11-14T10:14:31.000Z
                 tempInCels: 34
                 fanDCInPerc: 43
-              - date: 2021-11-14T11:14:34+01:00
+              - date: 2021-11-14T10:14:34.000Z
                 tempInCels: 33
                 fanDCInPerc: 42
       description: Temperature- / DC history
@@ -880,27 +896,27 @@ components:
             logs_collection:
               value:
               - uuid: 6808e842-453b-11ec-af70-c75dcdc17c9e
-                date: 2021-11-14T11:14:25+01:00
+                date: 2021-11-14T10:14:25.000Z
                 level: DEBUG
                 message: "Current temp: 45.200000 ℃, calc. fan dutycycle: 30.000000,\
                   \ applied dutycycle: 45.000000"
               - uuid: 7808e842-453b-11ec-af70-c75dcdc17c9e
-                date: 2021-11-14T11:14:28+01:00
+                date: 2021-11-14T10:14:28.000Z
                 level: DEBUG
                 message: "Current temp: 42.200000 ℃, calc. fan dutycycle: 25.000000,\
                   \ applied dutycycle: 40.000000"
               - uuid: 8808e842-453b-11ec-af70-c75dcdc17c9e
-                date: 2021-11-14T11:14:31+01:00
+                date: 2021-11-14T10:14:31.000Z
                 level: DEBUG
                 message: "Current temp: 45.200000 ℃, calc. fan dutycycle: 30.000000,\
                   \ applied dutycycle: 45.000000"
               - uuid: 9808e842-453b-11ec-af70-c75dcdc17c9e
-                date: 2021-11-14T11:14:34+01:00
+                date: 2021-11-14T10:14:34.000Z
                 level: DEBUG
                 message: "Current temp: 44.200000 ℃, calc. fan dutycycle: 30.000000,\
                   \ applied dutycycle: 45.000000"
               - uuid: 0908e842-453b-11ec-af70-c75dcdc17c9e
-                date: 2021-11-14T11:14:37+01:00
+                date: 2021-11-14T10:14:37.000Z
                 level: DEBUG
                 message: "Current temp: 40.200000 ℃, calc. fan dutycycle: 25.000000,\
                   \ applied dutycycle: 40.000000"
