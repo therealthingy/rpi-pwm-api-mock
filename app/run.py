@@ -1,25 +1,22 @@
 #!/usr/bin/env python3
 
-from app.envflags import api_enabled, api_swagger_ui_enabled, api_server_port
+
 # import app
 
 
+from time import sleep
+from app.envflags import api_enabled
 
 
 if __name__ == '__main__':
-    # - PWM (controls fan) -
-    ...
 
     # - API -
     if api_enabled:
-        # TODO: Log "starting API"
-        from connexion import App as ConnexionApp
-        import api.encoder as encoder
+        import core.backend as backend
+        backend.launch_as_new_thread()
 
-        app = ConnexionApp(__name__, specification_dir='./api/openapi/',
-                           options={"swagger_ui": api_swagger_ui_enabled})
-        app.app.json_encoder = encoder.JSONEncoder
-        app.add_api('openapi.yaml',
-                    arguments={'title': 'rpi-pwm'},
-                    pythonic_params=True)
-        app.run(port=api_server_port)
+
+    # - PWM (controls fan) -
+    while True:
+        print("I'm scheduling API")
+        sleep(3)
