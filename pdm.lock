@@ -55,7 +55,7 @@ summary = "Connexion - API first applications with OpenAPI/Swagger and Flask"
 dependencies = [
     "PyYAML<6,>=5.1",
     "clickclick<21,>=1.2",
-    "connexion",
+    "connexion==2.9.0",
     "flask<2,>=1.0.4",
     "inflection<0.6,>=0.3.1",
     "jsonschema<4,>=2.5.1",
@@ -210,7 +210,7 @@ summary = "The comprehensive WSGI web application library."
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:aa1055b91f55c67acf4964c61bd2e97965a5e52c8180c5c4320ca55d7b94420a"
+content_hash = "sha256:48345b775ade5810013366b9d0b6c2fd575978585668d18fbe525b849cc74594"
 
 [metadata.files]
 "attrs 21.2.0" = [
