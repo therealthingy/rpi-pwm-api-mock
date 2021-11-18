@@ -6,15 +6,16 @@ import unittest
 from flask import json
 from six import BytesIO
 
-from ..models.app_config import AppConfig  # noqa: E501
-from ..models.app_fan_curve import AppFanCurve  # noqa: E501
-from ..models.app_fan_curve_base import AppFanCurveBase  # noqa: E501
-from ..models.app_log_entry import AppLogEntry  # noqa: E501
-from ..models.app_temp_dc_history_entry import AppTempDCHistoryEntry  # noqa: E501
-from ..models.http_error import HTTPError  # noqa: E501
-from ..models.system_info import SystemInfo  # noqa: E501
-from ..models.system_process import SystemProcess  # noqa: E501
-from ..test import BaseTestCase
+from app.api.models.app_config import AppConfig  # noqa: E501
+from app.api.models.app_fan_curve_base import AppFanCurveBase  # noqa: E501
+from app.api.models.app_fan_curve_complete import AppFanCurveComplete  # noqa: E501
+from app.api.models.app_fan_curve_update import AppFanCurveUpdate  # noqa: E501
+from app.api.models.app_log_entry import AppLogEntry  # noqa: E501
+from app.api.models.app_temp_dc_history_entry import AppTempDCHistoryEntry  # noqa: E501
+from app.api.models.http_error import HTTPError  # noqa: E501
+from app.api.models.system_info import SystemInfo  # noqa: E501
+from app.api.models.system_process import SystemProcess  # noqa: E501
+from app.api.test import BaseTestCase
 
 
 class TestDefaultController(BaseTestCase):
@@ -41,6 +42,7 @@ class TestDefaultController(BaseTestCase):
         Updates config flags
         """
         app_config = {
+  "lastTimeChanged" : "2021-11-14T10:14:22.000Z",
   "app" : {
     "fanOn" : true,
     "loggingEnabled" : true,
@@ -48,6 +50,7 @@ class TestDefaultController(BaseTestCase):
     "DCUpdateIntervalInSec" : 3,
     "selectedFanCurve" : {
       "id" : "916CD0EB-A755-4663-8410-461431039F74",
+      "lastTimeChanged" : "2021-11-14T10:14:22.000Z",
       "name" : "Quiet",
       "fanCurveSeries" : [ {
         "tempInCels" : 30,
@@ -129,7 +132,8 @@ class TestDefaultController(BaseTestCase):
 
         Updates requested fan curve whose id corresponds to specified \"id\"
         """
-        app_fan_curve_base = {
+        app_fan_curve_update = {
+  "lastTimeChanged" : "2021-11-14T10:14:22.000Z",
   "name" : "Quiet",
   "fanCurveSeries" : [ {
     "tempInCels" : 30,
@@ -146,7 +150,7 @@ class TestDefaultController(BaseTestCase):
             '/api/v1/app/fanCurves/{id}'.format(id='4731ab6a-433b-11ec-8321-c3a754deb306'),
             method='PUT',
             headers=headers,
-            data=json.dumps(app_fan_curve_base),
+            data=json.dumps(app_fan_curve_update),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

@@ -205,7 +205,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"app\": {\n        \"fanOn\": true,\n        \"loggingEnabled\": true,\n        \"loggingLevel\": \"WARN\",\n        \"DCUpdateIntervalInSec\": 3,\n        \"selectedFanCurve\": {\n            \"id\": \"916CD0EB-A755-4663-8410-461431039F74\",\n            \"name\": \"Quiet\",\n            \"fanCurveSeries\": [\n                {\n                    \"tempInCels\": 30,\n                    \"fanDCInPerc\": 40\n                },\n                {\n                    \"tempInCels\": 35,\n                    \"fanDCInPerc\": 50\n                }\n            ]\n        }\n    },\n    \"pwm\": {\n        \"gpioPin\": 12,\n        \"invertSignal\": true,\n        \"minDCInPerc\": 20,\n        \"maxDCInPerc\": 95\n    }\n}",
+					"raw": "{\n    \"lastTimeChanged\": \"2021-11-14T10:14:22.000Z\",\n    \"app\": {\n        \"fanOn\": true,\n        \"loggingEnabled\": true,\n        \"loggingLevel\": \"WARN\",\n        \"DCUpdateIntervalInSec\": 3,\n        \"selectedFanCurve\": {\n            \"id\": \"916CD0EB-A755-4663-8410-461431039F74\",\n            \"lastTimeChanged\": \"2021-11-14T10:14:22.000Z\",\n            \"name\": \"Quiet\",\n            \"fanCurveSeries\": [\n                {\n                    \"tempInCels\": 30,\n                    \"fanDCInPerc\": 40\n                },\n                {\n                    \"tempInCels\": 35,\n                    \"fanDCInPerc\": 50\n                }\n            ]\n        }\n    },\n    \"pwm\": {\n        \"gpioPin\": 12,\n        \"invertSignal\": true,\n        \"minDCInPerc\": 20,\n        \"maxDCInPerc\": 95\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -232,7 +232,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"916CD0EB-A755-4663-8410-461431039F74\",\n    \"name\": \"Quiet\",\n    \"fanCurveSeries\": [\n        {\n            \"tempInCels\": 30,\n            \"fanDCInPerc\": 40\n        },\n        {\n            \"tempInCels\": 35,\n            \"fanDCInPerc\": 50\n        }\n    ]\n}",
+					"raw": "{\n    \"name\": \"Quiet\",\n    \"fanCurveSeries\": [\n        {\n            \"tempInCels\": 30,\n            \"fanDCInPerc\": 40\n        },\n        {\n            \"tempInCels\": 35,\n            \"fanDCInPerc\": 50\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"

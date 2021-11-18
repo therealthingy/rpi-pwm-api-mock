@@ -5,8 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from .base_model_ import Model
-from .. import util
+from app.api.models.base_model_ import Model
+from app.api import util
 
 
 class AppConfigPWM(Model):
@@ -77,6 +77,8 @@ class AppConfigPWM(Model):
         :param gpio_pin: The gpio_pin of this AppConfigPWM.
         :type gpio_pin: int
         """
+        if gpio_pin is None:
+            raise ValueError("Invalid value for `gpio_pin`, must not be `None`")  # noqa: E501
 
         self._gpio_pin = gpio_pin
 
@@ -100,6 +102,8 @@ class AppConfigPWM(Model):
         :param invert_signal: The invert_signal of this AppConfigPWM.
         :type invert_signal: bool
         """
+        if invert_signal is None:
+            raise ValueError("Invalid value for `invert_signal`, must not be `None`")  # noqa: E501
 
         self._invert_signal = invert_signal
 
@@ -123,6 +127,8 @@ class AppConfigPWM(Model):
         :param max_dcin_perc: The max_dcin_perc of this AppConfigPWM.
         :type max_dcin_perc: int
         """
+        if max_dcin_perc is None:
+            raise ValueError("Invalid value for `max_dcin_perc`, must not be `None`")  # noqa: E501
         if max_dcin_perc is not None and max_dcin_perc > 100:  # noqa: E501
             raise ValueError("Invalid value for `max_dcin_perc`, must be a value less than or equal to `100`")  # noqa: E501
         if max_dcin_perc is not None and max_dcin_perc < 1:  # noqa: E501
@@ -150,6 +156,8 @@ class AppConfigPWM(Model):
         :param min_dcin_perc: The min_dcin_perc of this AppConfigPWM.
         :type min_dcin_perc: int
         """
+        if min_dcin_perc is None:
+            raise ValueError("Invalid value for `min_dcin_perc`, must not be `None`")  # noqa: E501
         if min_dcin_perc is not None and min_dcin_perc > 100:  # noqa: E501
             raise ValueError("Invalid value for `min_dcin_perc`, must be a value less than or equal to `100`")  # noqa: E501
         if min_dcin_perc is not None and min_dcin_perc < 1:  # noqa: E501

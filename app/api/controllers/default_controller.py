@@ -1,15 +1,16 @@
 import connexion
 import six
 
-from ..models.app_config import AppConfig  # noqa: E501
-from ..models.app_fan_curve import AppFanCurve  # noqa: E501
-from ..models.app_fan_curve_base import AppFanCurveBase  # noqa: E501
-from ..models.app_log_entry import AppLogEntry  # noqa: E501
-from ..models.app_temp_dc_history_entry import AppTempDCHistoryEntry  # noqa: E501
-from ..models.http_error import HTTPError  # noqa: E501
-from ..models.system_info import SystemInfo  # noqa: E501
-from ..models.system_process import SystemProcess  # noqa: E501
-from .. import util
+from app.api.models.app_config import AppConfig  # noqa: E501
+from app.api.models.app_fan_curve_base import AppFanCurveBase  # noqa: E501
+from app.api.models.app_fan_curve_complete import AppFanCurveComplete  # noqa: E501
+from app.api.models.app_fan_curve_update import AppFanCurveUpdate  # noqa: E501
+from app.api.models.app_log_entry import AppLogEntry  # noqa: E501
+from app.api.models.app_temp_dc_history_entry import AppTempDCHistoryEntry  # noqa: E501
+from app.api.models.http_error import HTTPError  # noqa: E501
+from app.api.models.system_info import SystemInfo  # noqa: E501
+from app.api.models.system_process import SystemProcess  # noqa: E501
+from app.api import util
 
 
 def app_config_get():  # noqa: E501
@@ -23,7 +24,7 @@ def app_config_get():  # noqa: E501
     return 'do some magic!'
 
 
-def app_config_put(app_config):  # noqa: E501
+def app_config_put(body):  # noqa: E501                       # ?? WHY NEED TO CHANGE TO `body` ??
     """Updates config flags
 
     Updates config flags # noqa: E501
@@ -46,12 +47,12 @@ def app_fan_curves_get(name=None):  # noqa: E501
     :param name: Filter for fan curves whose name is similar to &#x60;name&#x60;
     :type name: str
 
-    :rtype: List[AppFanCurve]
+    :rtype: List[AppFanCurveComplete]
     """
     return 'do some magic!'
 
 
-def app_fan_curves_id_delete(id):  # noqa: E501
+def app_fan_curves_id_delete(id_):  # noqa: E501                       # ?? WHY IS HERE A `_` necessary ??
     """Deletes fan curve whose id correspond to specified \&quot;id\&quot;
 
     Deletes fan curve whose id correspond to specified &#x60;id&#x60; # noqa: E501
@@ -61,10 +62,10 @@ def app_fan_curves_id_delete(id):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    return f'do some magic! {id_}'
 
 
-def app_fan_curves_id_get(id):  # noqa: E501
+def app_fan_curves_id_get(id_):  # noqa: E501                       # ?? WHY IS HERE A `_` necessary ??
     """Returns requested fan curve whose id corresponds to specified \&quot;id\&quot;
 
     Returns requested fan curve whose id corresponds to specified &#x60;id&#x60; # noqa: E501
@@ -72,29 +73,29 @@ def app_fan_curves_id_get(id):  # noqa: E501
     :param id: Id of the fan curve (generated, i.e., surrogate key)
     :type id: str
 
-    :rtype: AppFanCurve
+    :rtype: AppFanCurveComplete
     """
-    return 'do some magic!'
+    return f'do some magic! {id_}'
 
 
-def app_fan_curves_id_put(id, app_fan_curve_base):  # noqa: E501
+def app_fan_curves_id_put(id_, body):  # noqa: E501                       # ?? WHY IS HERE A `_` necessary ??
     """Updates requested fan curve whose id corresponds to specified \&quot;id\&quot;
 
     Updates requested fan curve whose id corresponds to specified &#x60;id&#x60; # noqa: E501
 
     :param id: Id of the fan curve (generated, i.e., surrogate key)
     :type id: str
-    :param app_fan_curve_base: 
-    :type app_fan_curve_base: dict | bytes
+    :param app_fan_curve_update: 
+    :type app_fan_curve_update: dict | bytes
 
-    :rtype: AppFanCurve
+    :rtype: AppFanCurveComplete
     """
     if connexion.request.is_json:
-        app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        app_fan_curve_update = AppFanCurveUpdate.from_dict(connexion.request.get_json())  # noqa: E501
+    return f'do some magic! {id} {body}'
 
 
-def app_fan_curves_post(app_fan_curve_base, name=None):  # noqa: E501
+def app_fan_curves_post(body, name=None):  # noqa: E501                       # ?? WHY NEED TO CHANGE TO `body` ??
     """Adds new fan curve
 
     Adds new fan curve # noqa: E501
@@ -104,11 +105,11 @@ def app_fan_curves_post(app_fan_curve_base, name=None):  # noqa: E501
     :param name: Filter for fan curves whose name is similar to &#x60;name&#x60;
     :type name: str
 
-    :rtype: AppFanCurve
+    :rtype: AppFanCurveComplete
     """
     if connexion.request.is_json:
         app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+    return f'do some magic! {body}'
 
 
 def app_logs_get():  # noqa: E501
