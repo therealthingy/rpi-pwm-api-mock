@@ -1156,6 +1156,7 @@ components:
           description: Last time settings were changed (used for optimistic locking)
           example: 2021-11-14T10:14:22Z
           format: date-time
+          maxLength: 255
           type: string
       required:
       - app
@@ -1399,6 +1400,8 @@ components:
         name:
           description: Name of the fan curve
           example: Quiet
+          maxLength: 255
+          minLength: 0
           type: string
         fanCurveSeries:
           description: Array comprised of all fan series points
@@ -1445,6 +1448,7 @@ components:
         id:
           description: Id of fan curve
           example: 916CD0EB-A755-4663-8410-461431039F74
+          maxLength: 255
           title: id
           type: string
       required:

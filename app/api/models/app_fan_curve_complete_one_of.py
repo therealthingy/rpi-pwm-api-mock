@@ -64,5 +64,7 @@ class AppFanCurveCompleteOneOf(Model):
         """
         if id is None:
             raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
+        if id is not None and len(id) > 255:
+            raise ValueError("Invalid value for `id`, length must be less than or equal to `255`")  # noqa: E501
 
         self._id = id

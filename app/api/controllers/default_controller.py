@@ -62,7 +62,7 @@ def app_fan_curves_id_delete(id_):  # noqa: E501                       # ?? WHY 
 
     :rtype: None
     """
-    return f'do some magic! {id_}'
+    return 'do some magic!'
 
 
 def app_fan_curves_id_get(id_):  # noqa: E501                       # ?? WHY IS HERE A `_` necessary ??
@@ -75,7 +75,7 @@ def app_fan_curves_id_get(id_):  # noqa: E501                       # ?? WHY IS 
 
     :rtype: AppFanCurveComplete
     """
-    return f'do some magic! {id_}'
+    return 'do some magic!'
 
 
 def app_fan_curves_id_put(id_, body):  # noqa: E501                       # ?? WHY IS HERE A `_` necessary ??
@@ -92,7 +92,7 @@ def app_fan_curves_id_put(id_, body):  # noqa: E501                       # ?? W
     """
     if connexion.request.is_json:
         app_fan_curve_update = AppFanCurveUpdate.from_dict(connexion.request.get_json())  # noqa: E501
-    return f'do some magic! {id} {body}'
+    return 'do some magic!'
 
 
 def app_fan_curves_post(body, name=None):  # noqa: E501                       # ?? WHY NEED TO CHANGE TO `body` ??
@@ -109,7 +109,7 @@ def app_fan_curves_post(body, name=None):  # noqa: E501                       # 
     """
     if connexion.request.is_json:
         app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
-    return f'do some magic! {body}'
+    return 'do some magic!'
 
 
 def app_logs_get():  # noqa: E501

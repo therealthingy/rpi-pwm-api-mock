@@ -124,5 +124,7 @@ class AppConfig(Model):
         """
         if last_time_changed is None:
             raise ValueError("Invalid value for `last_time_changed`, must not be `None`")  # noqa: E501
+        if last_time_changed is not None and len(last_time_changed) > 255:
+            raise ValueError("Invalid value for `last_time_changed`, length must be less than or equal to `255`")  # noqa: E501
 
         self._last_time_changed = last_time_changed
