@@ -78,6 +78,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "flask-testing"
+version = "0.8.1"
+summary = "Unit testing for Flask"
+dependencies = [
+    "Flask",
+]
+
+[[package]]
 name = "idna"
 version = "3.3"
 requires_python = ">=3.5"
@@ -210,7 +218,7 @@ summary = "The comprehensive WSGI web application library."
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:48345b775ade5810013366b9d0b6c2fd575978585668d18fbe525b849cc74594"
+content_hash = "sha256:341fb4bf28dcbcf2dc37bf2fd16810ecd6e0ca8216862f5aa29aaaf7f24f0e50"
 
 [metadata.files]
 "attrs 21.2.0" = [
@@ -240,6 +248,9 @@ content_hash = "sha256:48345b775ade5810013366b9d0b6c2fd575978585668d18fbe525b849
 "flask 1.1.4" = [
     {file = "Flask-1.1.4-py2.py3-none-any.whl", hash = "sha256:c34f04500f2cbbea882b1acb02002ad6fe6b7ffa64a6164577995657f50aed22"},
     {file = "Flask-1.1.4.tar.gz", hash = "sha256:0fbeb6180d383a9186d0d6ed954e0042ad9f18e0e8de088b2b419d526927d196"},
+]
+"flask-testing 0.8.1" = [
+    {file = "Flask-Testing-0.8.1.tar.gz", hash = "sha256:0a734d7b68e63a9410b413cd7b1f96456f9a858bd09a6222d465650cc782eb01"},
 ]
 "idna 3.3" = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},

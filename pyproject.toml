@@ -14,9 +14,14 @@ license = {text = "GNU AGPLv3"}
 [project.urls]
 homepage = "https://github.com/therealthingy/rpi-pwm"
 
+[project.optional-dependencies]
 [build-system]
 requires = ["pdm-pep517"]
 build-backend = "pdm.pep517.api"
 
 [tool]
 [tool.pdm]
+[tool.pdm.dev-dependencies]
+test = [
+    "flask-testing~=0.8",
+]
