@@ -22,7 +22,7 @@ def app_config_get():  # noqa: E501
     return 'do some magic!'
 
 
-def app_config_put(body):  # noqa: E501     # $$ FIX: ONLY `body` $$
+def app_config_put(body):  # noqa: E501       # $$ OG: `if_match, app_config` $$
     """Updates config flags
 
     Updates config flags # noqa: E501
@@ -52,7 +52,7 @@ def app_fan_curves_get(name=None):  # noqa: E501
     return 'do some magic!'
 
 
-def app_fan_curves_id_delete(id_):  # noqa: E501     # $$ FIX: ONLY `id_` $$
+def app_fan_curves_id_delete(id_):  # noqa: E501       # $$ OG: `id` $$
     """Deletes fan curve whose id correspond to specified \&quot;id\&quot;
 
     Deletes fan curve whose id correspond to specified &#x60;id&#x60; # noqa: E501
@@ -65,7 +65,7 @@ def app_fan_curves_id_delete(id_):  # noqa: E501     # $$ FIX: ONLY `id_` $$
     return 'do some magic!'
 
 
-def app_fan_curves_id_get(id):  # noqa: E501
+def app_fan_curves_id_get(id_):  # noqa: E501       # $$ OG: `id` $$
     """Returns requested fan curve whose id corresponds to specified \&quot;id\&quot;
 
     Returns requested fan curve whose id corresponds to specified &#x60;id&#x60; # noqa: E501
@@ -78,7 +78,7 @@ def app_fan_curves_id_get(id):  # noqa: E501
     return 'do some magic!'
 
 
-def app_fan_curves_id_put(id_, body):  # noqa: E501     # $$ FIX: ONLY `body`; OG: id, if_match, app_fan_curve_base $$
+def app_fan_curves_id_put(id_, body):  # noqa: E501       # $$ OG: `id, if_match, app_fan_curve_base` $$
     """Updates requested fan curve whose id corresponds to specified \&quot;id\&quot;
 
     Updates requested fan curve whose id corresponds to specified &#x60;id&#x60; # noqa: E501
@@ -97,7 +97,7 @@ def app_fan_curves_id_put(id_, body):  # noqa: E501     # $$ FIX: ONLY `body`; O
     return 'do some magic!'
 
 
-def app_fan_curves_post(body):  # noqa: E501     # $$ FIX: ONLY `body` $$
+def app_fan_curves_post(body):  # noqa: E501       # $$ OG: `app_fan_curve_base, name=None` $$
     """Adds new fan curve
 
     Adds new fan curve # noqa: E501

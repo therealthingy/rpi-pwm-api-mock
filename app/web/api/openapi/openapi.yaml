@@ -89,24 +89,22 @@ paths:
             examples:
               app-config_singleton:
                 value:
-                  app:
-                    fanOn: true
-                    loggingEnabled: true
-                    loggingLevel: WARN
-                    DCUpdateIntervalInSec: 3
-                    selectedFanCurve:
-                      id: 916CD0EB-A755-4663-8410-461431039F74
-                      name: Quiet
-                      fanCurveSeries:
-                      - tempInCels: 30
-                        fanDCInPerc: 40
-                      - tempInCels: 35
-                        fanDCInPerc: 50
-                  pwm:
-                    gpioPin: 12
-                    invertSignal: true
-                    minDCInPerc: 20
-                    maxDCInPerc: 95
+                  fanOn: true
+                  loggingEnabled: true
+                  loggingLevel: WARN
+                  DCUpdateIntervalInSec: 3
+                  selectedFanCurve:
+                    id: 916CD0EB-A755-4663-8410-461431039F74
+                    name: Quiet
+                    fanCurveSeries:
+                    - tempInCels: 30
+                      fanDCInPerc: 40
+                    - tempInCels: 35
+                      fanDCInPerc: 50
+                  pwmGpioPin: 12
+                  pwmInvertSignal: true
+                  pwmMinDCInPerc: 20
+                  pwmMaxDCInPerc: 95
             schema:
               $ref: '#/components/schemas/AppConfig'
         description: Config flags consisting of app and pwm config
