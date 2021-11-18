@@ -5,8 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from app.api.models.base_model_ import Model
-from app.api import util
+from app.web.api.models.base_model_ import Model
+from app.web.api import util
 
 
 class AppFanCurveSeriesPoint(Model):

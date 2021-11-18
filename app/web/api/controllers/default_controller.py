@@ -1,16 +1,14 @@
 import connexion
 import six
 
-from app.api.models.app_config import AppConfig  # noqa: E501
-from app.api.models.app_fan_curve_base import AppFanCurveBase  # noqa: E501
-from app.api.models.app_fan_curve_complete import AppFanCurveComplete  # noqa: E501
-from app.api.models.app_fan_curve_update import AppFanCurveUpdate  # noqa: E501
-from app.api.models.app_log_entry import AppLogEntry  # noqa: E501
-from app.api.models.app_temp_dc_history_entry import AppTempDCHistoryEntry  # noqa: E501
-from app.api.models.http_error import HTTPError  # noqa: E501
-from app.api.models.system_info import SystemInfo  # noqa: E501
-from app.api.models.system_process import SystemProcess  # noqa: E501
-from app.api import util
+from app.web.api.models.app_config import AppConfig  # noqa: E501
+from app.web.api.models.app_fan_curve import AppFanCurve  # noqa: E501
+from app.web.api.models.app_fan_curve_base import AppFanCurveBase  # noqa: E501
+from app.web.api.models.app_log_entry import AppLogEntry  # noqa: E501
+from app.web.api.models.app_temp_dc_history_entry import AppTempDCHistoryEntry  # noqa: E501
+from app.web.api.models.system_info import SystemInfo  # noqa: E501
+from app.web.api.models.system_process import SystemProcess  # noqa: E501
+from app.web.api import util
 
 
 def app_config_get():  # noqa: E501
@@ -24,11 +22,13 @@ def app_config_get():  # noqa: E501
     return 'do some magic!'
 
 
-def app_config_put(body):  # noqa: E501                       # ?? WHY NEED TO CHANGE TO `body` ??
+def app_config_put(body):  # noqa: E501     # $$ FIX: ONLY `body` $$
     """Updates config flags
 
     Updates config flags # noqa: E501
 
+    :param if_match: Current hash of to be updated config -&gt; used for optimistic locking
+    :type if_match: str
     :param app_config: Config flags consisting of app and pwm config
     :type app_config: dict | bytes
 
@@ -47,12 +47,12 @@ def app_fan_curves_get(name=None):  # noqa: E501
     :param name: Filter for fan curves whose name is similar to &#x60;name&#x60;
     :type name: str
 
-    :rtype: List[AppFanCurveComplete]
+    :rtype: List[AppFanCurve]
     """
     return 'do some magic!'
 
 
-def app_fan_curves_id_delete(id_):  # noqa: E501                       # ?? WHY IS HERE A `_` necessary ??
+def app_fan_curves_id_delete(id_):  # noqa: E501     # $$ FIX: ONLY `id_` $$
     """Deletes fan curve whose id correspond to specified \&quot;id\&quot;
 
     Deletes fan curve whose id correspond to specified &#x60;id&#x60; # noqa: E501
@@ -65,7 +65,7 @@ def app_fan_curves_id_delete(id_):  # noqa: E501                       # ?? WHY 
     return 'do some magic!'
 
 
-def app_fan_curves_id_get(id_):  # noqa: E501                       # ?? WHY IS HERE A `_` necessary ??
+def app_fan_curves_id_get(id):  # noqa: E501
     """Returns requested fan curve whose id corresponds to specified \&quot;id\&quot;
 
     Returns requested fan curve whose id corresponds to specified &#x60;id&#x60; # noqa: E501
@@ -73,29 +73,31 @@ def app_fan_curves_id_get(id_):  # noqa: E501                       # ?? WHY IS 
     :param id: Id of the fan curve (generated, i.e., surrogate key)
     :type id: str
 
-    :rtype: AppFanCurveComplete
+    :rtype: AppFanCurve
     """
     return 'do some magic!'
 
 
-def app_fan_curves_id_put(id_, body):  # noqa: E501                       # ?? WHY IS HERE A `_` necessary ??
+def app_fan_curves_id_put(id_, body):  # noqa: E501     # $$ FIX: ONLY `body`; OG: id, if_match, app_fan_curve_base $$
     """Updates requested fan curve whose id corresponds to specified \&quot;id\&quot;
 
     Updates requested fan curve whose id corresponds to specified &#x60;id&#x60; # noqa: E501
 
     :param id: Id of the fan curve (generated, i.e., surrogate key)
     :type id: str
-    :param app_fan_curve_update: 
-    :type app_fan_curve_update: dict | bytes
+    :param if_match: Current hash of to be updated fan curve -&gt; used for optimistic locking
+    :type if_match: str
+    :param app_fan_curve_base: Must contain the the updated fan curve corresponding to &#x60;id&#x60;
+    :type app_fan_curve_base: dict | bytes
 
-    :rtype: AppFanCurveComplete
+    :rtype: AppFanCurve
     """
     if connexion.request.is_json:
-        app_fan_curve_update = AppFanCurveUpdate.from_dict(connexion.request.get_json())  # noqa: E501
+        app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 
-def app_fan_curves_post(body, name=None):  # noqa: E501                       # ?? WHY NEED TO CHANGE TO `body` ??
+def app_fan_curves_post(body):  # noqa: E501     # $$ FIX: ONLY `body` $$
     """Adds new fan curve
 
     Adds new fan curve # noqa: E501
@@ -105,7 +107,7 @@ def app_fan_curves_post(body, name=None):  # noqa: E501                       # 
     :param name: Filter for fan curves whose name is similar to &#x60;name&#x60;
     :type name: str
 
-    :rtype: AppFanCurveComplete
+    :rtype: AppFanCurve
     """
     if connexion.request.is_json:
         app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501

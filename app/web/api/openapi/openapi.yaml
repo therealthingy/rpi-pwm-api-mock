@@ -36,43 +36,59 @@ paths:
           content:
             application/json:
               examples:
-                config_singleton:
+                app-config_singleton:
                   value:
-                    lastTimeChanged: 2021-11-14T10:14:22.000Z
-                    app:
-                      fanOn: true
-                      loggingEnabled: true
-                      loggingLevel: WARN
-                      DCUpdateIntervalInSec: 3
-                      selectedFanCurve:
-                        id: 916CD0EB-A755-4663-8410-461431039F74
-                        lastTimeChanged: 2021-11-14T10:14:22.000Z
-                        name: Quiet
-                        fanCurveSeries:
-                        - tempInCels: 30
-                          fanDCInPerc: 40
-                        - tempInCels: 35
-                          fanDCInPerc: 50
-                    pwm:
-                      gpioPin: 12
-                      invertSignal: true
-                      minDCInPerc: 20
-                      maxDCInPerc: 95
+                    fanOn: true
+                    loggingEnabled: true
+                    loggingLevel: WARN
+                    DCUpdateIntervalInSec: 3
+                    selectedFanCurve:
+                      id: 916CD0EB-A755-4663-8410-461431039F74
+                      name: Quiet
+                      fanCurveSeries:
+                      - tempInCels: 30
+                        fanDCInPerc: 40
+                      - tempInCels: 35
+                        fanDCInPerc: 50
+                    pwmGpioPin: 12
+                    pwmInvertSignal: true
+                    pwmMinDCInPerc: 20
+                    pwmMaxDCInPerc: 95
               schema:
                 $ref: '#/components/schemas/AppConfig'
           description: Config of app
+          headers:
+            ETag:
+              examples:
+                etag-example:
+                  value: b5395865858689cfcb718a8fbf84e128771f6975
+              explode: false
+              schema:
+                type: string
+              style: simple
       summary: Returns current config flags
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     put:
       description: Updates config flags
       operationId: app_config_put
+      parameters:
+      - description: Current hash of to be updated config -> used for optimistic locking
+        examples:
+          If-Match-example:
+            value: b5395865858689cfcb718a8fbf84e128771f6975
+        explode: false
+        in: header
+        name: If-Match
+        required: true
+        schema:
+          type: string
+        style: simple
       requestBody:
         content:
           application/json:
             examples:
               app-config_singleton:
                 value:
-                  lastTimeChanged: 2021-11-14T10:14:22.000Z
                   app:
                     fanOn: true
                     loggingEnabled: true
@@ -80,7 +96,6 @@ paths:
                     DCUpdateIntervalInSec: 3
                     selectedFanCurve:
                       id: 916CD0EB-A755-4663-8410-461431039F74
-                      lastTimeChanged: 2021-11-14T10:14:22.000Z
                       name: Quiet
                       fanCurveSeries:
                       - tempInCels: 30
@@ -101,47 +116,40 @@ paths:
           content:
             application/json:
               examples:
-                config_singleton:
+                app-config_singleton:
                   value:
-                    lastTimeChanged: 2021-11-14T10:14:22.000Z
-                    app:
-                      fanOn: true
-                      loggingEnabled: true
-                      loggingLevel: WARN
-                      DCUpdateIntervalInSec: 3
-                      selectedFanCurve:
-                        id: 916CD0EB-A755-4663-8410-461431039F74
-                        lastTimeChanged: 2021-11-14T10:14:22.000Z
-                        name: Quiet
-                        fanCurveSeries:
-                        - tempInCels: 30
-                          fanDCInPerc: 40
-                        - tempInCels: 35
-                          fanDCInPerc: 50
-                    pwm:
-                      gpioPin: 12
-                      invertSignal: true
-                      minDCInPerc: 20
-                      maxDCInPerc: 95
+                    fanOn: true
+                    loggingEnabled: true
+                    loggingLevel: WARN
+                    DCUpdateIntervalInSec: 3
+                    selectedFanCurve:
+                      id: 916CD0EB-A755-4663-8410-461431039F74
+                      name: Quiet
+                      fanCurveSeries:
+                      - tempInCels: 30
+                        fanDCInPerc: 40
+                      - tempInCels: 35
+                        fanDCInPerc: 50
+                    pwmGpioPin: 12
+                    pwmInvertSignal: true
+                    pwmMinDCInPerc: 20
+                    pwmMaxDCInPerc: 95
               schema:
                 $ref: '#/components/schemas/AppConfig'
           description: Config of app
-        "400":
-          content:
-            application/json:
+          headers:
+            ETag:
               examples:
-                HTTPError-BadRequest:
-                  value:
-                    httpStatusCode: 400
-                    httpStatusDescription: Bad Request
-                    appErrorCode: 0
-                    appErrorDescription: Malformed payload in request body
+                etag-example:
+                  value: b5395865858689cfcb718a8fbf84e128771f6975
+              explode: false
               schema:
-                $ref: '#/components/schemas/HTTPError'
-          description: Error (Bad Request, e.g., due to malformed payload in request
-            body)
+                type: string
+              style: simple
+        "400":
+          description: The request failed due to a malformed request body
       summary: Updates config flags
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: Allows user to view config of app
   /app/fanCurves:
     description: Collection resource for fan curves
@@ -165,26 +173,23 @@ paths:
           content:
             application/json:
               examples:
-                fanCurves_collection:
+                app-fanCurves_collection:
                   value:
-                  - lastTimeChanged: 2021-11-14T10:14:22.000Z
-                    id: 916CD0EB-A755-4663-8410-461431039F74
+                  - id: 916CD0EB-A755-4663-8410-461431039F74
                     name: Quiet
                     fanCurveSeries:
                     - tempInCels: 30
                       fanDCInPerc: 40
                     - tempInCels: 35
                       fanDCInPerc: 50
-                  - lastTimeChanged: 2021-11-14T10:14:22.000Z
-                    id: 316CD0EB-A755-4463-8410-461411039F74
+                  - id: 316CD0EB-A755-4463-8410-461411039F74
                     name: Quiet-2
                     fanCurveSeries:
                     - tempInCels: 30
                       fanDCInPerc: 20
                     - tempInCels: 35
                       fanDCInPerc: 10
-                  - lastTimeChanged: 2021-11-14T10:14:22.000Z
-                    id: 016ED0EB-A755-4663-8210-461431039F74
+                  - id: 016ED0EB-A755-4663-8210-461431039F74
                     name: Loud
                     fanCurveSeries:
                     - tempInCels: 20
@@ -195,11 +200,11 @@ paths:
                       fanDCInPerc: 100
               schema:
                 items:
-                  $ref: '#/components/schemas/AppFanCurveComplete'
+                  $ref: '#/components/schemas/AppFanCurve'
                 type: array
           description: Multiple fan curves
       summary: Returns list of all available fan curves
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     post:
       description: Adds new fan curve
       operationId: app_fan_curves_post
@@ -235,9 +240,8 @@ paths:
           content:
             application/json:
               examples:
-                fanCurves_singleton:
+                app-fanCurves_singleton:
                   value:
-                    lastTimeChanged: 2021-11-14T10:14:22.000Z
                     id: 916CD0EB-A755-4663-8410-461431039F74
                     name: Quiet
                     fanCurveSeries:
@@ -246,24 +250,21 @@ paths:
                     - tempInCels: 35
                       fanDCInPerc: 50
               schema:
-                $ref: '#/components/schemas/AppFanCurveComplete'
+                $ref: '#/components/schemas/AppFanCurve'
           description: Fan curve
-        "400":
-          content:
-            application/json:
+          headers:
+            ETag:
               examples:
-                HTTPError-BadRequest:
-                  value:
-                    httpStatusCode: 400
-                    httpStatusDescription: Bad Request
-                    appErrorCode: 0
-                    appErrorDescription: Malformed payload in request body
+                etag-example:
+                  value: b5395865858689cfcb718a8fbf84e128771f6975
+              explode: false
               schema:
-                $ref: '#/components/schemas/HTTPError'
-          description: Error (Bad Request, e.g., due to malformed payload in request
-            body)
+                type: string
+              style: simple
+        "400":
+          description: The request failed due to a malformed request body
       summary: Adds new fan curve
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: Enables user to view all fan curves or to add a new one (up to 10 max)
   /app/fanCurves/{id}:
     delete:
@@ -285,35 +286,12 @@ paths:
         "204":
           description: Empty body
         "404":
-          content:
-            application/json:
-              examples:
-                HTTPError-NotFound:
-                  value:
-                    httpStatusCode: 404
-                    httpStatusDescription: Not Found
-                    appErrorCode: 0
-                    appErrorDescription: HTTP API Error
-              schema:
-                $ref: '#/components/schemas/HTTPError'
-          description: Error (Requested resource doesn't exist)
+          description: Requested fan curve w/ `id` doesn't exist
         "423":
-          content:
-            application/json:
-              examples:
-                HTTPError-Locked:
-                  value:
-                    httpStatusCode: 423
-                    httpStatusDescription: Locked
-                    appErrorCode: 0
-                    appErrorDescription: To be deleted resource cannot be deleted
-                      b/c it's currently in use
-              schema:
-                $ref: '#/components/schemas/HTTPError'
-          description: Error (Resource, e.g., fan curve, cannot be deleted b/c it's
-            currently in use)
+          description: Fan curve corresponding to `id` cannot be deleted since fan
+            curve is currently in use
       summary: Deletes fan curve whose id correspond to specified "id"
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     description: Singleton resource for fan curves
     get:
       description: Returns requested fan curve whose id corresponds to specified `id`
@@ -335,9 +313,8 @@ paths:
           content:
             application/json:
               examples:
-                fanCurves_singleton:
+                app-fanCurves_singleton:
                   value:
-                    lastTimeChanged: 2021-11-14T10:14:22.000Z
                     id: 916CD0EB-A755-4663-8410-461431039F74
                     name: Quiet
                     fanCurveSeries:
@@ -346,23 +323,21 @@ paths:
                     - tempInCels: 35
                       fanDCInPerc: 50
               schema:
-                $ref: '#/components/schemas/AppFanCurveComplete'
+                $ref: '#/components/schemas/AppFanCurve'
           description: Fan curve
-        "404":
-          content:
-            application/json:
+          headers:
+            ETag:
               examples:
-                HTTPError-NotFound:
-                  value:
-                    httpStatusCode: 404
-                    httpStatusDescription: Not Found
-                    appErrorCode: 0
-                    appErrorDescription: HTTP API Error
+                etag-example:
+                  value: b5395865858689cfcb718a8fbf84e128771f6975
+              explode: false
               schema:
-                $ref: '#/components/schemas/HTTPError'
-          description: Error (Requested resource doesn't exist)
+                type: string
+              style: simple
+        "404":
+          description: Requested fan curve w/ `id` doesn't exist
       summary: Returns requested fan curve whose id corresponds to specified "id"
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     put:
       description: Updates requested fan curve whose id corresponds to specified `id`
       operationId: app_fan_curves_id_put
@@ -378,32 +353,41 @@ paths:
         schema:
           type: string
         style: simple
+      - description: Current hash of to be updated fan curve -> used for optimistic
+          locking
+        examples:
+          If-Match-example:
+            value: b5395865858689cfcb718a8fbf84e128771f6975
+        explode: false
+        in: header
+        name: If-Match
+        required: true
+        schema:
+          type: string
+        style: simple
       requestBody:
         content:
           application/json:
             examples:
-              singletonFanCurve:
+              app-fanCurvesBase_singleton:
                 value:
-                  lastTimeChanged: 2021-11-14T10:14:22.000Z
-                  name: Quiet-2
+                  name: Quiet
                   fanCurveSeries:
-                  - tempInCels: 60
-                    fanDCInPerc: 66
-                  - tempInCels: 44
-                    fanDCInPerc: 42
-                  - tempInCels: 53
-                    fanDCInPerc: 56
+                  - tempInCels: 30
+                    fanDCInPerc: 40
+                  - tempInCels: 35
+                    fanDCInPerc: 50
             schema:
-              $ref: '#/components/schemas/AppFanCurveUpdate'
+              $ref: '#/components/schemas/AppFanCurveBase'
+        description: Must contain the the updated fan curve corresponding to `id`
         required: true
       responses:
         "200":
           content:
             application/json:
               examples:
-                fanCurves_singleton:
+                app-fanCurves_singleton:
                   value:
-                    lastTimeChanged: 2021-11-14T10:14:22.000Z
                     id: 916CD0EB-A755-4663-8410-461431039F74
                     name: Quiet
                     fanCurveSeries:
@@ -412,37 +396,23 @@ paths:
                     - tempInCels: 35
                       fanDCInPerc: 50
               schema:
-                $ref: '#/components/schemas/AppFanCurveComplete'
+                $ref: '#/components/schemas/AppFanCurve'
           description: Fan curve
+          headers:
+            ETag:
+              examples:
+                etag-example:
+                  value: b5395865858689cfcb718a8fbf84e128771f6975
+              explode: false
+              schema:
+                type: string
+              style: simple
         "400":
-          content:
-            application/json:
-              examples:
-                HTTPError-BadRequest:
-                  value:
-                    httpStatusCode: 400
-                    httpStatusDescription: Bad Request
-                    appErrorCode: 0
-                    appErrorDescription: Malformed payload in request body
-              schema:
-                $ref: '#/components/schemas/HTTPError'
-          description: Error (Bad Request, e.g., due to malformed payload in request
-            body)
+          description: The request failed due to a malformed request body
         "404":
-          content:
-            application/json:
-              examples:
-                HTTPError-NotFound:
-                  value:
-                    httpStatusCode: 404
-                    httpStatusDescription: Not Found
-                    appErrorCode: 0
-                    appErrorDescription: HTTP API Error
-              schema:
-                $ref: '#/components/schemas/HTTPError'
-          description: Error (Requested resource doesn't exist)
+          description: Requested fan curve w/ `id` doesn't exist
       summary: Updates requested fan curve whose id corresponds to specified "id"
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: Allows user to view, update or delete fan curve corresponding to specified
       "id"
   /app/logs/:
@@ -488,7 +458,7 @@ paths:
                 type: array
           description: Log
       summary: Returns list of all available fan curves
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: 'Enables user to view app logs (Note: Might return nothing if logging
       was disabled via config flag "loggingEnabled")'
   /app/tempDCHistory:
@@ -524,7 +494,7 @@ paths:
                 type: array
           description: Temperature- / DC history
       summary: Returns temperature- & fan history over last 10 min.
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: 'Returns temperature- & fan history over last 10 min. Note: Time delta
       b/w each item depends on config-flag "DCUpdateIntervalInSec"'
   /system/info:
@@ -549,7 +519,7 @@ paths:
                 $ref: '#/components/schemas/SystemInfo'
           description: System info
       summary: Returns information about used system (SW & HW)
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: Allows user to obtain information about the currently used SW & HW
   /system/topTenProcesses:
     description: 'Collection resource for top 10 processes (dynamically aggregated;
@@ -610,7 +580,7 @@ paths:
                 type: array
           description: Top ten processes
       summary: Returns list of top 10 processes using the most CPU time
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: Allows user to view the top 10 processes which utilize the majority of
       CPU time (dynamically aggregated)
   /system/topTenProcesses/{nr}:
@@ -648,54 +618,14 @@ paths:
                 $ref: '#/components/schemas/SystemProcess'
           description: A process within the top ten processes
         "404":
-          content:
-            application/json:
-              examples:
-                HTTPError-NotFound:
-                  value:
-                    httpStatusCode: 404
-                    httpStatusDescription: Not Found
-                    appErrorCode: 0
-                    appErrorDescription: HTTP API Error
-              schema:
-                $ref: '#/components/schemas/HTTPError'
-          description: Error (Requested resource doesn't exist)
+          description: Requested process corresponding to `nr` doesn't exist
       summary: Returns requested process whose current CPU utilization corresponds
         to specified nr in ranking
-      x-openapi-router-controller: app.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: Allows user to view process w/ nr highest CPU utilization at current
       moment
 components:
   responses:
-    app-config_singleton:
-      content:
-        application/json:
-          examples:
-            config_singleton:
-              value:
-                lastTimeChanged: 2021-11-14T10:14:22.000Z
-                app:
-                  fanOn: true
-                  loggingEnabled: true
-                  loggingLevel: WARN
-                  DCUpdateIntervalInSec: 3
-                  selectedFanCurve:
-                    id: 916CD0EB-A755-4663-8410-461431039F74
-                    lastTimeChanged: 2021-11-14T10:14:22.000Z
-                    name: Quiet
-                    fanCurveSeries:
-                    - tempInCels: 30
-                      fanDCInPerc: 40
-                    - tempInCels: 35
-                      fanDCInPerc: 50
-                pwm:
-                  gpioPin: 12
-                  invertSignal: true
-                  minDCInPerc: 20
-                  maxDCInPerc: 95
-          schema:
-            $ref: '#/components/schemas/AppConfig'
-      description: Config of app
     system-topTenProcesses_collection:
       content:
         application/json:
@@ -837,119 +767,27 @@ components:
               $ref: '#/components/schemas/AppLogEntry'
             type: array
       description: Log
-    HTTPError-NotFound:
+    app-fanCurves_collection:
       content:
         application/json:
           examples:
-            HTTPError-NotFound:
+            app-fanCurves_collection:
               value:
-                httpStatusCode: 404
-                httpStatusDescription: Not Found
-                appErrorCode: 0
-                appErrorDescription: HTTP API Error
-          schema:
-            $ref: '#/components/schemas/HTTPError'
-      description: Error (Requested resource doesn't exist)
-    HTTPError-Locked:
-      content:
-        application/json:
-          examples:
-            HTTPError-Locked:
-              value:
-                httpStatusCode: 423
-                httpStatusDescription: Locked
-                appErrorCode: 0
-                appErrorDescription: To be deleted resource cannot be deleted b/c
-                  it's currently in use
-          schema:
-            $ref: '#/components/schemas/HTTPError'
-      description: Error (Resource, e.g., fan curve, cannot be deleted b/c it's currently
-        in use)
-    HTTPError-BadRequest:
-      content:
-        application/json:
-          examples:
-            HTTPError-BadRequest:
-              value:
-                httpStatusCode: 400
-                httpStatusDescription: Bad Request
-                appErrorCode: 0
-                appErrorDescription: Malformed payload in request body
-          schema:
-            $ref: '#/components/schemas/HTTPError'
-      description: Error (Bad Request, e.g., due to malformed payload in request body)
-    app-fanCurvesBase_singleton:
-      content:
-        application/json:
-          examples:
-            fanCurves_singleton:
-              value:
+              - id: 916CD0EB-A755-4663-8410-461431039F74
                 name: Quiet
                 fanCurveSeries:
                 - tempInCels: 30
                   fanDCInPerc: 40
                 - tempInCels: 35
                   fanDCInPerc: 50
-          schema:
-            $ref: '#/components/schemas/AppFanCurveBase'
-      description: Fan curve
-    app-fanCurvesComplete_singleton:
-      content:
-        application/json:
-          examples:
-            fanCurves_singleton:
-              value:
-                lastTimeChanged: 2021-11-14T10:14:22.000Z
-                id: 916CD0EB-A755-4663-8410-461431039F74
-                name: Quiet
-                fanCurveSeries:
-                - tempInCels: 30
-                  fanDCInPerc: 40
-                - tempInCels: 35
-                  fanDCInPerc: 50
-          schema:
-            $ref: '#/components/schemas/AppFanCurveComplete'
-      description: Fan curve
-    app-fanCurvesUpdate_singleton:
-      content:
-        application/json:
-          examples:
-            fanCurves_singleton:
-              value:
-                lastTimeChanged: 2021-11-14T10:14:22.000Z
-                name: Quiet
-                fanCurveSeries:
-                - tempInCels: 30
-                  fanDCInPerc: 40
-                - tempInCels: 35
-                  fanDCInPerc: 50
-          schema:
-            $ref: '#/components/schemas/AppFanCurveUpdate'
-      description: Fan curve
-    app-fanCurvesComplete_collection:
-      content:
-        application/json:
-          examples:
-            fanCurves_collection:
-              value:
-              - lastTimeChanged: 2021-11-14T10:14:22.000Z
-                id: 916CD0EB-A755-4663-8410-461431039F74
-                name: Quiet
-                fanCurveSeries:
-                - tempInCels: 30
-                  fanDCInPerc: 40
-                - tempInCels: 35
-                  fanDCInPerc: 50
-              - lastTimeChanged: 2021-11-14T10:14:22.000Z
-                id: 316CD0EB-A755-4463-8410-461411039F74
+              - id: 316CD0EB-A755-4463-8410-461411039F74
                 name: Quiet-2
                 fanCurveSeries:
                 - tempInCels: 30
                   fanDCInPerc: 20
                 - tempInCels: 35
                   fanDCInPerc: 10
-              - lastTimeChanged: 2021-11-14T10:14:22.000Z
-                id: 016ED0EB-A755-4663-8210-461431039F74
+              - id: 016ED0EB-A755-4663-8210-461431039F74
                 name: Loud
                 fanCurveSeries:
                 - tempInCels: 20
@@ -960,9 +798,68 @@ components:
                   fanDCInPerc: 100
           schema:
             items:
-              $ref: '#/components/schemas/AppFanCurveComplete'
+              $ref: '#/components/schemas/AppFanCurve'
             type: array
       description: Multiple fan curves
+    app-fanCurves_singleton:
+      content:
+        application/json:
+          examples:
+            app-fanCurves_singleton:
+              value:
+                id: 916CD0EB-A755-4663-8410-461431039F74
+                name: Quiet
+                fanCurveSeries:
+                - tempInCels: 30
+                  fanDCInPerc: 40
+                - tempInCels: 35
+                  fanDCInPerc: 50
+          schema:
+            $ref: '#/components/schemas/AppFanCurve'
+      description: Fan curve
+      headers:
+        ETag:
+          examples:
+            etag-example:
+              value: b5395865858689cfcb718a8fbf84e128771f6975
+          explode: false
+          schema:
+            type: string
+          style: simple
+    app-config_singleton:
+      content:
+        application/json:
+          examples:
+            app-config_singleton:
+              value:
+                fanOn: true
+                loggingEnabled: true
+                loggingLevel: WARN
+                DCUpdateIntervalInSec: 3
+                selectedFanCurve:
+                  id: 916CD0EB-A755-4663-8410-461431039F74
+                  name: Quiet
+                  fanCurveSeries:
+                  - tempInCels: 30
+                    fanDCInPerc: 40
+                  - tempInCels: 35
+                    fanDCInPerc: 50
+                pwmGpioPin: 12
+                pwmInvertSignal: true
+                pwmMinDCInPerc: 20
+                pwmMaxDCInPerc: 95
+          schema:
+            $ref: '#/components/schemas/AppConfig'
+      description: Config of app
+      headers:
+        ETag:
+          examples:
+            etag-example:
+              value: b5395865858689cfcb718a8fbf84e128771f6975
+          explode: false
+          schema:
+            type: string
+          style: simple
   schemas:
     SystemStats:
       description: Current stats of the system
@@ -1123,145 +1020,6 @@ components:
       - ppid
       title: Root Type for Process
       type: object
-    AppConfig:
-      description: Comprised of `app` and `pwm` config, which constitute all config
-        flags for this app
-      example:
-        lastTimeChanged: 2021-11-14T10:14:22.000Z
-        app:
-          fanOn: true
-          loggingEnabled: true
-          loggingLevel: WARN
-          DCUpdateIntervalInSec: 3
-          selectedFanCurve:
-            id: 916CD0EB-A755-4663-8410-461431039F74
-            lastTimeChanged: 2021-11-14T10:14:22.000Z
-            name: Quiet
-            fanCurveSeries:
-            - tempInCels: 30
-              fanDCInPerc: 40
-            - tempInCels: 35
-              fanDCInPerc: 50
-        pwm:
-          gpioPin: 12
-          invertSignal: true
-          minDCInPerc: 20
-          maxDCInPerc: 95
-      properties:
-        app:
-          $ref: '#/components/schemas/AppConfigApp'
-        pwm:
-          $ref: '#/components/schemas/AppConfigPWM'
-        lastTimeChanged:
-          description: Last time settings were changed (used for optimistic locking)
-          example: 2021-11-14T10:14:22Z
-          format: date-time
-          maxLength: 255
-          type: string
-      required:
-      - app
-      - lastTimeChanged
-      - pwm
-      title: AppConfig
-      type: object
-    AppConfigApp:
-      description: Configuration flags pertaining the app itself
-      example:
-        fanOn: true
-        loggingEnabled: true
-        loggingLevel: WARN
-        DCUpdateIntervalInSec: 3
-        selectedFanCurve:
-          id: 916CD0EB-A755-4663-8410-461431039F74
-          lastTimeChanged: 2021-11-14T10:14:22.000Z
-          name: Quiet
-          fanCurveSeries:
-          - tempInCels: 30
-            fanDCInPerc: 40
-          - tempInCels: 35
-            fanDCInPerc: 50
-      properties:
-        fanOn:
-          description: Whether fan is turned on (kill switch)
-          example: true
-          type: boolean
-        loggingLevel:
-          description: Current log level
-          enum:
-          - DEBUG
-          - INFO
-          - WARN
-          - ERROR
-          - CRITICAL
-          example: WARN
-          type: string
-        DCUpdateIntervalInSec:
-          description: How frequently the dutycycle shall be updated in seconds
-          example: 3
-          format: int32
-          maximum: 10
-          minimum: 1
-          type: integer
-        loggingEnabled:
-          description: Whether logging is enabled
-          example: true
-          type: boolean
-        selectedFanCurve:
-          $ref: '#/components/schemas/AppFanCurveComplete'
-      required:
-      - DCUpdateIntervalInSec
-      - fanOn
-      - loggingEnabled
-      - loggingLevel
-      - selectedFanCurve
-      title: Root Type for App
-      type: object
-    AppConfigPWM:
-      description: Configuration flags of the PWM
-      example:
-        gpioPin: 12
-        invertSignal: true
-        minDCInPerc: 20
-        maxDCInPerc: 95
-      properties:
-        gpioPin:
-          description: GPIO pin used for PWM (which applies the desired dutycycle
-            for the fan)
-          example: 12
-          format: int32
-          type: integer
-        invertSignal:
-          description: Whether PWM signal shall be inverted (may be required based
-            on transitor type (PNP / NPN)
-          example: true
-          type: boolean
-        maxDCInPerc:
-          description: "Limits max duty cycle, i.e., the max fan speed in percent.\
-            \ \nMay be desirable for some fans which only operate reliably within\
-            \ a specific range of fan speeds.\nNOTE: This effectively overwrittes\
-            \ the applied fan curve."
-          example: 95
-          format: int32
-          maximum: 100
-          minimum: 1
-          type: integer
-        minDCInPerc:
-          description: "Limits min duty cycle, i.e., the min fan speed in percent.\
-            \ \nMay be desirable for some fans which only operate reliably within\
-            \ a specific range of fan speeds.\nNOTE: This effectively overwrittes\
-            \ the applied fan curve."
-          example: 20
-          format: int32
-          maximum: 100
-          minimum: 1
-          type: integer
-      required:
-      - gpioPin
-      - invertSignal
-      - maxDCInPerc
-      - minDCInPerc
-      title: Root Type for PWM
-      type: object
     AppFanCurveSeriesPoint:
       description: Point in fan curve series consisting of temperature in Celsius
         and fan speed in percent
@@ -1369,23 +1127,6 @@ components:
       - httpStatusDescription
       title: Root Type for HTTPError
       type: object
-    AppFanCurveComplete:
-      description: Fan curve consisting of id, fan curve series data and name (used
-        for `GET`).
-      example:
-        id: 916CD0EB-A755-4663-8410-461431039F74
-        lastTimeChanged: 2021-11-14T10:14:22.000Z
-        name: Quiet
-        fanCurveSeries:
-        - tempInCels: 30
-          fanDCInPerc: 40
-        - tempInCels: 35
-          fanDCInPerc: 50
-      oneOf:
-      - $ref: '#/components/schemas/AppFanCurveComplete_oneOf'
-      - $ref: '#/components/schemas/AppFanCurveUpdate'
-      title: AppFanCurveComplete
-      type: object
     AppFanCurveBase:
       description: Fan curve consisting of fan curve series data and name (used for
         `POST`).
@@ -1427,23 +1168,113 @@ components:
       - name
       title: AppFanCurveBase
       type: object
-    AppFanCurveUpdate:
+    AppFanCurve:
+      allOf:
+      - $ref: '#/components/schemas/AppFanCurve_allOf'
+      - $ref: '#/components/schemas/AppFanCurveBase'
       description: Fan curve consisting of id, fan curve series data and name (used
-        for `PUT`).
+        for `GET`).
       example:
-        lastTimeChanged: 2021-11-14T10:14:22.000Z
+        id: 916CD0EB-A755-4663-8410-461431039F74
         name: Quiet
         fanCurveSeries:
         - tempInCels: 30
           fanDCInPerc: 40
         - tempInCels: 35
           fanDCInPerc: 50
-      oneOf:
-      - $ref: '#/components/schemas/AppFanCurveUpdate_oneOf'
-      - $ref: '#/components/schemas/AppFanCurveBase'
-      title: AppFanCurveUpdate
+      title: AppFanCurve
       type: object
-    AppFanCurveComplete_oneOf:
+    AppConfig:
+      description: Configuration flags pertaining the app itself and the pwm
+      example:
+        fanOn: true
+        loggingEnabled: true
+        loggingLevel: WARN
+        DCUpdateIntervalInSec: 3
+        selectedFanCurve:
+          id: 916CD0EB-A755-4663-8410-461431039F74
+          name: Quiet
+          fanCurveSeries:
+          - tempInCels: 30
+            fanDCInPerc: 40
+          - tempInCels: 35
+            fanDCInPerc: 50
+        pwmGpioPin: 12
+        pwmInvertSignal: true
+        pwmMinDCInPerc: 20
+        pwmMaxDCInPerc: 95
+      properties:
+        fanOn:
+          description: Whether fan is turned on (kill switch)
+          example: true
+          type: boolean
+        loggingLevel:
+          description: Current log level
+          enum:
+          - DEBUG
+          - INFO
+          - WARN
+          - ERROR
+          - CRITICAL
+          example: WARN
+          type: string
+        DCUpdateIntervalInSec:
+          description: How frequently the dutycycle shall be updated in seconds
+          example: 3
+          format: int32
+          maximum: 10
+          minimum: 1
+          type: integer
+        loggingEnabled:
+          description: Whether logging is enabled
+          example: true
+          type: boolean
+        selectedFanCurve:
+          $ref: '#/components/schemas/AppFanCurve'
+        pwmGpioPin:
+          description: GPIO pin used for PWM (which applies the desired dutycycle
+            for the fan)
+          example: 12
+          format: int32
+          type: integer
+        pwmInvertSignal:
+          description: Whether PWM signal shall be inverted (may be required based
+            on transitor type (PNP / NPN)
+          example: true
+          type: boolean
+        pwmMaxDCInPerc:
+          description: "Limits max duty cycle, i.e., the max fan speed in percent.\
+            \ \nMay be desirable for some fans which only operate reliably within\
+            \ a specific range of fan speeds.\nNOTE: This effectively overwrittes\
+            \ the applied fan curve."
+          example: 95
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+        pwmMinDCInPerc:
+          description: "Limits min duty cycle, i.e., the min fan speed in percent.\
+            \ \nMay be desirable for some fans which only operate reliably within\
+            \ a specific range of fan speeds.\nNOTE: This effectively overwrittes\
+            \ the applied fan curve."
+          example: 20
+          format: int32
+          maximum: 100
+          minimum: 1
+          type: integer
+      required:
+      - DCUpdateIntervalInSec
+      - fanOn
+      - loggingEnabled
+      - loggingLevel
+      - pwmGpioPin
+      - pwmInvertSignal
+      - pwmMaxDCInPerc
+      - pwmMinDCInPerc
+      - selectedFanCurve
+      title: AppConfig
+      type: object
+    AppFanCurve_allOf:
       properties:
         id:
           description: Id of fan curve
@@ -1453,23 +1284,11 @@ components:
           type: string
       required:
       - id
-      title: AppFanCurveComplete_oneOf
-      type: object
-    AppFanCurveUpdate_oneOf:
-      properties:
-        lastTimeChanged:
-          description: Last time fan curve was updated (used for optimistic locking)
-          example: 2021-11-14T10:14:22Z
-          format: date-time
-          title: lastTimeChanged
-          type: string
-      required:
-      - lastTimeChanged
-      title: AppFanCurveUpdate_oneOf
+      title: AppFanCurve_allOf
       type: object
   securitySchemes:
     api-security:
       description: Validated by webapp
       scheme: basic
       type: http
-      x-basicInfoFunc: api.controllers.security_controller_.info_from_api_security
+      x-basicInfoFunc: web.api.controllers.security_controller_.info_from_api_security

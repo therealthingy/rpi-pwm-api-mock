@@ -6,16 +6,14 @@ import unittest
 from flask import json
 from six import BytesIO
 
-from app.api.models.app_config import AppConfig  # noqa: E501
-from app.api.models.app_fan_curve_base import AppFanCurveBase  # noqa: E501
-from app.api.models.app_fan_curve_complete import AppFanCurveComplete  # noqa: E501
-from app.api.models.app_fan_curve_update import AppFanCurveUpdate  # noqa: E501
-from app.api.models.app_log_entry import AppLogEntry  # noqa: E501
-from app.api.models.app_temp_dc_history_entry import AppTempDCHistoryEntry  # noqa: E501
-from app.api.models.http_error import HTTPError  # noqa: E501
-from app.api.models.system_info import SystemInfo  # noqa: E501
-from app.api.models.system_process import SystemProcess  # noqa: E501
-from app.api.test import BaseTestCase
+from app.web.api.models.app_config import AppConfig  # noqa: E501
+from app.web.api.models.app_fan_curve import AppFanCurve  # noqa: E501
+from app.web.api.models.app_fan_curve_base import AppFanCurveBase  # noqa: E501
+from app.web.api.models.app_log_entry import AppLogEntry  # noqa: E501
+from app.web.api.models.app_temp_dc_history_entry import AppTempDCHistoryEntry  # noqa: E501
+from app.web.api.models.system_info import SystemInfo  # noqa: E501
+from app.web.api.models.system_process import SystemProcess  # noqa: E501
+from app.web.api.test import BaseTestCase
 
 
 class TestDefaultController(BaseTestCase):
@@ -42,33 +40,28 @@ class TestDefaultController(BaseTestCase):
         Updates config flags
         """
         app_config = {
-  "lastTimeChanged" : "2021-11-14T10:14:22.000Z",
-  "app" : {
-    "fanOn" : true,
-    "loggingEnabled" : true,
-    "loggingLevel" : "WARN",
-    "DCUpdateIntervalInSec" : 3,
-    "selectedFanCurve" : {
-      "id" : "916CD0EB-A755-4663-8410-461431039F74",
-      "lastTimeChanged" : "2021-11-14T10:14:22.000Z",
-      "name" : "Quiet",
-      "fanCurveSeries" : [ {
-        "tempInCels" : 30,
-        "fanDCInPerc" : 40
-      }, {
-        "tempInCels" : 35,
-        "fanDCInPerc" : 50
-      } ]
-    }
+  "fanOn" : true,
+  "loggingEnabled" : true,
+  "loggingLevel" : "WARN",
+  "DCUpdateIntervalInSec" : 3,
+  "selectedFanCurve" : {
+    "id" : "916CD0EB-A755-4663-8410-461431039F74",
+    "name" : "Quiet",
+    "fanCurveSeries" : [ {
+      "tempInCels" : 30,
+      "fanDCInPerc" : 40
+    }, {
+      "tempInCels" : 35,
+      "fanDCInPerc" : 50
+    } ]
   },
-  "pwm" : {
-    "gpioPin" : 12,
-    "invertSignal" : true,
-    "minDCInPerc" : 20,
-    "maxDCInPerc" : 95
-  }
+  "pwmGpioPin" : 12,
+  "pwmInvertSignal" : true,
+  "pwmMinDCInPerc" : 20,
+  "pwmMaxDCInPerc" : 95
 }
         headers = { 
+            'if_match': 'b5395865858689cfcb718a8fbf84e128771f6975',
             'Authorization': 'Basic Zm9vOmJhcg==',
         }
         response = self.client.open(
@@ -132,8 +125,7 @@ class TestDefaultController(BaseTestCase):
 
         Updates requested fan curve whose id corresponds to specified \"id\"
         """
-        app_fan_curve_update = {
-  "lastTimeChanged" : "2021-11-14T10:14:22.000Z",
+        app_fan_curve_base = {
   "name" : "Quiet",
   "fanCurveSeries" : [ {
     "tempInCels" : 30,
@@ -144,13 +136,14 @@ class TestDefaultController(BaseTestCase):
   } ]
 }
         headers = { 
+            'if_match': 'b5395865858689cfcb718a8fbf84e128771f6975',
             'Authorization': 'Basic Zm9vOmJhcg==',
         }
         response = self.client.open(
             '/api/v1/app/fanCurves/{id}'.format(id='4731ab6a-433b-11ec-8321-c3a754deb306'),
             method='PUT',
             headers=headers,
-            data=json.dumps(app_fan_curve_update),
+            data=json.dumps(app_fan_curve_base),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

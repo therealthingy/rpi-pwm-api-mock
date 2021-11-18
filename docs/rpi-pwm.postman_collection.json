@@ -155,7 +155,13 @@
 			"name": "/app/fanCurves/{id}",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "If-Match",
+						"value": "asfdasfdasfd",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"fanCurveSeries\": [\n    {\n      \"fanDCInPerc\": 66,\n      \"tempInCels\": 60\n    },\n    {\n      \"fanDCInPerc\": 42,\n      \"tempInCels\": 44\n    },\n    {\n      \"fanDCInPerc\": 56,\n      \"tempInCels\": 53\n    }\n  ],\n  \"name\": \"Quiet-2\"\n}",
@@ -202,10 +208,16 @@
 			"name": "/app/config",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "If-Match",
+						"value": "asdfasdf",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"lastTimeChanged\": \"2021-11-14T10:14:22.000Z\",\n    \"app\": {\n        \"fanOn\": true,\n        \"loggingEnabled\": true,\n        \"loggingLevel\": \"WARN\",\n        \"DCUpdateIntervalInSec\": 3,\n        \"selectedFanCurve\": {\n            \"id\": \"916CD0EB-A755-4663-8410-461431039F74\",\n            \"lastTimeChanged\": \"2021-11-14T10:14:22.000Z\",\n            \"name\": \"Quiet\",\n            \"fanCurveSeries\": [\n                {\n                    \"tempInCels\": 30,\n                    \"fanDCInPerc\": 40\n                },\n                {\n                    \"tempInCels\": 35,\n                    \"fanDCInPerc\": 50\n                }\n            ]\n        }\n    },\n    \"pwm\": {\n        \"gpioPin\": 12,\n        \"invertSignal\": true,\n        \"minDCInPerc\": 20,\n        \"maxDCInPerc\": 95\n    }\n}",
+					"raw": "{\n    \"fanOn\": true,\n    \"loggingEnabled\": true,\n    \"loggingLevel\": \"WARN\",\n    \"DCUpdateIntervalInSec\": 3,\n    \"selectedFanCurve\": {\n        \"id\": \"916CD0EB-A755-4663-8410-461431039F74\",\n        \"name\": \"Quiet\",\n        \"fanCurveSeries\": [\n            {\n                \"tempInCels\": 30,\n                \"fanDCInPerc\": 40\n            },\n            {\n                \"tempInCels\": 35,\n                \"fanDCInPerc\": 50\n            }\n        ]\n    },\n    \"pwmGpioPin\": 12,\n    \"pwmInvertSignal\": true,\n    \"pwmMinDCInPerc\": 20,\n    \"pwmMaxDCInPerc\": 95\n}",
 					"options": {
 						"raw": {
 							"language": "json"

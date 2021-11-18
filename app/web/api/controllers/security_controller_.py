@@ -1,5 +1,4 @@
-from typing import List
-from app.envflags import api_auth_user, api_auth_pass
+from app.core.envflags import api_auth_user, api_auth_pass
 
 
 def info_from_api_security(username, password, required_scopes):
@@ -7,6 +6,7 @@ def info_from_api_security(username, password, required_scopes):
     Check and retrieve authentication information from basic auth.
     Returned value will be passed in 'token_info' parameter of your operation function, if there is one.
     'sub' or 'uid' will be set in 'user' parameter of your operation function, if there is one.
+
     :param username login provided by Authorization header
     :type username: str
     :param password password provided by Authorization header

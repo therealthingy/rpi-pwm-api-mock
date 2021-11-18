@@ -3,7 +3,7 @@ import pprint
 import six
 import typing
 
-from app.api import util
+from app.web.api import util
 
 T = typing.TypeVar('T')
 
