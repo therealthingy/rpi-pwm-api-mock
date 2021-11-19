@@ -10,7 +10,11 @@ from app.web.api.models.system_info import SystemInfo  # noqa: E501
 from app.web.api.models.system_process import SystemProcess  # noqa: E501
 from app.web.api import util
 
+from app.web.persistence.repositories import FanCurveRepo, ConfigRepo
+from app.web.api.types_mapper import entity_to_model, model_to_entity
 
+
+# -- Functions --
 def app_config_get():  # noqa: E501
     """Returns current config flags
 
@@ -19,7 +23,10 @@ def app_config_get():  # noqa: E501
 
     :rtype: AppConfig
     """
-    return 'do some magic!'
+    # TODO: ADD ETAG
+
+    config = ConfigRepo.fetch_config()
+    return entity_to_model(config), 200
 
 
 def app_config_put(body):  # noqa: E501       # $$ OG: `if_match, app_config` $$
@@ -35,8 +42,15 @@ def app_config_put(body):  # noqa: E501       # $$ OG: `if_match, app_config` $$
     :rtype: AppConfig
     """
     if connexion.request.is_json:
+        # TODO: CHECK If-Match
         app_config = AppConfig.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+
+        # FanCurveRepo.fetch_by_id(app_config.selected_fan_curve._id)
+
+        ConfigRepo.update_config(model_to_entity(app_config))
+        return app_config, 200
+
+    return {"error": "Unsupported Media Type"}, 415    #  TODO: ??
 
 
 def app_fan_curves_get(name=None):  # noqa: E501
@@ -49,7 +63,7 @@ def app_fan_curves_get(name=None):  # noqa: E501
 
     :rtype: List[AppFanCurve]
     """
-    return 'do some magic!'
+    return FanCurveRepo.fetch_all()
 
 
 def app_fan_curves_id_delete(id_):  # noqa: E501       # $$ OG: `id` $$
