@@ -45,7 +45,7 @@ class TestDefaultController(BaseTestCase):
   "loggingLevel" : "WARN",
   "DCUpdateIntervalInSec" : 3,
   "selectedFanCurve" : {
-    "id" : "916CD0EB-A755-4663-8410-461431039F74",
+    "did" : "916CD0EB-A755-4663-8410-461431039F74",
     "name" : "Quiet",
     "fanCurveSeries" : [ {
       "tempInCels" : 30,
@@ -73,57 +73,40 @@ class TestDefaultController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_app_fan_curves_get(self):
-        """Test case for app_fan_curves_get
+    def test_app_fan_curves_did_delete(self):
+        """Test case for app_fan_curves_did_delete
 
-        Returns list of all available fan curves
-        """
-        query_string = [('name', 'Quiet-')]
-        headers = { 
-            'Authorization': 'Basic Zm9vOmJhcg==',
-        }
-        response = self.client.open(
-            '/api/v1/app/fanCurves',
-            method='GET',
-            headers=headers,
-            query_string=query_string)
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
-    def test_app_fan_curves_id_delete(self):
-        """Test case for app_fan_curves_id_delete
-
-        Deletes fan curve whose id correspond to specified \"id\"
+        Deletes fan curve whose id correspond to specified \"did\"
         """
         headers = { 
             'Authorization': 'Basic Zm9vOmJhcg==',
         }
         response = self.client.open(
-            '/api/v1/app/fanCurves/{id}'.format(id='4731ab6a-433b-11ec-8321-c3a754deb306'),
+            '/api/v1/app/fanCurves/{did}'.format(did='4731ab6a-433b-11ec-8321-c3a754deb306'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_app_fan_curves_id_get(self):
-        """Test case for app_fan_curves_id_get
+    def test_app_fan_curves_did_get(self):
+        """Test case for app_fan_curves_did_get
 
-        Returns requested fan curve whose id corresponds to specified \"id\"
+        Returns requested fan curve whose id corresponds to specified \"did\"
         """
         headers = { 
             'Authorization': 'Basic Zm9vOmJhcg==',
         }
         response = self.client.open(
-            '/api/v1/app/fanCurves/{id}'.format(id='4731ab6a-433b-11ec-8321-c3a754deb306'),
+            '/api/v1/app/fanCurves/{did}'.format(did='4731ab6a-433b-11ec-8321-c3a754deb306'),
             method='GET',
             headers=headers)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_app_fan_curves_id_put(self):
-        """Test case for app_fan_curves_id_put
+    def test_app_fan_curves_did_put(self):
+        """Test case for app_fan_curves_did_put
 
-        Updates requested fan curve whose id corresponds to specified \"id\"
+        Updates requested fan curve whose id corresponds to specified \"did\"
         """
         app_fan_curve_base = {
   "name" : "Quiet",
@@ -140,11 +123,28 @@ class TestDefaultController(BaseTestCase):
             'Authorization': 'Basic Zm9vOmJhcg==',
         }
         response = self.client.open(
-            '/api/v1/app/fanCurves/{id}'.format(id='4731ab6a-433b-11ec-8321-c3a754deb306'),
+            '/api/v1/app/fanCurves/{did}'.format(did='4731ab6a-433b-11ec-8321-c3a754deb306'),
             method='PUT',
             headers=headers,
             data=json.dumps(app_fan_curve_base),
             content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_app_fan_curves_get(self):
+        """Test case for app_fan_curves_get
+
+        Returns list of all available fan curves
+        """
+        query_string = [('name', 'Quiet-')]
+        headers = { 
+            'Authorization': 'Basic Zm9vOmJhcg==',
+        }
+        response = self.client.open(
+            '/api/v1/app/fanCurves',
+            method='GET',
+            headers=headers,
+            query_string=query_string)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 

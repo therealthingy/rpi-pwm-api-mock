@@ -1,5 +1,5 @@
 ###
-# Workaround due to `https://github.com/OpenAPITools/openapi-generator/issues/4586`
+# Workaround for `https://github.com/OpenAPITools/openapi-generator/issues/4586`
 ###
 from app.web.persistence.db import \
     Config as ConfigEntity, \
@@ -26,7 +26,7 @@ def entity_to_model(db_entity):
 
     if type(db_entity) is FanCurveEntity:
         return FanCurveModel(
-                          id=db_entity.id,
+                          did=db_entity.did,
                           name=db_entity.name,
                           fan_curve_series=list(map(entity_to_model, db_entity.fan_curve_series)))
 
@@ -53,7 +53,7 @@ def model_to_entity(model_instance):
 
     if type(model_instance) is FanCurveModel:
         return FanCurveEntity(
-                          id=model_instance.id,
+                          did=model_instance.did,
                           name=model_instance.name,
                           fan_curve_series=list(map(model_to_entity, model_instance.fan_curve_series)))
 

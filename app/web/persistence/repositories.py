@@ -9,21 +9,21 @@ class FanCurveRepo:
         db.session.commit()
 
     @staticmethod
-    def fetch_by_id(_id) -> FanCurve:
-        return db.session.query(FanCurve).filter_by(id=_id).first()
+    def fetch_by_id(did) -> FanCurve:
+        return db.session.query(FanCurve).filter_by(did=did).first()
 
     @staticmethod
     def fetch_all() -> List[FanCurve]:
         return db.session.query(FanCurve).all()
 
     @staticmethod
-    def delete(_id) -> None:
+    def delete(did) -> None:
         config_repo = ConfigRepo()
         current_config = config_repo.fetch_config()
         if current_config.selectedFanCurve_id == _id:
             raise ValueError("The to be deleted fan curve is currently being used")
 
-        item = db.session.query(FanCurve).filter_by(id=_id).first()
+        item = db.session.query(FanCurve).filter_by(did=did).first()
         db.session.delete(item)
         db.session.commit()
 
@@ -36,7 +36,7 @@ class FanCurveRepo:
 class ConfigRepo:
     @staticmethod
     def fetch_config() -> Config:
-        return db.session.query(Config).filter_by(id=0).first()
+        return db.session.query(Config).filter_by(did=0).first()
 
     @staticmethod
     def update_config(config_data):

@@ -15,8 +15,8 @@ def new_launchable_backend():
                               options={"swagger_ui": api_swagger_ui_enabled})
     connex_app.app.json_encoder = encoder.JSONEncoder
     connex_app.add_api('openapi.yaml',
-                arguments={'title': 'rpi-pwm'},
-                pythonic_params=True)
+                       arguments={'title': 'rpi-pwm'},
+                       pythonic_params=True)
 
     # -- Logging config --
     # app.

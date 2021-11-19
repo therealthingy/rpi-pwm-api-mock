@@ -1,3 +1,4 @@
+import app.web.api.models
 import connexion
 import six
 
@@ -10,11 +11,14 @@ from app.web.api.models.system_info import SystemInfo  # noqa: E501
 from app.web.api.models.system_process import SystemProcess  # noqa: E501
 from app.web.api import util
 
+from app.web.api.models.http_error import HTTPError
 from app.web.persistence.repositories import FanCurveRepo, ConfigRepo
 from app.web.api.types_mapper import entity_to_model, model_to_entity
 
 
-# -- Functions --
+_unsupported_media_type_error = HTTPError(415, "Unsupported Media Type", 0, "API Error", None)
+
+
 def app_config_get():  # noqa: E501
     """Returns current config flags
 
@@ -23,13 +27,11 @@ def app_config_get():  # noqa: E501
 
     :rtype: AppConfig
     """
-    # TODO: ADD ETAG
-
     config = ConfigRepo.fetch_config()
     return entity_to_model(config), 200
 
 
-def app_config_put(body):  # noqa: E501       # $$ OG: `if_match, app_config` $$
+def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
     """Updates config flags
 
     Updates config flags # noqa: E501
@@ -43,14 +45,64 @@ def app_config_put(body):  # noqa: E501       # $$ OG: `if_match, app_config` $$
     """
     if connexion.request.is_json:
         # TODO: CHECK If-Match
+
         app_config = AppConfig.from_dict(connexion.request.get_json())  # noqa: E501
 
-        # FanCurveRepo.fetch_by_id(app_config.selected_fan_curve._id)
+        new_selected_fan_curve = FanCurveRepo.fetch_by_id(app_config.selected_fan_curve.did)
+        if new_selected_fan_curve is None:
+            return HTTPError(400, "Bad request", 0, "API Error - Selected fan curve doesn't exist", None), 400
 
-        ConfigRepo.update_config(model_to_entity(app_config))
-        return app_config, 200
+        new_app_config = model_to_entity(app_config)
+        new_app_config.selected_fan_curve = new_selected_fan_curve
+        ConfigRepo.update_config(new_app_config)
+        return entity_to_model(new_app_config), 200
 
-    return {"error": "Unsupported Media Type"}, 415    #  TODO: ??
+    return _unsupported_media_type_error, _unsupported_media_type_error.http_status_code
+
+
+def app_fan_curves_did_delete(did):  # noqa: E501
+    """Deletes fan curve whose id correspond to specified \&quot;did\&quot;
+
+    Deletes fan curve whose id correspond to specified &#x60;did&#x60; # noqa: E501
+
+    :param did: Id of the fan curve (generated, i.e., surrogate key)
+    :type did: str
+
+    :rtype: None
+    """
+    return 'do some magic!'
+
+
+def app_fan_curves_did_get(did):  # noqa: E501
+    """Returns requested fan curve whose id corresponds to specified \&quot;did\&quot;
+
+    Returns requested fan curve whose id corresponds to specified &#x60;did&#x60; # noqa: E501
+
+    :param did: Id of the fan curve (generated, i.e., surrogate key)
+    :type did: str
+
+    :rtype: AppFanCurve
+    """
+    return FanCurveRepo.fetch_all()
+
+
+def app_fan_curves_did_put(did, if_match, app_fan_curve_base):  # noqa: E501
+    """Updates requested fan curve whose id corresponds to specified \&quot;did\&quot;
+
+    Updates requested fan curve whose id corresponds to specified &#x60;did&#x60; # noqa: E501
+
+    :param did: Id of the fan curve (generated, i.e., surrogate key)
+    :type did: str
+    :param if_match: Current hash of to be updated fan curve -&gt; used for optimistic locking
+    :type if_match: str
+    :param app_fan_curve_base: Must contain the the updated fan curve corresponding to &#x60;did&#x60;
+    :type app_fan_curve_base: dict | bytes
+
+    :rtype: AppFanCurve
+    """
+    if connexion.request.is_json:
+        app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
+    return 'do some magic!'
 
 
 def app_fan_curves_get(name=None):  # noqa: E501
@@ -63,55 +115,10 @@ def app_fan_curves_get(name=None):  # noqa: E501
 
     :rtype: List[AppFanCurve]
     """
-    return FanCurveRepo.fetch_all()
-
-
-def app_fan_curves_id_delete(id_):  # noqa: E501       # $$ OG: `id` $$
-    """Deletes fan curve whose id correspond to specified \&quot;id\&quot;
-
-    Deletes fan curve whose id correspond to specified &#x60;id&#x60; # noqa: E501
-
-    :param id: Id of the fan curve (generated, i.e., surrogate key)
-    :type id: str
-
-    :rtype: None
-    """
     return 'do some magic!'
 
 
-def app_fan_curves_id_get(id_):  # noqa: E501       # $$ OG: `id` $$
-    """Returns requested fan curve whose id corresponds to specified \&quot;id\&quot;
-
-    Returns requested fan curve whose id corresponds to specified &#x60;id&#x60; # noqa: E501
-
-    :param id: Id of the fan curve (generated, i.e., surrogate key)
-    :type id: str
-
-    :rtype: AppFanCurve
-    """
-    return 'do some magic!'
-
-
-def app_fan_curves_id_put(id_, body):  # noqa: E501       # $$ OG: `id, if_match, app_fan_curve_base` $$
-    """Updates requested fan curve whose id corresponds to specified \&quot;id\&quot;
-
-    Updates requested fan curve whose id corresponds to specified &#x60;id&#x60; # noqa: E501
-
-    :param id: Id of the fan curve (generated, i.e., surrogate key)
-    :type id: str
-    :param if_match: Current hash of to be updated fan curve -&gt; used for optimistic locking
-    :type if_match: str
-    :param app_fan_curve_base: Must contain the the updated fan curve corresponding to &#x60;id&#x60;
-    :type app_fan_curve_base: dict | bytes
-
-    :rtype: AppFanCurve
-    """
-    if connexion.request.is_json:
-        app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
-
-
-def app_fan_curves_post(body):  # noqa: E501       # $$ OG: `app_fan_curve_base, name=None` $$
+def app_fan_curves_post(app_fan_curve_base, name=None):  # noqa: E501
     """Adds new fan curve
 
     Adds new fan curve # noqa: E501

@@ -23,7 +23,7 @@ db = SQLAlchemy()
 class FanCurve(db.Model):
     __tablename__ = "fan_curve"
 
-    id = db.Column(db.String(255), primary_key=True, default=lambda: str(uuid.uuid4()))
+    did = db.Column(db.String(255), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(255), nullable=False)
     fan_curve_series = db.relationship("FanCurveSeriesPoint", backref="fan_curve",
                                        lazy=False, cascade="all, delete-orphan")  # One-To-Many unidirectional `FanCurve` -> `FanCurveSeriesPoint`
@@ -36,21 +36,21 @@ class FanCurve(db.Model):
 @event.listens_for(FanCurve.__table__, 'after_create')
 def after_create_fancurve_table(target, connection, **kw):
     connection.execute(
-        'INSERT INTO fan_curve (id, name) VALUES ("1C5A8579-AB76-4089-AF15-97FC1F4358AB", "Default");')
+        'INSERT INTO fan_curve (did, name) VALUES ("1C5A8579-AB76-4089-AF15-97FC1F4358AB", "Default");')
 
 
 class FanCurveSeriesPoint(db.Model):
     __tablename__ = "fan_curve_point"
 
-    id = db.Column(db.Integer, db.Sequence('fan_curve_point_seq', start=4, increment=1), primary_key=True)
+    did = db.Column(db.Integer, db.Sequence('fan_curve_point_seq', start=4, increment=1), primary_key=True)
     fan_dcin_perc = db.Column(db.Integer, nullable=False)  # TODO: min = 0, max = 100
     temp_in_cels = db.Column(db.Integer, nullable=False)
-    fan_curve_id = db.Column(db.String(255), db.ForeignKey('fan_curve.id'))
+    fan_curve_did = db.Column(db.String(255), db.ForeignKey('fan_curve.did'))
 
 @event.listens_for(FanCurveSeriesPoint.__table__, 'after_create')
 def after_create_fancurvepoint_table(target, connection, **kw):
     connection.execute(
-        """INSERT INTO fan_curve_point  (id, fan_dcin_perc, temp_in_cels, fan_curve_id)
+        """INSERT INTO fan_curve_point (did, fan_dcin_perc, temp_in_cels, fan_curve_did)
             VALUES
                 (0,  0, 45, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
                 (1,  30, 46, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
@@ -72,13 +72,13 @@ class LoggingLevel(enum.Enum):
 class Config(db.Model):
     __tablename__ = "config"
 
-    id = db.Column(db.Integer, primary_key=True)
+    did = db.Column(db.Integer, primary_key=True)
     dc_update_interval_in_sec = db.Column(db.Integer, nullable=False)
     fan_on = db.Column(db.Boolean, nullable=False)
     logging_enabled = db.Column(db.Boolean, nullable=False)
     logging_level = db.Column(db.Enum(LoggingLevel), nullable=False)
-    selected_fancurve_id = db.Column(db.String(255),
-                                    db.ForeignKey(FanCurve.id))  # One-To-One unidirectional Config -> FanCurve
+    selected_fancurve_did = db.Column(db.String(255),
+                                    db.ForeignKey(FanCurve.did))  # One-To-One unidirectional Config -> FanCurve
     selected_fan_curve = db.relationship(FanCurve, uselist=False, lazy=False)
     pwm_gpio_pin = db.Column(db.Integer, nullable=False)
     pwm_invert_signal = db.Column(db.Boolean, nullable=False)
@@ -93,6 +93,6 @@ class Config(db.Model):
 @event.listens_for(Config.__table__, 'after_create')
 def after_create_config_table(target, connection, **kw):
     connection.execute(
-        """INSERT INTO config  (id, dc_update_interval_in_sec, fan_on, logging_enabled, logging_level, pwm_gpio_pin,
-                                pwm_invert_signal, pwm_max_dcin_perc, pwm_min_dcin_perc, selected_fancurve_id)
+        """INSERT INTO config (did, dc_update_interval_in_sec, fan_on, logging_enabled, logging_level, pwm_gpio_pin,
+                               pwm_invert_signal, pwm_max_dcin_perc, pwm_min_dcin_perc, selected_fancurve_did)
            VALUES (0, 3, 0, 1, "WARN", 12, 0, 100, 0, "1C5A8579-AB76-4089-AF15-97FC1F4358AB");""")

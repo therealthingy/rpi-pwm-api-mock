@@ -1,3 +1,2 @@
 lint-openapi rpi-pwm.yaml &> rpi-pwm.log
 openapi-generator generate -g python-flask -i rpi-pwm.yaml --additional-properties=pythonSrcRoot=app,usePythonSrcRootInImports=true,packageName=web.api,controllerPackage=controllers
-
