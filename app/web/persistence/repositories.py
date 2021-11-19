@@ -28,8 +28,8 @@ class FanCurveRepo:
         db.session.commit()
 
     @staticmethod
-    def update(item_data):
-        db.session.merge(item_data)
+    def update(fan_curve):
+        db.session.merge(fan_curve)
         db.session.commit()
 
 
@@ -39,7 +39,7 @@ class ConfigRepo:
         return db.session.query(Config).filter_by(did=0).first()
 
     @staticmethod
-    def update_config(config_data):
-        config_data.id = 0                      # Set always to `0` (since Singleton)
-        db.session.merge(config_data)
+    def update_config(config):
+        config.did = 0                      # Set always to `0` (since Singleton)
+        db.session.merge(config)
         db.session.commit()
