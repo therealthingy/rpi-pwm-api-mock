@@ -17,6 +17,10 @@ from app.web.api.types_mapper import entity_to_model, model_to_entity
 
 
 _unsupported_media_type_error = HTTPError(415, "Unsupported Media Type", 0, "API Error", None)
+_not_found_error = HTTPError(404, "Not Found", 0, "API Error", None)
+
+
+# !! TODO: ADD ETAG EVERYWHERE !!
 
 
 def app_config_get():  # noqa: E501
@@ -83,7 +87,9 @@ def app_fan_curves_did_get(did):  # noqa: E501
 
     :rtype: AppFanCurve
     """
-    return FanCurveRepo.fetch_all()
+    found_fan_curve = FanCurveRepo.fetch_by_id(did)
+    return (entity_to_model(found_fan_curve), 200) if found_fan_curve is not None \
+        else (_not_found_error, _not_found_error.http_status_code)
 
 
 def app_fan_curves_did_put(did, if_match, app_fan_curve_base):  # noqa: E501
@@ -115,7 +121,7 @@ def app_fan_curves_get(name=None):  # noqa: E501
 
     :rtype: List[AppFanCurve]
     """
-    return 'do some magic!'
+    return [entity_to_model(x) for x in FanCurveRepo.fetch_all()]
 
 
 def app_fan_curves_post(app_fan_curve_base, name=None):  # noqa: E501

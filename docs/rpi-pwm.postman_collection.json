@@ -138,14 +138,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/3",
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/1C5A8579-AB76-4089-AF15-97FC1F4358AB",
 					"host": [
 						"{{DEV_SERVER_URL}}"
 					],
 					"path": [
 						"app",
 						"fanCurves",
-						"3"
+						"1C5A8579-AB76-4089-AF15-97FC1F4358AB"
 					]
 				}
 			},
@@ -217,7 +217,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"fanOn\": true,\n    \"loggingEnabled\": true,\n    \"loggingLevel\": \"WARN\",\n    \"DCUpdateIntervalInSec\": 3,\n    \"selectedFanCurve\": {\n        \"id\": \"916CD0EB-A755-4663-8410-461431039F74\",\n        \"name\": \"Quiet\",\n        \"fanCurveSeries\": [\n            {\n                \"tempInCels\": 30,\n                \"fanDCInPerc\": 40\n            },\n            {\n                \"tempInCels\": 35,\n                \"fanDCInPerc\": 50\n            }\n        ]\n    },\n    \"pwmGpioPin\": 12,\n    \"pwmInvertSignal\": true,\n    \"pwmMinDCInPerc\": 20,\n    \"pwmMaxDCInPerc\": 95\n}",
+					"raw": "{\n    \"fanOn\": false,\n    \"loggingEnabled\": true,\n    \"loggingLevel\": \"WARN\",\n    \"DCUpdateIntervalInSec\": 3,\n    \"selectedFanCurve\": {\n        \"did\": \"1C5A8579-AB76-4089-AF15-97FC1F4358AB\",\n        \"name\": \"Quiet\",\n        \"fanCurveSeries\": [\n            {\n                \"tempInCels\": 30,\n                \"fanDCInPerc\": 40\n            },\n            {\n                \"tempInCels\": 35,\n                \"fanDCInPerc\": 54\n            }\n        ]\n    },\n    \"pwmGpioPin\": 12,\n    \"pwmInvertSignal\": true,\n    \"pwmMinDCInPerc\": 20,\n    \"pwmMaxDCInPerc\": 95\n}",
 					"options": {
 						"raw": {
 							"language": "json"
