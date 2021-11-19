@@ -11,14 +11,15 @@ Creates db object containing db config + model (entities)
     import importlib
     importlib.reload(entities)
 '''
-from flask_sqlalchemy import SQLAlchemy, event
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import event, DDL
 import enum
 import uuid
 
 db = SQLAlchemy()
 
 
-# ------ ------ ------ ------ ------ ------ ------ Entities ------ ------ ------ ------ ------ ------ ------
+# ------ ------ ------ ------ ------ ------ ------ Entities + Events ------ ------ ------ ------ ------ ------ ------
 class FanCurve(db.Model):
     __tablename__ = "fan_curve"
 
@@ -26,6 +27,12 @@ class FanCurve(db.Model):
     name = db.Column(db.String(255), nullable=False)
     fanCurveSeries = db.relationship("FanCurveSeriesPoint", backref="fan_curve",
                                      lazy=False)  # One-To-Many unidirectional FanCurve -> FanCurveSeriesPoint
+
+@event.listens_for(FanCurve.__table__, 'after_create')
+def after_create_fancurve_table(target, connection, **kw):
+    connection.execute(
+        'INSERT INTO fan_curve (id, name) VALUES ("1C5A8579-AB76-4089-AF15-97FC1F4358AB", "Default");')
+
 
 class FanCurveSeriesPoint(db.Model):
     __tablename__ = "fan_curve_point"
@@ -35,6 +42,16 @@ class FanCurveSeriesPoint(db.Model):
     tempInCels = db.Column(db.Integer, nullable=False)
     fanCurve_id = db.Column(db.String(255), db.ForeignKey('fan_curve.id'))
 
+@event.listens_for(FanCurveSeriesPoint.__table__, 'after_create')
+def after_create_fancurvepoint_table(target, connection, **kw):
+    connection.execute(
+        '''INSERT INTO fan_curve_point  (id, fanDcInPerc, tempInCels, fanCurve_id)
+            VALUES
+                (0,  0, 45, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
+                (1,  30, 46, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
+                (2, 50, 60, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
+                (3, 60, 100, "1C5A8579-AB76-4089-AF15-97FC1F4358AB");''')
+
 
 class LoggingLevel(enum.Enum):
     DEBUG = 1
@@ -42,7 +59,6 @@ class LoggingLevel(enum.Enum):
     WARN = 3
     ERROR = 4
     CRITICAL = 5
-
 
 class Config(db.Model):
     __tablename__ = "config"
@@ -60,30 +76,8 @@ class Config(db.Model):
     pwmMaxDCInPerc = db.Column(db.Integer, nullable=False)
     pwmMinDCInPerc = db.Column(db.Integer, nullable=False)
 
-
-# ------ ------ ------ ------ ------ ------ ------ Events ------ ------ ------ ------ ------ ------ ------
-@event.listens_for(db, 'after_create')
-def receive_after_create(target, connection, **kw):
-    init_ddl = '''
-                INSERT
-                INTO fan_curve (id, name)
-                VALUES
-                	("1C5A8579-AB76-4089-AF15-97FC1F4358AB", "Default");
-
-                INSERT
-                INTO fan_curve_point  (id, fanDcInPerc, tempInCels, fanCurve_id)
-                VALUES
-                	(0,  0, 45, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
-                	(1,  30, 46, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
-                	(2, 50, 60, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
-                	(3, 60, 100, "1C5A8579-AB76-4089-AF15-97FC1F4358AB");
-
-                INSERT
-                INTO config  (id, DCUpdateIntervalInSec, fanOn, loggingEnabled, loggingLevel, pwmGpioPin, pwmInvertSignal, pwmMaxDCInPerc, pwmMinDCInPerc, selectedFanCurve_id)
-                VALUES
-                	(0,  3, 1, 1, "WARN",  12, 0, 100, 0, "1C5A8579-AB76-4089-AF15-97FC1F4358AB");
-               '''
-    "listen for the 'after_create' event"
-
-    # ... (event handling logic) ...
-db.engine.execute()
+@event.listens_for(Config.__table__, 'after_create')
+def after_create_config_table(target, connection, **kw):
+    connection.execute(
+        '''INSERT INTO config  (id, DCUpdateIntervalInSec, fanOn, loggingEnabled, loggingLevel, pwmGpioPin, pwmInvertSignal, pwmMaxDCInPerc, pwmMinDCInPerc, selectedFanCurve_id)
+            VALUES (0,  3, 0, 1, "WARN",  12, 0, 100, 0, "1C5A8579-AB76-4089-AF15-97FC1F4358AB");''')
