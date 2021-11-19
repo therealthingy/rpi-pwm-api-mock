@@ -1,18 +1,16 @@
 '''
 Backend which is run in an dedicated Thread
 '''
+from app.core.envflags import api_swagger_ui_enabled, api_server_port
+from connexion import App as ConnexionApp
+import app.web.api.encoder as encoder
+from app.web.persistence.db import db
 
 DB_FILE_PATH = "/tmp/rpi-pwm.db"
 
 
 def new_launchable_backend():
     # -- API config --
-    from app.core.envflags import api_swagger_ui_enabled, api_server_port
-    from connexion import App as ConnexionApp
-    import app.web.api.encoder as encoder
-    from app.web.persistence.db import db
-
-
     connex_app = ConnexionApp(__name__, specification_dir='./api/openapi/',
                               options={"swagger_ui": api_swagger_ui_enabled})
     connex_app.app.json_encoder = encoder.JSONEncoder
@@ -23,12 +21,14 @@ def new_launchable_backend():
     # -- Logging config --
     # app.
 
-    # -- DB config --
+    # -- Setup DB --
     connex_app.app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + DB_FILE_PATH
     connex_app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     connex_app.app.config['PROPAGATE_EXCEPTIONS'] = True
 
-    db.init_app(connex_app.app)
+    with connex_app.app.app_context():
+        db.init_app(connex_app.app)
+        db.create_all()
 
     return lambda: connex_app.run(port=api_server_port)
 

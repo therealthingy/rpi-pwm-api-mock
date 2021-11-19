@@ -7,8 +7,7 @@ authors = [
 ]
 dependencies = [
     "connexion[swagger-ui]~=2.9",
-    "flask-sqlalchemy~=2.5",
-]
+    "flask-sqlalchemy~=2.5"]
 requires-python = ">=3.9"
 dynamic = ["classifiers"]
 license = {text = "GNU AGPLv3"}
