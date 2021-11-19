@@ -25,7 +25,12 @@ class FanCurve(db.Model):
 
     id = db.Column(db.String(255), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(255), nullable=False)
-    fanCurveSeries = db.relationship("FanCurveSeriesPoint", backref="fan_curve",  lazy=False)  # One-To-Many unidirectional FanCurve -> FanCurveSeriesPoint
+    fanCurveSeries = db.relationship("FanCurveSeriesPoint", backref="fan_curve",  lazy=False)  # One-To-Many unidirectional `FanCurve` -> `FanCurveSeriesPoint`
+
+    def __iter__(self):                 # Required when deserializing objects of type `Config` (otherwise TypeError b/c FanCurve not iterable)
+        for attr in dir(self):
+            if not attr.startswith("__"):
+                yield attr
 
 @event.listens_for(FanCurve.__table__, 'after_create')
 def after_create_fancurve_table(target, connection, **kw):
@@ -60,7 +65,8 @@ class LoggingLevel(enum.Enum):
     CRITICAL = 5
 
     def __str__(self):
-        return self.name    # Required otherwise `str()` returns e.g., LoggingLevel.WARN instead of just `WARN`
+        return self.name    # Required for deserialization -> otherwise `str()` returns e.g., `LoggingLevel.WARN` instead of just `WARN`
+
 
 class Config(db.Model):
     __tablename__ = "config"
