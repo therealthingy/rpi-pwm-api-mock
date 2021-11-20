@@ -23,6 +23,8 @@ _locked_resource_error = HTTPError(423, "Locked", 0, "API Error - Requested reso
 _locked_resource_response = (_locked_resource_error, _locked_resource_error.http_status_code)
 _not_found_error = HTTPError(404, "Not Found", 0, "API Error", None)
 _not_found_response = (_not_found_error, _not_found_error.http_status_code)
+_not_implemented_yet_error = HTTPError(501, "Not Implemented", 0, "API Error - Functionality accessible via API isn't implemented yet", None)
+_not_implemented_yet_response = (_not_implemented_yet_error, _not_implemented_yet_error.http_status_code)
 
 
 # !! TODO: ADD ETAG EVERYWHERE !!
@@ -97,8 +99,8 @@ def app_fan_curves_did_get(did):  # noqa: E501
     :rtype: AppFanCurve
     """
     found_fan_curve = FanCurveRepo.fetch_by_id(did)
-    return (entity_to_model(found_fan_curve), 200) if found_fan_curve is not None \
-        else (_not_found_error, _not_found_error.http_status_code)
+    return entity_to_model(found_fan_curve) if found_fan_curve is not None \
+        else (_not_found_error, _not_found_error.http_status_code)              # Note: `entity_to_model` defaults to 200
 
 
 def app_fan_curves_did_put(did, if_match, app_fan_curve_base):  # noqa: E501
@@ -158,7 +160,7 @@ def app_logs_get():  # noqa: E501
 
     :rtype: List[AppLogEntry]
     """
-    return 'do some magic!'
+    return _not_implemented_yet_response           # TODO
 
 
 def app_temp_dc_history_get():  # noqa: E501
@@ -169,7 +171,7 @@ def app_temp_dc_history_get():  # noqa: E501
 
     :rtype: List[AppTempDCHistoryEntry]
     """
-    return 'do some magic!'
+    return _not_implemented_yet_response           # TODO
 
 
 def system_info_get():  # noqa: E501
@@ -180,7 +182,7 @@ def system_info_get():  # noqa: E501
 
     :rtype: SystemInfo
     """
-    return 'do some magic!'
+    return _not_implemented_yet_response           # TODO
 
 
 def system_top_ten_processes_get():  # noqa: E501
@@ -191,7 +193,7 @@ def system_top_ten_processes_get():  # noqa: E501
 
     :rtype: List[SystemProcess]
     """
-    return 'do some magic!'
+    return _not_implemented_yet_response           # TODO
 
 
 def system_top_ten_processes_nr_get(nr):  # noqa: E501
@@ -204,4 +206,4 @@ def system_top_ten_processes_nr_get(nr):  # noqa: E501
 
     :rtype: SystemProcess
     """
-    return 'do some magic!'
+    return _not_implemented_yet_response           # TODO
