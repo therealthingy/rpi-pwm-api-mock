@@ -45,6 +45,12 @@ class ConfigRepo:
 
     @staticmethod
     def update_config(config):
-        config.did = 0                      # Set always to `0` (since Singleton)
+        found_selected_fan_curve = FanCurveRepo.find_by_id(config.selected_fan_curve.did)
+        if found_selected_fan_curve is None:
+            raise ValueError("Selected fan curve doesn't exist")
+
+        config.selected_fan_curve = found_selected_fan_curve
+        config.did = 0                  # Set always to `0` (since Singleton)
+
         db.session.merge(config)
         db.session.commit()

@@ -62,13 +62,10 @@ def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
 
         app_config = AppConfig.from_dict(connexion.request.get_json())  # noqa: E501
 
-        new_selected_fan_curve = FanCurveRepo.find_by_id(app_config.selected_fan_curve.did)
-        if new_selected_fan_curve is None:
-            return HTTPError(400, "Bad request", 0, "API Error - Selected fan curve doesn't exist", None), 400
-
         new_app_config = model_to_entity(app_config)
-        new_app_config.selected_fan_curve = new_selected_fan_curve
-        ConfigRepo.update_config(new_app_config)
+        try: ConfigRepo.update_config(new_app_config)
+        except ValueError: return HTTPError(400, "Bad request", 0, "API Error - Selected fan curve doesn't exist", None), 400
+
         return entity_to_model(new_app_config)                                  # Note: `entity_to_model` defaults to 200
 
     return _unsupported_media_type_response
