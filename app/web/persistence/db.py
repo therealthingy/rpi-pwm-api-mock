@@ -1,15 +1,5 @@
 """
 Creates db object containing db config + model (entities)
-
-  Testing:
-    0. eval "$(pdm --pep582)" && python
-    1. from flask import Flask
-       app = Flask(__name__)
-    2. import entities
-    3. db.create_all()
-
-    import importlib
-    importlib.reload(entities)
 """
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
@@ -36,7 +26,7 @@ class FanCurve(db.Model):
 @event.listens_for(FanCurve.__table__, 'after_create')
 def after_create_fancurve_table(target, connection, **kw):
     connection.execute(
-        'INSERT INTO fan_curve (did, name) VALUES ("1C5A8579-AB76-4089-AF15-97FC1F4358AB", "Default");')
+        'INSERT INTO fan_curve (did, name) VALUES ("1c5a8579-ab76-4089-af15-97fc1f4358ab", "Default");')
 
 
 class FanCurveSeriesPoint(db.Model):
@@ -52,10 +42,10 @@ def after_create_fancurvepoint_table(target, connection, **kw):
     connection.execute(
         """INSERT INTO fan_curve_point (did, fan_dcin_perc, temp_in_cels, fan_curve_did)
             VALUES
-                (0,  0, 45, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
-                (1,  30, 46, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
-                (2, 50, 60, "1C5A8579-AB76-4089-AF15-97FC1F4358AB"),
-                (3, 60, 100, "1C5A8579-AB76-4089-AF15-97FC1F4358AB");""")
+                (0,  0, 45, "1c5a8579-ab76-4089-af15-97fc1f4358ab"),
+                (1,  30, 46, "1c5a8579-ab76-4089-af15-97fc1f4358ab"),
+                (2, 50, 60, "1c5a8579-ab76-4089-af15-97fc1f4358ab"),
+                (3, 60, 100, "1c5a8579-ab76-4089-af15-97fc1f4358ab");""")
 
 
 class LoggingLevel(enum.Enum):
@@ -95,4 +85,4 @@ def after_create_config_table(target, connection, **kw):
     connection.execute(
         """INSERT INTO config (did, dc_update_interval_in_sec, fan_on, logging_enabled, logging_level, pwm_gpio_pin,
                                pwm_invert_signal, pwm_max_dcin_perc, pwm_min_dcin_perc, selected_fancurve_did)
-           VALUES (0, 3, 0, 1, "WARN", 12, 0, 100, 0, "1C5A8579-AB76-4089-AF15-97FC1F4358AB");""")
+           VALUES (0, 3, 0, 1, "WARN", 12, 0, 100, 0, "1c5a8579-ab76-4089-af15-97fc1f4358ab");""")

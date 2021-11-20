@@ -13,9 +13,15 @@ from app.web.api import util
 
 from app.web.api.models.http_error import HTTPError
 from app.web.persistence.repositories import FanCurveRepo, ConfigRepo
-from app.web.api.types_mapper import entity_to_model, model_to_entity
+from app.web.api.types_mapper import logic_to_apimodel, api_to_logicmodel
 
-import flask
+from app.web.logic.stats import SysStatsMock as SysStats
+
+
+# TODO: Add disable `system` endppoint flag (after presentation of mock)
+
+# -- Globals
+sys_stats = SysStats()
 
 
 # -- Errors + Responses --
@@ -41,7 +47,7 @@ def app_config_get():  # noqa: E501
 
     :rtype: AppConfig
     """
-    return entity_to_model(ConfigRepo.fetch_config())
+    return logic_to_apimodel(ConfigRepo.fetch_config())
 
 
 def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
@@ -62,11 +68,11 @@ def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
 
         app_config = AppConfig.from_dict(connexion.request.get_json())  # noqa: E501
 
-        new_app_config = model_to_entity(app_config)
+        new_app_config = api_to_logicmodel(app_config)
         try: ConfigRepo.update_config(new_app_config)
         except ValueError: return HTTPError(400, "Bad request", 0, "API Error - Selected fan curve doesn't exist", None), 400
 
-        return entity_to_model(new_app_config)                                  # Note: `entity_to_model` defaults to 200
+        return logic_to_apimodel(new_app_config)                                  # Note: `entity_to_model` defaults to 200
 
     return _unsupported_media_type_response
 
@@ -81,10 +87,8 @@ def app_fan_curves_did_delete(did):  # noqa: E501
 
     :rtype: None
     """
-    try:
-        return None if FanCurveRepo.delete(did) else _not_found_response        # Note: `None` defaults to 204
-    except ValueError:
-        return _locked_resource_response
+    try: return None if FanCurveRepo.delete(did) else _not_found_response        # Note: `None` defaults to 204
+    except ValueError: return _locked_resource_response
 
 
 def app_fan_curves_did_get(did):  # noqa: E501
@@ -98,7 +102,7 @@ def app_fan_curves_did_get(did):  # noqa: E501
     :rtype: AppFanCurve
     """
     found_fan_curve = FanCurveRepo.find_by_id(did)
-    return entity_to_model(found_fan_curve) if found_fan_curve is not None \
+    return logic_to_apimodel(found_fan_curve) if found_fan_curve is not None \
         else (_not_found_error, _not_found_error.http_status_code)              # Note: `entity_to_model` defaults to 200
 
 
@@ -123,10 +127,10 @@ def app_fan_curves_did_put(did, body):  # noqa: E501        # $$ OG: `did, if_ma
         app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
         found_fan_curve_entity = FanCurveRepo.find_by_id(did)
         if found_fan_curve_entity is not None:
-            updated_fan_curve_entity = model_to_entity(app_fan_curve_base)
+            updated_fan_curve_entity = api_to_logicmodel(app_fan_curve_base)
             updated_fan_curve_entity.did = did
             FanCurveRepo.update(updated_fan_curve_entity)
-            return entity_to_model(updated_fan_curve_entity)                    # Note: `entity_to_model` defaults to 200
+            return logic_to_apimodel(updated_fan_curve_entity)                    # Note: `entity_to_model` defaults to 200
         return _not_found_response
 
     return _unsupported_media_type_response
@@ -142,7 +146,7 @@ def app_fan_curves_get(name=None):  # noqa: E501
 
     :rtype: List[AppFanCurve]
     """
-    return [entity_to_model(x) for x in FanCurveRepo.find_all(name)]
+    return [logic_to_apimodel(x) for x in FanCurveRepo.find_all(name)]
 
 
 def app_fan_curves_post(body):  # noqa: E501        # $$ OG: `app_fan_curve_base, name=None` $$
@@ -159,9 +163,9 @@ def app_fan_curves_post(body):  # noqa: E501        # $$ OG: `app_fan_curve_base
     """
     if connexion.request.is_json:
         app_fan_curve = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
-        new_fancurve = model_to_entity(app_fan_curve)
+        new_fancurve = api_to_logicmodel(app_fan_curve)
         FanCurveRepo.create(new_fancurve)
-        return entity_to_model(new_fancurve)
+        return logic_to_apimodel(new_fancurve)
 
     return _unsupported_media_type_response
 
@@ -196,7 +200,7 @@ def system_info_get():  # noqa: E501
 
     :rtype: SystemInfo
     """
-    return _not_implemented_yet_response           # TODO
+    return logic_to_apimodel(sys_stats.get_system_info())
 
 
 def system_top_ten_processes_get():  # noqa: E501
@@ -207,7 +211,7 @@ def system_top_ten_processes_get():  # noqa: E501
 
     :rtype: List[SystemProcess]
     """
-    return _not_implemented_yet_response           # TODO
+    return [logic_to_apimodel(x) for x in sys_stats.get_top_ten_processes()]
 
 
 def system_top_ten_processes_nr_get(nr):  # noqa: E501
@@ -220,4 +224,9 @@ def system_top_ten_processes_nr_get(nr):  # noqa: E501
 
     :rtype: SystemProcess
     """
-    return _not_implemented_yet_response           # TODO
+    try:
+        index_nr = nr - 1
+        if index_nr < 0: raise IndexError("Negative indices are not allowed")
+        return system_top_ten_processes_get()[index_nr]
+    except IndexError:
+        return HTTPError(400, "Bad request", 0, "Invalid value for `nr`", None), 400
