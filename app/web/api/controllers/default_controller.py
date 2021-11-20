@@ -15,13 +15,15 @@ from app.web.api.models.http_error import HTTPError
 from app.web.persistence.repositories import FanCurveRepo, ConfigRepo
 from app.web.api.types_mapper import logic_to_apimodel, api_to_logicmodel
 
-from app.web.logic.stats import SysStatsMock as SysStats
+from app.web.logic.sysinfo import SysStatsMock as SysStats
+from app.web.logic.history import AppHistoryMock as AppHistory
 
 
 # TODO: Add disable `system` endppoint flag (after presentation of mock)
 
 # -- Globals
 sys_stats = SysStats()
+app_history = AppHistory()
 
 
 # -- Errors + Responses --
@@ -178,7 +180,7 @@ def app_logs_get():  # noqa: E501
 
     :rtype: List[AppLogEntry]
     """
-    return _not_implemented_yet_response           # TODO
+    return [logic_to_apimodel(x) for x in app_history.get_logs()]
 
 
 def app_temp_dc_history_get():  # noqa: E501
@@ -189,7 +191,7 @@ def app_temp_dc_history_get():  # noqa: E501
 
     :rtype: List[AppTempDCHistoryEntry]
     """
-    return _not_implemented_yet_response           # TODO
+    return [logic_to_apimodel(x) for x in app_history.get_temp_dc_history()]
 
 
 def system_info_get():  # noqa: E501
@@ -211,7 +213,7 @@ def system_top_ten_processes_get():  # noqa: E501
 
     :rtype: List[SystemProcess]
     """
-    return [logic_to_apimodel(x) for x in sys_stats.get_top_ten_processes()]
+    return [logic_to_apimodel(x) for x in sys_stats.get_system_processes()[:10]]
 
 
 def system_top_ten_processes_nr_get(nr):  # noqa: E501

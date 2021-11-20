@@ -1,13 +1,12 @@
-'''
+"""
 Gathers stats + information about system
-'''
+"""
 
 # import os
 
 # _exec_os_shell_cmd = lambda shell_cmd: os.popen(shell_cmd).readline()
 
 
-# ------------ ------------ ------------ ------------ System stats ------------ ------------ ------------ ------------
 class SysStatsOSProcess:
     def __init__(self, cpu_util_in_perc, name, pid, ppid):
         self.cpu_util_in_perc = cpu_util_in_perc
@@ -29,12 +28,12 @@ class SysStatsSystemInfo:
 class _SysStatsBase:
     def __init__(self):
         if type(self) is _SysStatsBase:
-            raise Exception('Base is an abstract class and cannot be instantiated directly')
+            raise Exception('`_SysStatsBase` is an abstract class and cannot be instantiated directly')
 
     def get_system_info(self) -> SysStatsSystemInfo:
         raise NotImplementedError("`get_system_info` has to overridden by subclass")
 
-    def get_top_ten_processes(self) -> list[SysStatsOSProcess]:
+    def get_system_processes(self) -> list[SysStatsOSProcess]:
         raise NotImplementedError("`get_top_ten_processes` has to overridden by subclass")
 
 
@@ -52,7 +51,7 @@ class SysStatsMock(_SysStatsBase):
     def get_system_info(self) -> SysStatsSystemInfo:
         return self.system_info
 
-    def get_top_ten_processes(self) -> list[SysStatsOSProcess]:
+    def get_system_processes(self) -> list[SysStatsOSProcess]:
         import random
         from operator import itemgetter, attrgetter
 
@@ -65,6 +64,3 @@ class SysStatsMock(_SysStatsBase):
                 zip(mock_pnames, mock_pids, mock_ppids)]
 
         return sorted(mock_processes, key=attrgetter('cpu_util_in_perc'), reverse=True)
-
-# ------------ ------------ ------------ ------------ PWM stats ------------ ------------ ------------ ------------
-# TODO PWMStats -> share state w/ other thread ??

@@ -127,6 +127,13 @@
 					"path": [
 						"app",
 						"fanCurves"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Quiet",
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -138,14 +145,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/1C5A8579-AB76-4089-AF15-97FC1F4358AB",
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/1c5a8579-ab76-4089-af15-97fc1f4358ab",
 					"host": [
 						"{{DEV_SERVER_URL}}"
 					],
 					"path": [
 						"app",
 						"fanCurves",
-						"1C5A8579-AB76-4089-AF15-97FC1F4358AB"
+						"1c5a8579-ab76-4089-af15-97fc1f4358ab"
 					]
 				}
 			},
@@ -164,7 +171,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"fanCurveSeries\": [\n    {\n      \"fanDCInPerc\": 66,\n      \"tempInCels\": 60\n    },\n    {\n      \"fanDCInPerc\": 42,\n      \"tempInCels\": 44\n    },\n    {\n      \"fanDCInPerc\": 56,\n      \"tempInCels\": 53\n    }\n  ],\n  \"name\": \"Quiet-2\"\n}",
+					"raw": "{\n  \"fanCurveSeries\": [\n    {\n      \"fanDCInPerc\": 66,\n      \"tempInCels\": 60\n    },\n    {\n      \"fanDCInPerc\": 42,\n      \"tempInCels\": 44\n    },\n    {\n      \"fanDCInPerc\": 56,\n      \"tempInCels\": 66\n    }\n  ],\n  \"name\": \"old_Default\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -172,14 +179,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/3",
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/1c5a8579-ab76-4089-af15-97fc1f4358ab",
 					"host": [
 						"{{DEV_SERVER_URL}}"
 					],
 					"path": [
 						"app",
 						"fanCurves",
-						"3"
+						"1c5a8579-ab76-4089-af15-97fc1f4358ab"
 					]
 				}
 			},
@@ -191,14 +198,14 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/3",
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/1c5a8579-ab76-4089-af15-97fc1f4358ab",
 					"host": [
 						"{{DEV_SERVER_URL}}"
 					],
 					"path": [
 						"app",
 						"fanCurves",
-						"3"
+						"1c5a8579-ab76-4089-af15-97fc1f4358ab"
 					]
 				}
 			},
@@ -217,7 +224,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"fanOn\": false,\n    \"loggingEnabled\": true,\n    \"loggingLevel\": \"WARN\",\n    \"DCUpdateIntervalInSec\": 3,\n    \"selectedFanCurve\": {\n        \"did\": \"1C5A8579-AB76-4089-AF15-97FC1F4358AB\",\n        \"name\": \"Quiet\",\n        \"fanCurveSeries\": [\n            {\n                \"tempInCels\": 30,\n                \"fanDCInPerc\": 40\n            },\n            {\n                \"tempInCels\": 35,\n                \"fanDCInPerc\": 54\n            }\n        ]\n    },\n    \"pwmGpioPin\": 12,\n    \"pwmInvertSignal\": true,\n    \"pwmMinDCInPerc\": 20,\n    \"pwmMaxDCInPerc\": 95\n}",
+					"raw": "{\n    \"fanOn\": false,\n    \"loggingEnabled\": true,\n    \"loggingLevel\": \"WARN\",\n    \"DCUpdateIntervalInSec\": 3,\n    \"selectedFanCurve\": {\n        \"did\": \"1c5a8579-ab76-4089-af15-97fc1f4358ab\",\n        \"name\": \"Quiet\",\n        \"fanCurveSeries\": [\n            {\n                \"tempInCels\": 30,\n                \"fanDCInPerc\": 40\n            },\n            {\n                \"tempInCels\": 35,\n                \"fanDCInPerc\": 54\n            }\n        ]\n    },\n    \"pwmGpioPin\": 12,\n    \"pwmInvertSignal\": true,\n    \"pwmMinDCInPerc\": 20,\n    \"pwmMaxDCInPerc\": 95\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -244,7 +251,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Quiet\",\n    \"fanCurveSeries\": [\n        {\n            \"tempInCels\": 30,\n            \"fanDCInPerc\": 40\n        },\n        {\n            \"tempInCels\": 35,\n            \"fanDCInPerc\": 50\n        }\n    ]\n}",
+					"raw": "{\n    \"name\": \"Quiet-1\",\n    \"fanCurveSeries\": [\n        {\n            \"tempInCels\": 30,\n            \"fanDCInPerc\": 40\n        },\n        {\n            \"tempInCels\": 35,\n            \"fanDCInPerc\": 50\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"

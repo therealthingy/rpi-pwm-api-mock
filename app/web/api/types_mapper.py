@@ -1,22 +1,27 @@
 ###
-# Workaround for `https://github.com/OpenAPITools/openapi-generator/issues/4586`
+# Workaround since `AppTempDCHistoryEntry.from_dict()` doesn't work w/ snake_case
+#   See https://github.com/OpenAPITools/openapi-generator/issues/4586
 ###
 from app.web.persistence.db import \
     Config as ConfigLogicModel, \
     FanCurveSeriesPoint as FanCurveSeriesPointLogicModel, \
     FanCurve as FanCurveLogicModel
-from app.web.logic.stats import \
+from app.web.logic.sysinfo import \
     SysStatsSystemInfo as SystemInfoLogicModel, \
     SysStatsOSProcess as SystemProcessLogicModel
+from app.web.logic.history import \
+    AppTempDCHistoryEntry as AppTempDCHistoryEntryLogicModel, \
+    AppLogEntry as AppLogEntryLogicModel
 
 from app.web.api.models import \
     AppConfig as ConfigAPIModel, \
     AppFanCurveSeriesPoint as FanCurveSeriesPointAPIModel, \
     AppFanCurve as FanCurveAPIModel, \
-    AppFanCurveBase as FanCurveBaseAPIModel
-from app.web.api.models import \
+    AppFanCurveBase as FanCurveBaseAPIModel, \
     SystemInfo as SystemInfoAPIModel, \
-    SystemProcess as SystemProcessAPIModel
+    SystemProcess as SystemProcessAPIModel, \
+    AppTempDCHistoryEntry as AppTempDCHistoryEntryApiModel, \
+    AppLogEntry as AppLogEntryApiModel
 
 
 def logic_to_apimodel(logic_model_obj):
@@ -58,7 +63,20 @@ def logic_to_apimodel(logic_model_obj):
                           pid=logic_model_obj.pid,
                           ppid=logic_model_obj.ppid)
 
-    raise NotImplementedError("Unknown logic model")
+    if type(logic_model_obj) is AppTempDCHistoryEntryLogicModel:
+        return AppTempDCHistoryEntryApiModel(
+                          date=logic_model_obj.date,
+                          temp_in_cels=logic_model_obj.temp_in_cels,
+                          fan_dcin_perc=logic_model_obj.fan_dc_in_perc)
+
+    if type(logic_model_obj) is AppLogEntryLogicModel:
+        return AppLogEntryApiModel(
+                          date=logic_model_obj.date,
+                          level=str(logic_model_obj.level),
+                          message=logic_model_obj.message,
+                          uuid=logic_model_obj.uuid)
+
+    raise NotImplementedError("Unknown logic model: %s" % (type(logic_model_obj),))
 
 
 def api_to_logicmodel(api_model_obj):
@@ -88,4 +106,4 @@ def api_to_logicmodel(api_model_obj):
                           temp_in_cels=api_model_obj.temp_in_cels,
                           fan_dcin_perc=api_model_obj.fan_dcin_perc)
 
-    raise NotImplementedError("Unknown api model")
+    raise NotImplementedError("Unknown api model: %s" % (type(api_model_obj),))
