@@ -15,6 +15,8 @@ from app.web.api.models.http_error import HTTPError
 from app.web.persistence.repositories import FanCurveRepo, ConfigRepo
 from app.web.api.types_mapper import entity_to_model, model_to_entity
 
+import flask
+
 
 # -- Errors + Responses --
 _unsupported_media_type_error = HTTPError(415, "Unsupported Media Type", 0, "API Error", None)     # Note: Already handeled by Flask (only for code completion)
@@ -39,8 +41,7 @@ def app_config_get():  # noqa: E501
 
     :rtype: AppConfig
     """
-    config = ConfigRepo.fetch_config()
-    return entity_to_model(config), 200
+    return entity_to_model(ConfigRepo.fetch_config())
 
 
 def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
@@ -61,7 +62,7 @@ def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
 
         app_config = AppConfig.from_dict(connexion.request.get_json())  # noqa: E501
 
-        new_selected_fan_curve = FanCurveRepo.fetch_by_id(app_config.selected_fan_curve.did)
+        new_selected_fan_curve = FanCurveRepo.find_by_id(app_config.selected_fan_curve.did)
         if new_selected_fan_curve is None:
             return HTTPError(400, "Bad request", 0, "API Error - Selected fan curve doesn't exist", None), 400
 
@@ -99,7 +100,7 @@ def app_fan_curves_did_get(did):  # noqa: E501
 
     :rtype: AppFanCurve
     """
-    found_fan_curve = FanCurveRepo.fetch_by_id(did)
+    found_fan_curve = FanCurveRepo.find_by_id(did)
     return entity_to_model(found_fan_curve) if found_fan_curve is not None \
         else (_not_found_error, _not_found_error.http_status_code)              # Note: `entity_to_model` defaults to 200
 
@@ -123,7 +124,7 @@ def app_fan_curves_did_put(did, body):  # noqa: E501        # $$ OG: `did, if_ma
 
     if connexion.request.is_json:
         app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
-        found_fan_curve_entity = FanCurveRepo.fetch_by_id(did)
+        found_fan_curve_entity = FanCurveRepo.find_by_id(did)
         if found_fan_curve_entity is not None:
             updated_fan_curve_entity = model_to_entity(app_fan_curve_base)
             updated_fan_curve_entity.did = did
@@ -144,7 +145,7 @@ def app_fan_curves_get(name=None):  # noqa: E501
 
     :rtype: List[AppFanCurve]
     """
-    return [entity_to_model(x) for x in FanCurveRepo.fetch_all()]
+    return [entity_to_model(x) for x in FanCurveRepo.find_all(name)]
 
 
 def app_fan_curves_post(body):  # noqa: E501        # $$ OG: `app_fan_curve_base, name=None` $$

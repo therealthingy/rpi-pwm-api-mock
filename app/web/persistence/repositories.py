@@ -9,12 +9,13 @@ class FanCurveRepo:
         db.session.commit()
 
     @staticmethod
-    def fetch_by_id(did) -> FanCurve:
+    def find_by_id(did) -> FanCurve:
         return db.session.query(FanCurve).filter_by(did=did).first()
 
     @staticmethod
-    def fetch_all() -> List[FanCurve]:
-        return db.session.query(FanCurve).all()
+    def find_all(name=None) -> List[FanCurve]:
+        return db.session.query(FanCurve).all() if name is None else \
+            db.session.query(FanCurve).filter(FanCurve.name.startswith(name)).all()
 
     @staticmethod
     def delete(did) -> bool:
