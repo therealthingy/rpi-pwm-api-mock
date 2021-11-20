@@ -56,7 +56,8 @@ def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
     :rtype: AppConfig
     """
     if connexion.request.is_json:
-        # TODO: CHECK If-Match
+        # TODO: CHECK If-Match; Locking ?
+        print(connexion.request.if_match)
 
         app_config = AppConfig.from_dict(connexion.request.get_json())  # noqa: E501
 
@@ -67,7 +68,7 @@ def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
         new_app_config = model_to_entity(app_config)
         new_app_config.selected_fan_curve = new_selected_fan_curve
         ConfigRepo.update_config(new_app_config)
-        return entity_to_model(new_app_config), 200
+        return entity_to_model(new_app_config)                                  # Note: `entity_to_model` defaults to 200
 
     return _unsupported_media_type_response
 
@@ -135,7 +136,7 @@ def app_fan_curves_get(name=None):  # noqa: E501
     return [entity_to_model(x) for x in FanCurveRepo.fetch_all()]
 
 
-def app_fan_curves_post(app_fan_curve_base, name=None):  # noqa: E501
+def app_fan_curves_post(body):  # noqa: E501        # $$ OG: `app_fan_curve_base, name=None` $$
     """Adds new fan curve
 
     Adds new fan curve # noqa: E501
@@ -148,8 +149,12 @@ def app_fan_curves_post(app_fan_curve_base, name=None):  # noqa: E501
     :rtype: AppFanCurve
     """
     if connexion.request.is_json:
-        app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        app_fan_curve = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
+        new_fancurve = model_to_entity(app_fan_curve)
+        FanCurveRepo.create(new_fancurve)
+        return entity_to_model(new_fancurve)
+
+    return _unsupported_media_type_response
 
 
 def app_logs_get():  # noqa: E501

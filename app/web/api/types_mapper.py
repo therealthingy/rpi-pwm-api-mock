@@ -9,7 +9,8 @@ from app.web.persistence.db import \
 from app.web.api.models import \
     AppConfig as ConfigModel, \
     AppFanCurveSeriesPoint as FanCurveSeriesPointModel, \
-    AppFanCurve as FanCurveModel
+    AppFanCurve as FanCurveModel, \
+    AppFanCurveBase as FanCurveBaseModel
 
 
 def entity_to_model(db_entity):
@@ -51,11 +52,14 @@ def model_to_entity(model_instance):
                           pwm_max_dcin_perc=model_instance.pwm_max_dcin_perc,
                           pwm_min_dcin_perc=model_instance.pwm_min_dcin_perc)
 
-    if type(model_instance) is FanCurveModel:
-        return FanCurveEntity(
-                          did=model_instance.did,
+    if type(model_instance) in [FanCurveModel, FanCurveBaseModel]:
+        fan_curve_entity = FanCurveEntity(
+                          did=None,
                           name=model_instance.name,
                           fan_curve_series=list(map(model_to_entity, model_instance.fan_curve_series)))
+        if type(model_instance) is FanCurveModel:
+            fan_curve_entity.did = model_instance.did
+        return fan_curve_entity
 
     if type(model_instance) is FanCurveSeriesPointModel:
         return FanCurveSeriesPointEntity(
