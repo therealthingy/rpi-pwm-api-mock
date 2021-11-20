@@ -17,15 +17,19 @@ class FanCurveRepo:
         return db.session.query(FanCurve).all()
 
     @staticmethod
-    def delete(did) -> None:
+    def delete(did) -> bool:
         config_repo = ConfigRepo()
         current_config = config_repo.fetch_config()
         if current_config.selected_fancurve_did == did:
             raise ValueError("The to be deleted fan curve is currently being used")
 
-        item = db.session.query(FanCurve).filter_by(did=did).first()
-        db.session.delete(item)
-        db.session.commit()
+        fan_curve = db.session.query(FanCurve).filter_by(did=did).first()
+        if fan_curve is not None:
+            db.session.delete(fan_curve)
+            db.session.commit()
+            return True
+        else:
+            return False
 
     @staticmethod
     def update(fan_curve):

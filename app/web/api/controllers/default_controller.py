@@ -16,13 +16,19 @@ from app.web.persistence.repositories import FanCurveRepo, ConfigRepo
 from app.web.api.types_mapper import entity_to_model, model_to_entity
 
 
-_unsupported_media_type_error = HTTPError(415, "Unsupported Media Type", 0, "API Error", None)
+# -- Errors + Responses --
+_unsupported_media_type_error = HTTPError(415, "Unsupported Media Type", 0, "API Error", None)     # Note: Already handeled by Flask (only for code completion)
+_unsupported_media_type_response = (_unsupported_media_type_error, _unsupported_media_type_error.http_status_code)
+_locked_resource_error = HTTPError(423, "Locked", 0, "API Error - Requested resource cannot be deleted b/c its currently used", None)
+_locked_resource_response = (_locked_resource_error, _locked_resource_error.http_status_code)
 _not_found_error = HTTPError(404, "Not Found", 0, "API Error", None)
+_not_found_response = (_not_found_error, _not_found_error.http_status_code)
 
 
 # !! TODO: ADD ETAG EVERYWHERE !!
 
 
+# -- Handlers --
 def app_config_get():  # noqa: E501
     """Returns current config flags
 
@@ -61,7 +67,7 @@ def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
         ConfigRepo.update_config(new_app_config)
         return entity_to_model(new_app_config), 200
 
-    return _unsupported_media_type_error, _unsupported_media_type_error.http_status_code
+    return _unsupported_media_type_response
 
 
 def app_fan_curves_did_delete(did):  # noqa: E501
@@ -74,7 +80,10 @@ def app_fan_curves_did_delete(did):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    try:
+        return None if FanCurveRepo.delete(did) else _not_found_response        # Note: `None` defaults to 204
+    except ValueError:
+        return _locked_resource_response
 
 
 def app_fan_curves_did_get(did):  # noqa: E501
