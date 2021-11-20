@@ -104,7 +104,7 @@ def app_fan_curves_did_get(did):  # noqa: E501
         else (_not_found_error, _not_found_error.http_status_code)              # Note: `entity_to_model` defaults to 200
 
 
-def app_fan_curves_did_put(did, if_match, app_fan_curve_base):  # noqa: E501
+def app_fan_curves_did_put(did, body):  # noqa: E501        # $$ OG: `did, if_match, app_fan_curve_base` $$
     """Updates requested fan curve whose id corresponds to specified \&quot;did\&quot;
 
     Updates requested fan curve whose id corresponds to specified &#x60;did&#x60; # noqa: E501
@@ -118,9 +118,20 @@ def app_fan_curves_did_put(did, if_match, app_fan_curve_base):  # noqa: E501
 
     :rtype: AppFanCurve
     """
+    # TODO: CHECK If-Match
+    print(connexion.request.if_match)
+
     if connexion.request.is_json:
         app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        found_fan_curve_entity = FanCurveRepo.fetch_by_id(did)
+        if found_fan_curve_entity is not None:
+            updated_fan_curve_entity = model_to_entity(app_fan_curve_base)
+            updated_fan_curve_entity.did = did
+            FanCurveRepo.update(updated_fan_curve_entity)
+            return entity_to_model(updated_fan_curve_entity)                    # Note: `entity_to_model` defaults to 200
+        return _not_found_response
+
+    return _unsupported_media_type_response
 
 
 def app_fan_curves_get(name=None):  # noqa: E501
