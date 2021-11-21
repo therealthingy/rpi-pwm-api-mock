@@ -1,4 +1,3 @@
-from app.web.api.models import HTTPError
 from connexion import request
 
 from app.web.persistence.repos import FanCurveRepo, ConfigRepo
@@ -9,6 +8,12 @@ from app.web.logic.history import AppHistoryMock as AppHistory
 from app.web.api.schemas import FanCurveSchema, ConfigSchema, \
     SysStatsSystemInfoSchema, SysStatsOSProcessSchema, \
     AppLogEntrySchema, AppTempDCHistoryEntrySchema
+
+from app.web.api.models import HTTPError
+from app.web.api.controllers.responses import not_found as not_found_response, \
+    optimistic_locking as optimistic_locking_response, \
+    unsupported_media_type as unsupported_media_type_response, \
+    locked_resource as locked_resource_response
 
 from app.web.api.controllers.utils import calc_etag
 
@@ -28,14 +33,7 @@ app_history = AppHistory()
 
 
 # -- Errors + Responses --
-_not_found_error = HTTPError(404, "Not Found", 0, "API Error", None)
-_not_found_response = (_not_found_error, _not_found_error.http_status_code)
-_optimistic_locking_error = HTTPError(409, "Conflict", 0, "API Error - Requested resource has been most likely updated in the meantime", None)
-_optimistic_locking_response = (_optimistic_locking_error, _optimistic_locking_error.http_status_code)
-_unsupported_media_type_error = HTTPError(415, "Unsupported Media Type", 0, "API Error", None)     # Note: Already handeled by Flask (only for code completion)
-_unsupported_media_type_response = (_unsupported_media_type_error, _unsupported_media_type_error.http_status_code)
-_locked_resource_error = HTTPError(423, "Locked", 0, "API Error - Requested resource cannot be deleted b/c its currently used", None)
-_locked_resource_response = (_locked_resource_error, _locked_resource_error.http_status_code)
+
 
 
 # -- Handlers --
@@ -68,13 +66,13 @@ def app_config_put(body):
 
         current_config = ConfigRepo.fetch_config()
         if calc_etag(current_config) != str(request.if_match)[1:-1]:
-            return _optimistic_locking_response
+            return optimistic_locking_response
 
         try: ConfigRepo.update_config(updated_config)
         except ValueError as ex: return HTTPError(400, "Bad request", 0, "API Error - " + str(ex), None), 400
         return config_schema.dump(updated_config)
 
-    return _unsupported_media_type_response     # Note: Actually already caught before (by flask)
+    return unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
 
 def app_fan_curves_did_delete(did):
@@ -87,8 +85,8 @@ def app_fan_curves_did_delete(did):
 
     :rtype: None
     """
-    try: return None if FanCurveRepo.delete(did) else _not_found_response
-    except ValueError: return _locked_resource_response
+    try: return None if FanCurveRepo.delete(did) else not_found_response
+    except ValueError: return locked_resource_response
 
 
 def app_fan_curves_did_get(did):
@@ -103,7 +101,7 @@ def app_fan_curves_did_get(did):
     """
     found_fan_curve = FanCurveRepo.find_by_id(did)
     return (fan_curve_schema.dump(found_fan_curve), {'ETag': calc_etag(found_fan_curve)}) if found_fan_curve is not None \
-        else (_not_found_error, _not_found_error.http_status_code)
+        else not_found_response
 
 
 def app_fan_curves_did_put(did, body):
@@ -125,16 +123,16 @@ def app_fan_curves_did_put(did, body):
         found_fan_curve_entity = FanCurveRepo.find_by_id(did)
 
         if found_fan_curve_entity is None:
-            return _not_found_response
+            return not_found_response
 
         if calc_etag(found_fan_curve_entity) != str(request.if_match)[1:-1]:
-            return _optimistic_locking_response
+            return optimistic_locking_response
 
         updated_fan_curve.did = did
         FanCurveRepo.update(updated_fan_curve)
         return fan_curve_schema.dump(updated_fan_curve)
 
-    return _unsupported_media_type_response     # Note: Actually already caught before (by flask)
+    return unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
 
 def app_fan_curves_get(name=None):
@@ -167,7 +165,7 @@ def app_fan_curves_post(body):
         FanCurveRepo.create(new_fan_curve)
         return fan_curve_schema.dump(new_fan_curve)
 
-    return _unsupported_media_type_response     # Note: Actually already caught before (by flask)
+    return unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
 
 def app_logs_get():
