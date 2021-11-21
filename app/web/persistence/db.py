@@ -6,39 +6,17 @@ from sqlalchemy import event
 import enum
 import uuid
 
+from app.common.decorators import auto_str, auto_repr
+
 
 # -- Globals --
 db = SQLAlchemy()
 
 
-# -- Decorators --
-def _obj_vars_to_str(obj):
-    return ', '.join(f'{name}={value}' for (name, value) in sorted(vars(obj).items()) if not name.startswith("_"))
-
-
-def auto_str(cls):
-    def __str__(self): return f'{type(self).__name__}({_obj_vars_to_str(self)})'
-    cls.__str__ = __str__
-    return cls
-
-
-def auto_repr(cls):
-    def __repr__(self): return f'{type(self).__name__}({_obj_vars_to_str(self)})'
-    cls.__repr__ = __repr__
-    return cls
-
-
-# def auto_iter(cls):
-#     def __iter__(self):
-#         for attr in dir(self):
-#             if not attr.startswith("__"):
-#                 yield attr
-#     cls.__iter__ = __iter__
-#     return cls
-
-
 # ------ ------ ------ ------ ------ ------ ------ Entities + Events ------ ------ ------ ------ ------ ------ ------
-@auto_repr           # Required for ETag
+# @auto_iter(exclude_vars=None)
+@auto_str(exclude_vars=None)
+@auto_repr(exclude_vars=None)          # Required for ETag
 class FanCurve(db.Model):
     __tablename__ = "fan_curve"
 
@@ -54,7 +32,9 @@ def after_create_fancurve_table(target, connection, **kw):
         'INSERT INTO fan_curve (did, name) VALUES ("1c5a8579-ab76-4089-af15-97fc1f4358ab", "Default");')
 
 
-@auto_repr           # Required for ETag
+# @auto_iter(exclude_vars=None)
+@auto_str(exclude_vars=None)
+@auto_repr(exclude_vars=None)           # Required for ETag
 class FanCurveSeriesPoint(db.Model):
     __tablename__ = "fan_curve_point"
 
@@ -89,7 +69,9 @@ class LoggingLevel(enum.Enum):
         return f'{self.__name__}.{self.value}'
 
 
-@auto_repr           # Required for ETag
+# @auto_iter(exclude_vars=None)
+@auto_str(exclude_vars=None)
+@auto_repr(exclude_vars=None)           # Required for ETag
 class Config(db.Model):
     __tablename__ = "config"
 
