@@ -6,9 +6,16 @@ from connexion import App as ConnexionApp
 import app.web.api.encoder as encoder
 from app.web.persistence.db import db
 
+from flask_marshmallow import Marshmallow
+
+
+# -- Glboals --
 DB_FILE_PATH = "/tmp/rpi-pwm.db"
 
+ma = Marshmallow()
 
+
+# -- Functions --
 def new_launchable_backend():
     # -- API config --
     connex_app = ConnexionApp(__name__, specification_dir='./api/openapi/',
@@ -21,7 +28,7 @@ def new_launchable_backend():
     # -- Logging config --
     # app.
 
-    # -- Setup DB --
+    # -- Setup app (mainly db config) --
     connex_app.app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + DB_FILE_PATH
     connex_app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     connex_app.app.config['PROPAGATE_EXCEPTIONS'] = True
@@ -29,6 +36,7 @@ def new_launchable_backend():
     with connex_app.app.app_context():
         db.init_app(connex_app.app)
         db.create_all()
+        ma.init_app(connex_app.app)
 
     return lambda: connex_app.run(port=api_server_port)
 

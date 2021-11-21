@@ -15,7 +15,7 @@ class SystemStats(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, cpu_total_util_in_perc=None, cpu_clock_in_mhz=None, cpu_temp_in_cels=None, fan_dcin_perc=None):  # noqa: E501
+    def __init__(self, cpu_total_util_in_perc=None, cpu_clock_in_mhz=None, cpu_temp_in_cels=None, fan_dc_in_perc=None):  # noqa: E501
         """SystemStats - a model defined in OpenAPI
 
         :param cpu_total_util_in_perc: The cpu_total_util_in_perc of this SystemStats.  # noqa: E501
@@ -24,27 +24,27 @@ class SystemStats(Model):
         :type cpu_clock_in_mhz: int
         :param cpu_temp_in_cels: The cpu_temp_in_cels of this SystemStats.  # noqa: E501
         :type cpu_temp_in_cels: int
-        :param fan_dcin_perc: The fan_dcin_perc of this SystemStats.  # noqa: E501
-        :type fan_dcin_perc: int
+        :param fan_dc_in_perc: The fan_dc_in_perc of this SystemStats.  # noqa: E501
+        :type fan_dc_in_perc: int
         """
         self.openapi_types = {
             'cpu_total_util_in_perc': int,
             'cpu_clock_in_mhz': int,
             'cpu_temp_in_cels': int,
-            'fan_dcin_perc': int
+            'fan_dc_in_perc': int
         }
 
         self.attribute_map = {
             'cpu_total_util_in_perc': 'cpuTotalUtilInPerc',
             'cpu_clock_in_mhz': 'cpuClockInMhz',
             'cpu_temp_in_cels': 'cpuTempInCels',
-            'fan_dcin_perc': 'fanDCInPerc'
+            'fan_dc_in_perc': 'fanDcInPerc'
         }
 
         self._cpu_total_util_in_perc = cpu_total_util_in_perc
         self._cpu_clock_in_mhz = cpu_clock_in_mhz
         self._cpu_temp_in_cels = cpu_temp_in_cels
-        self._fan_dcin_perc = fan_dcin_perc
+        self._fan_dc_in_perc = fan_dc_in_perc
 
     @classmethod
     def from_dict(cls, dikt) -> 'SystemStats':
@@ -133,26 +133,26 @@ class SystemStats(Model):
         self._cpu_temp_in_cels = cpu_temp_in_cels
 
     @property
-    def fan_dcin_perc(self):
-        """Gets the fan_dcin_perc of this SystemStats.
+    def fan_dc_in_perc(self):
+        """Gets the fan_dc_in_perc of this SystemStats.
 
         Current dutycycle of fan in percent  # noqa: E501
 
-        :return: The fan_dcin_perc of this SystemStats.
+        :return: The fan_dc_in_perc of this SystemStats.
         :rtype: int
         """
-        return self._fan_dcin_perc
+        return self._fan_dc_in_perc
 
-    @fan_dcin_perc.setter
-    def fan_dcin_perc(self, fan_dcin_perc):
-        """Sets the fan_dcin_perc of this SystemStats.
+    @fan_dc_in_perc.setter
+    def fan_dc_in_perc(self, fan_dc_in_perc):
+        """Sets the fan_dc_in_perc of this SystemStats.
 
         Current dutycycle of fan in percent  # noqa: E501
 
-        :param fan_dcin_perc: The fan_dcin_perc of this SystemStats.
-        :type fan_dcin_perc: int
+        :param fan_dc_in_perc: The fan_dc_in_perc of this SystemStats.
+        :type fan_dc_in_perc: int
         """
-        if fan_dcin_perc is None:
-            raise ValueError("Invalid value for `fan_dcin_perc`, must not be `None`")  # noqa: E501
+        if fan_dc_in_perc is None:
+            raise ValueError("Invalid value for `fan_dc_in_perc`, must not be `None`")  # noqa: E501
 
-        self._fan_dcin_perc = fan_dcin_perc
+        self._fan_dc_in_perc = fan_dc_in_perc

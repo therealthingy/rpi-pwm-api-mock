@@ -41,19 +41,19 @@ paths:
                     fanOn: true
                     loggingEnabled: true
                     loggingLevel: WARN
-                    DCUpdateIntervalInSec: 3
+                    dcUpdateIntervalInSec: 3
                     selectedFanCurve:
                       id: 916CD0EB-A755-4663-8410-461431039F74
                       name: Quiet
                       fanCurveSeries:
                       - tempInCels: 30
-                        fanDCInPerc: 40
+                        fanDcInPerc: 40
                       - tempInCels: 35
-                        fanDCInPerc: 50
+                        fanDcInPerc: 50
                     pwmGpioPin: 12
                     pwmInvertSignal: true
-                    pwmMinDCInPerc: 20
-                    pwmMaxDCInPerc: 95
+                    pwmMinDcInPerc: 20
+                    pwmMaxDcInPerc: 95
               schema:
                 $ref: '#/components/schemas/AppConfig'
           description: Config of app
@@ -92,19 +92,19 @@ paths:
                   fanOn: true
                   loggingEnabled: true
                   loggingLevel: WARN
-                  DCUpdateIntervalInSec: 3
+                  dcUpdateIntervalInSec: 3
                   selectedFanCurve:
                     did: 916CD0EB-A755-4663-8410-461431039F74
                     name: Quiet
                     fanCurveSeries:
                     - tempInCels: 30
-                      fanDCInPerc: 40
+                      fanDcInPerc: 40
                     - tempInCels: 35
-                      fanDCInPerc: 50
+                      fanDcInPerc: 50
                   pwmGpioPin: 12
                   pwmInvertSignal: true
-                  pwmMinDCInPerc: 20
-                  pwmMaxDCInPerc: 95
+                  pwmMinDcInPerc: 20
+                  pwmMaxDcInPerc: 95
             schema:
               $ref: '#/components/schemas/AppConfig'
         description: Config flags consisting of app and pwm config
@@ -119,19 +119,19 @@ paths:
                     fanOn: true
                     loggingEnabled: true
                     loggingLevel: WARN
-                    DCUpdateIntervalInSec: 3
+                    dcUpdateIntervalInSec: 3
                     selectedFanCurve:
                       id: 916CD0EB-A755-4663-8410-461431039F74
                       name: Quiet
                       fanCurveSeries:
                       - tempInCels: 30
-                        fanDCInPerc: 40
+                        fanDcInPerc: 40
                       - tempInCels: 35
-                        fanDCInPerc: 50
+                        fanDcInPerc: 50
                     pwmGpioPin: 12
                     pwmInvertSignal: true
-                    pwmMinDCInPerc: 20
-                    pwmMaxDCInPerc: 95
+                    pwmMinDcInPerc: 20
+                    pwmMaxDcInPerc: 95
               schema:
                 $ref: '#/components/schemas/AppConfig'
           description: Config of app
@@ -180,25 +180,25 @@ paths:
                     name: Quiet
                     fanCurveSeries:
                     - tempInCels: 30
-                      fanDCInPerc: 40
+                      fanDcInPerc: 40
                     - tempInCels: 35
-                      fanDCInPerc: 50
+                      fanDcInPerc: 50
                   - did: 316CD0EB-A755-4463-8410-461411039F74
                     name: Quiet-2
                     fanCurveSeries:
                     - tempInCels: 30
-                      fanDCInPerc: 20
+                      fanDcInPerc: 20
                     - tempInCels: 35
-                      fanDCInPerc: 10
+                      fanDcInPerc: 10
                   - did: 016ED0EB-A755-4663-8210-461431039F74
                     name: Loud
                     fanCurveSeries:
                     - tempInCels: 20
-                      fanDCInPerc: 50
+                      fanDcInPerc: 50
                     - tempInCels: 35
-                      fanDCInPerc: 90
+                      fanDcInPerc: 90
                     - tempInCels: 45
-                      fanDCInPerc: 100
+                      fanDcInPerc: 100
               schema:
                 items:
                   $ref: '#/components/schemas/AppFanCurve'
@@ -230,9 +230,9 @@ paths:
                   name: Quiet
                   fanCurveSeries:
                   - tempInCels: 30
-                    fanDCInPerc: 40
+                    fanDcInPerc: 40
                   - tempInCels: 35
-                    fanDCInPerc: 50
+                    fanDcInPerc: 50
             schema:
               $ref: '#/components/schemas/AppFanCurveBase'
         required: true
@@ -247,9 +247,9 @@ paths:
                     name: Quiet
                     fanCurveSeries:
                     - tempInCels: 30
-                      fanDCInPerc: 40
+                      fanDcInPerc: 40
                     - tempInCels: 35
-                      fanDCInPerc: 50
+                      fanDcInPerc: 50
               schema:
                 $ref: '#/components/schemas/AppFanCurve'
           description: Fan curve
@@ -320,9 +320,9 @@ paths:
                     name: Quiet
                     fanCurveSeries:
                     - tempInCels: 30
-                      fanDCInPerc: 40
+                      fanDcInPerc: 40
                     - tempInCels: 35
-                      fanDCInPerc: 50
+                      fanDcInPerc: 50
               schema:
                 $ref: '#/components/schemas/AppFanCurve'
           description: Fan curve
@@ -375,9 +375,9 @@ paths:
                   name: Quiet
                   fanCurveSeries:
                   - tempInCels: 30
-                    fanDCInPerc: 40
+                    fanDcInPerc: 40
                   - tempInCels: 35
-                    fanDCInPerc: 50
+                    fanDcInPerc: 50
             schema:
               $ref: '#/components/schemas/AppFanCurveBase'
         description: Must contain the the updated fan curve corresponding to `did`
@@ -393,9 +393,9 @@ paths:
                     name: Quiet
                     fanCurveSeries:
                     - tempInCels: 30
-                      fanDCInPerc: 40
+                      fanDcInPerc: 40
                     - tempInCels: 35
-                      fanDCInPerc: 50
+                      fanDcInPerc: 50
               schema:
                 $ref: '#/components/schemas/AppFanCurve'
           description: Fan curve
@@ -465,7 +465,7 @@ paths:
       x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: 'Enables user to view app logs (Note: Might return nothing if logging
       was disabled via config flag "loggingEnabled")'
-  /app/tempDCHistory:
+  /app/tempDcHistory:
     description: Collection resource for fan- & DC history
     get:
       description: Returns temperature- & fan history over last 10 min.
@@ -475,32 +475,32 @@ paths:
           content:
             application/json:
               examples:
-                tempDCHistory_collection:
+                tempDcHistory_collection:
                   value:
                   - date: 2021-11-14T10:14:22.000Z
                     tempInCels: 30
-                    fanDCInPerc: 40
+                    fanDcInPerc: 40
                   - date: 2021-11-14T10:14:25.000Z
                     tempInCels: 33
-                    fanDCInPerc: 42
+                    fanDcInPerc: 42
                   - date: 2021-11-14T10:14:28.000Z
                     tempInCels: 31
-                    fanDCInPerc: 40
+                    fanDcInPerc: 40
                   - date: 2021-11-14T10:14:31.000Z
                     tempInCels: 34
-                    fanDCInPerc: 43
+                    fanDcInPerc: 43
                   - date: 2021-11-14T10:14:34.000Z
                     tempInCels: 33
-                    fanDCInPerc: 42
+                    fanDcInPerc: 42
               schema:
                 items:
-                  $ref: '#/components/schemas/AppTempDCHistoryEntry'
+                  $ref: '#/components/schemas/AppTempDcHistoryEntry'
                 type: array
           description: Temperature- / DC history
       summary: Returns temperature- & fan history over last 10 min.
       x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: 'Returns temperature- & fan history over last 10 min. Note: Time delta
-      b/w each item depends on config-flag "DCUpdateIntervalInSec"'
+      b/w each item depends on config-flag "dcUpdateIntervalInSec"'
   /system/info:
     description: Singleton resource of system info
     get:
@@ -694,30 +694,30 @@ components:
           schema:
             $ref: '#/components/schemas/SystemProcess'
       description: A process within the top ten processes
-    app-tempDCHistory_collection:
+    app-tempDcHistory_collection:
       content:
         application/json:
           examples:
-            tempDCHistory_collection:
+            tempDcHistory_collection:
               value:
               - date: 2021-11-14T10:14:22.000Z
                 tempInCels: 30
-                fanDCInPerc: 40
+                fanDcInPerc: 40
               - date: 2021-11-14T10:14:25.000Z
                 tempInCels: 33
-                fanDCInPerc: 42
+                fanDcInPerc: 42
               - date: 2021-11-14T10:14:28.000Z
                 tempInCels: 31
-                fanDCInPerc: 40
+                fanDcInPerc: 40
               - date: 2021-11-14T10:14:31.000Z
                 tempInCels: 34
-                fanDCInPerc: 43
+                fanDcInPerc: 43
               - date: 2021-11-14T10:14:34.000Z
                 tempInCels: 33
-                fanDCInPerc: 42
+                fanDcInPerc: 42
           schema:
             items:
-              $ref: '#/components/schemas/AppTempDCHistoryEntry'
+              $ref: '#/components/schemas/AppTempDcHistoryEntry'
             type: array
       description: Temperature- / DC history
     system-info_singleton:
@@ -781,25 +781,25 @@ components:
                 name: Quiet
                 fanCurveSeries:
                 - tempInCels: 30
-                  fanDCInPerc: 40
+                  fanDcInPerc: 40
                 - tempInCels: 35
-                  fanDCInPerc: 50
+                  fanDcInPerc: 50
               - did: 316CD0EB-A755-4463-8410-461411039F74
                 name: Quiet-2
                 fanCurveSeries:
                 - tempInCels: 30
-                  fanDCInPerc: 20
+                  fanDcInPerc: 20
                 - tempInCels: 35
-                  fanDCInPerc: 10
+                  fanDcInPerc: 10
               - did: 016ED0EB-A755-4663-8210-461431039F74
                 name: Loud
                 fanCurveSeries:
                 - tempInCels: 20
-                  fanDCInPerc: 50
+                  fanDcInPerc: 50
                 - tempInCels: 35
-                  fanDCInPerc: 90
+                  fanDcInPerc: 90
                 - tempInCels: 45
-                  fanDCInPerc: 100
+                  fanDcInPerc: 100
           schema:
             items:
               $ref: '#/components/schemas/AppFanCurve'
@@ -815,9 +815,9 @@ components:
                 name: Quiet
                 fanCurveSeries:
                 - tempInCels: 30
-                  fanDCInPerc: 40
+                  fanDcInPerc: 40
                 - tempInCels: 35
-                  fanDCInPerc: 50
+                  fanDcInPerc: 50
           schema:
             $ref: '#/components/schemas/AppFanCurve'
       description: Fan curve
@@ -839,19 +839,19 @@ components:
                 fanOn: true
                 loggingEnabled: true
                 loggingLevel: WARN
-                DCUpdateIntervalInSec: 3
+                dcUpdateIntervalInSec: 3
                 selectedFanCurve:
                   id: 916CD0EB-A755-4663-8410-461431039F74
                   name: Quiet
                   fanCurveSeries:
                   - tempInCels: 30
-                    fanDCInPerc: 40
+                    fanDcInPerc: 40
                   - tempInCels: 35
-                    fanDCInPerc: 50
+                    fanDcInPerc: 50
                 pwmGpioPin: 12
                 pwmInvertSignal: true
-                pwmMinDCInPerc: 20
-                pwmMaxDCInPerc: 95
+                pwmMinDcInPerc: 20
+                pwmMaxDcInPerc: 95
           schema:
             $ref: '#/components/schemas/AppConfig'
       description: Config of app
@@ -871,7 +871,7 @@ components:
         cpuTotalUtilInPerc: 43
         cpuTempInCels: 32
         cpuClockInMhz: 800
-        fanDCInPerc: 32
+        fanDcInPerc: 32
       properties:
         cpuTotalUtilInPerc:
           description: Current total CPU utilization in percent (retrieved via `ps
@@ -893,7 +893,7 @@ components:
           format: int32
           readOnly: true
           type: integer
-        fanDCInPerc:
+        fanDcInPerc:
           description: Current dutycycle of fan in percent
           example: 32
           format: int32
@@ -903,7 +903,7 @@ components:
       - cpuClockInMhz
       - cpuTempInCels
       - cpuTotalUtilInPerc
-      - fanDCInPerc
+      - fanDcInPerc
       title: Root Type for StatsSystem
       type: object
     SystemInfo:
@@ -956,13 +956,13 @@ components:
       - hwPiBoardRev
       title: Root Type for SystemInfo
       type: object
-    AppTempDCHistoryEntry:
+    AppTempDcHistoryEntry:
       description: History entry capturing fan speed & CPU temperature in a moment
         of time
       example:
         date: 2021-11-14T10:14:22.000Z
         tempInCels: 30
-        fanDCInPerc: 40
+        fanDcInPerc: 40
       properties:
         date:
           description: Date of this entry
@@ -974,7 +974,7 @@ components:
           example: 40
           readOnly: true
           type: integer
-        fanDCInPerc:
+        fanDcInPerc:
           description: Fan speed in percent at the date `date`
           example: 30
           maximum: 100
@@ -983,9 +983,9 @@ components:
           type: integer
       required:
       - date
-      - fanDCInPerc
+      - fanDcInPerc
       - tempInCels
-      title: Root Type for AppTempDCHistoryEntry
+      title: Root Type for AppTempDcHistoryEntry
       type: object
     SystemProcess:
       description: Represents process on host system (or in container if run in Docker
@@ -1029,22 +1029,22 @@ components:
         and fan speed in percent
       example:
         tempInCels: 30
-        fanDCInPerc: 40
+        fanDcInPerc: 40
       properties:
         tempInCels:
-          description: The temperature in Celsius for specified `fanDCInPerc`
+          description: The temperature in Celsius for specified `fanDcInPerc`
           example: 40
           maximum: 130
           minimum: -10
           type: integer
-        fanDCInPerc:
+        fanDcInPerc:
           description: The fan speed for specified `tempInCels` in percent
           example: 30
           maximum: 100
           minimum: 0
           type: integer
       required:
-      - fanDCInPerc
+      - fanDcInPerc
       - tempInCels
       title: Root Type for FanCurveSeriesPoint
       type: object
@@ -1138,9 +1138,9 @@ components:
         name: Quiet
         fanCurveSeries:
         - tempInCels: 30
-          fanDCInPerc: 40
+          fanDcInPerc: 40
         - tempInCels: 35
-          fanDCInPerc: 50
+          fanDcInPerc: 50
       properties:
         name:
           description: Name of the fan curve
@@ -1154,11 +1154,11 @@ components:
             [
                 {
                     "tempInCels": 30,
-                    "fanDCInPerc": 40
+                    "fanDcInPerc": 40
                 },
                 {
                     "tempInCels": 35,
-                    "fanDCInPerc": 50
+                    "fanDcInPerc": 50
                 }
             ]
           items:
@@ -1183,9 +1183,9 @@ components:
         name: Quiet
         fanCurveSeries:
         - tempInCels: 30
-          fanDCInPerc: 40
+          fanDcInPerc: 40
         - tempInCels: 35
-          fanDCInPerc: 50
+          fanDcInPerc: 50
       title: AppFanCurve
       type: object
     AppConfig:
@@ -1194,19 +1194,19 @@ components:
         fanOn: true
         loggingEnabled: true
         loggingLevel: WARN
-        DCUpdateIntervalInSec: 3
+        dcUpdateIntervalInSec: 3
         selectedFanCurve:
           did: 916CD0EB-A755-4663-8410-461431039F74
           name: Quiet
           fanCurveSeries:
           - tempInCels: 30
-            fanDCInPerc: 40
+            fanDcInPerc: 40
           - tempInCels: 35
-            fanDCInPerc: 50
+            fanDcInPerc: 50
         pwmGpioPin: 12
         pwmInvertSignal: true
-        pwmMinDCInPerc: 20
-        pwmMaxDCInPerc: 95
+        pwmMinDcInPerc: 20
+        pwmMaxDcInPerc: 95
       properties:
         fanOn:
           description: Whether fan is turned on (kill switch)
@@ -1222,7 +1222,7 @@ components:
           - CRITICAL
           example: WARN
           type: string
-        DCUpdateIntervalInSec:
+        dcUpdateIntervalInSec:
           description: How frequently the dutycycle shall be updated in seconds
           example: 3
           format: int32
@@ -1246,7 +1246,7 @@ components:
             on transitor type (PNP / NPN)
           example: true
           type: boolean
-        pwmMaxDCInPerc:
+        pwmMaxDcInPerc:
           description: "Limits max duty cycle, i.e., the max fan speed in percent.\
             \ \nMay be desirable for some fans which only operate reliably within\
             \ a specific range of fan speeds.\nNOTE: This effectively overwrittes\
@@ -1256,7 +1256,7 @@ components:
           maximum: 100
           minimum: 1
           type: integer
-        pwmMinDCInPerc:
+        pwmMinDcInPerc:
           description: "Limits min duty cycle, i.e., the min fan speed in percent.\
             \ \nMay be desirable for some fans which only operate reliably within\
             \ a specific range of fan speeds.\nNOTE: This effectively overwrittes\
@@ -1267,14 +1267,14 @@ components:
           minimum: 1
           type: integer
       required:
-      - DCUpdateIntervalInSec
+      - dcUpdateIntervalInSec
       - fanOn
       - loggingEnabled
       - loggingLevel
       - pwmGpioPin
       - pwmInvertSignal
-      - pwmMaxDCInPerc
-      - pwmMinDCInPerc
+      - pwmMaxDcInPerc
+      - pwmMinDcInPerc
       - selectedFanCurve
       title: AppConfig
       type: object
@@ -1295,4 +1295,4 @@ components:
       description: Validated by webapp
       scheme: basic
       type: http
-      x-basicInfoFunc: web.api.controllers.security_controller_.info_from_api_security
+      x-basicInfoFunc: web.api.controllers.security_controller.info_from_api_security

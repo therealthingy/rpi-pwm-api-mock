@@ -17,7 +17,7 @@ class AppConfig(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, fan_on=None, logging_level=None, dc_update_interval_in_sec=None, logging_enabled=None, selected_fan_curve=None, pwm_gpio_pin=None, pwm_invert_signal=None, pwm_max_dcin_perc=None, pwm_min_dcin_perc=None):  # noqa: E501
+    def __init__(self, fan_on=None, logging_level=None, dc_update_interval_in_sec=None, logging_enabled=None, selected_fan_curve=None, pwm_gpio_pin=None, pwm_invert_signal=None, pwm_max_dc_in_perc=None, pwm_min_dc_in_perc=None):  # noqa: E501
         """AppConfig - a model defined in OpenAPI
 
         :param fan_on: The fan_on of this AppConfig.  # noqa: E501
@@ -34,10 +34,10 @@ class AppConfig(Model):
         :type pwm_gpio_pin: int
         :param pwm_invert_signal: The pwm_invert_signal of this AppConfig.  # noqa: E501
         :type pwm_invert_signal: bool
-        :param pwm_max_dcin_perc: The pwm_max_dcin_perc of this AppConfig.  # noqa: E501
-        :type pwm_max_dcin_perc: int
-        :param pwm_min_dcin_perc: The pwm_min_dcin_perc of this AppConfig.  # noqa: E501
-        :type pwm_min_dcin_perc: int
+        :param pwm_max_dc_in_perc: The pwm_max_dc_in_perc of this AppConfig.  # noqa: E501
+        :type pwm_max_dc_in_perc: int
+        :param pwm_min_dc_in_perc: The pwm_min_dc_in_perc of this AppConfig.  # noqa: E501
+        :type pwm_min_dc_in_perc: int
         """
         self.openapi_types = {
             'fan_on': bool,
@@ -47,20 +47,20 @@ class AppConfig(Model):
             'selected_fan_curve': AppFanCurve,
             'pwm_gpio_pin': int,
             'pwm_invert_signal': bool,
-            'pwm_max_dcin_perc': int,
-            'pwm_min_dcin_perc': int
+            'pwm_max_dc_in_perc': int,
+            'pwm_min_dc_in_perc': int
         }
 
         self.attribute_map = {
             'fan_on': 'fanOn',
             'logging_level': 'loggingLevel',
-            'dc_update_interval_in_sec': 'DCUpdateIntervalInSec',
+            'dc_update_interval_in_sec': 'dcUpdateIntervalInSec',
             'logging_enabled': 'loggingEnabled',
             'selected_fan_curve': 'selectedFanCurve',
             'pwm_gpio_pin': 'pwmGpioPin',
             'pwm_invert_signal': 'pwmInvertSignal',
-            'pwm_max_dcin_perc': 'pwmMaxDCInPerc',
-            'pwm_min_dcin_perc': 'pwmMinDCInPerc'
+            'pwm_max_dc_in_perc': 'pwmMaxDcInPerc',
+            'pwm_min_dc_in_perc': 'pwmMinDcInPerc'
         }
 
         self._fan_on = fan_on
@@ -70,8 +70,8 @@ class AppConfig(Model):
         self._selected_fan_curve = selected_fan_curve
         self._pwm_gpio_pin = pwm_gpio_pin
         self._pwm_invert_signal = pwm_invert_signal
-        self._pwm_max_dcin_perc = pwm_max_dcin_perc
-        self._pwm_min_dcin_perc = pwm_min_dcin_perc
+        self._pwm_max_dc_in_perc = pwm_max_dc_in_perc
+        self._pwm_min_dc_in_perc = pwm_min_dc_in_perc
 
     @classmethod
     def from_dict(cls, dikt) -> 'AppConfig':
@@ -266,59 +266,59 @@ class AppConfig(Model):
         self._pwm_invert_signal = pwm_invert_signal
 
     @property
-    def pwm_max_dcin_perc(self):
-        """Gets the pwm_max_dcin_perc of this AppConfig.
+    def pwm_max_dc_in_perc(self):
+        """Gets the pwm_max_dc_in_perc of this AppConfig.
 
         Limits max duty cycle, i.e., the max fan speed in percent.  May be desirable for some fans which only operate reliably within a specific range of fan speeds. NOTE: This effectively overwrittes the applied fan curve.  # noqa: E501
 
-        :return: The pwm_max_dcin_perc of this AppConfig.
+        :return: The pwm_max_dc_in_perc of this AppConfig.
         :rtype: int
         """
-        return self._pwm_max_dcin_perc
+        return self._pwm_max_dc_in_perc
 
-    @pwm_max_dcin_perc.setter
-    def pwm_max_dcin_perc(self, pwm_max_dcin_perc):
-        """Sets the pwm_max_dcin_perc of this AppConfig.
+    @pwm_max_dc_in_perc.setter
+    def pwm_max_dc_in_perc(self, pwm_max_dc_in_perc):
+        """Sets the pwm_max_dc_in_perc of this AppConfig.
 
         Limits max duty cycle, i.e., the max fan speed in percent.  May be desirable for some fans which only operate reliably within a specific range of fan speeds. NOTE: This effectively overwrittes the applied fan curve.  # noqa: E501
 
-        :param pwm_max_dcin_perc: The pwm_max_dcin_perc of this AppConfig.
-        :type pwm_max_dcin_perc: int
+        :param pwm_max_dc_in_perc: The pwm_max_dc_in_perc of this AppConfig.
+        :type pwm_max_dc_in_perc: int
         """
-        if pwm_max_dcin_perc is None:
-            raise ValueError("Invalid value for `pwm_max_dcin_perc`, must not be `None`")  # noqa: E501
-        if pwm_max_dcin_perc is not None and pwm_max_dcin_perc > 100:  # noqa: E501
-            raise ValueError("Invalid value for `pwm_max_dcin_perc`, must be a value less than or equal to `100`")  # noqa: E501
-        if pwm_max_dcin_perc is not None and pwm_max_dcin_perc < 1:  # noqa: E501
-            raise ValueError("Invalid value for `pwm_max_dcin_perc`, must be a value greater than or equal to `1`")  # noqa: E501
+        if pwm_max_dc_in_perc is None:
+            raise ValueError("Invalid value for `pwm_max_dc_in_perc`, must not be `None`")  # noqa: E501
+        if pwm_max_dc_in_perc is not None and pwm_max_dc_in_perc > 100:  # noqa: E501
+            raise ValueError("Invalid value for `pwm_max_dc_in_perc`, must be a value less than or equal to `100`")  # noqa: E501
+        if pwm_max_dc_in_perc is not None and pwm_max_dc_in_perc < 1:  # noqa: E501
+            raise ValueError("Invalid value for `pwm_max_dc_in_perc`, must be a value greater than or equal to `1`")  # noqa: E501
 
-        self._pwm_max_dcin_perc = pwm_max_dcin_perc
+        self._pwm_max_dc_in_perc = pwm_max_dc_in_perc
 
     @property
-    def pwm_min_dcin_perc(self):
-        """Gets the pwm_min_dcin_perc of this AppConfig.
+    def pwm_min_dc_in_perc(self):
+        """Gets the pwm_min_dc_in_perc of this AppConfig.
 
         Limits min duty cycle, i.e., the min fan speed in percent.  May be desirable for some fans which only operate reliably within a specific range of fan speeds. NOTE: This effectively overwrittes the applied fan curve.  # noqa: E501
 
-        :return: The pwm_min_dcin_perc of this AppConfig.
+        :return: The pwm_min_dc_in_perc of this AppConfig.
         :rtype: int
         """
-        return self._pwm_min_dcin_perc
+        return self._pwm_min_dc_in_perc
 
-    @pwm_min_dcin_perc.setter
-    def pwm_min_dcin_perc(self, pwm_min_dcin_perc):
-        """Sets the pwm_min_dcin_perc of this AppConfig.
+    @pwm_min_dc_in_perc.setter
+    def pwm_min_dc_in_perc(self, pwm_min_dc_in_perc):
+        """Sets the pwm_min_dc_in_perc of this AppConfig.
 
         Limits min duty cycle, i.e., the min fan speed in percent.  May be desirable for some fans which only operate reliably within a specific range of fan speeds. NOTE: This effectively overwrittes the applied fan curve.  # noqa: E501
 
-        :param pwm_min_dcin_perc: The pwm_min_dcin_perc of this AppConfig.
-        :type pwm_min_dcin_perc: int
+        :param pwm_min_dc_in_perc: The pwm_min_dc_in_perc of this AppConfig.
+        :type pwm_min_dc_in_perc: int
         """
-        if pwm_min_dcin_perc is None:
-            raise ValueError("Invalid value for `pwm_min_dcin_perc`, must not be `None`")  # noqa: E501
-        if pwm_min_dcin_perc is not None and pwm_min_dcin_perc > 100:  # noqa: E501
-            raise ValueError("Invalid value for `pwm_min_dcin_perc`, must be a value less than or equal to `100`")  # noqa: E501
-        if pwm_min_dcin_perc is not None and pwm_min_dcin_perc < 1:  # noqa: E501
-            raise ValueError("Invalid value for `pwm_min_dcin_perc`, must be a value greater than or equal to `1`")  # noqa: E501
+        if pwm_min_dc_in_perc is None:
+            raise ValueError("Invalid value for `pwm_min_dc_in_perc`, must not be `None`")  # noqa: E501
+        if pwm_min_dc_in_perc is not None and pwm_min_dc_in_perc > 100:  # noqa: E501
+            raise ValueError("Invalid value for `pwm_min_dc_in_perc`, must be a value less than or equal to `100`")  # noqa: E501
+        if pwm_min_dc_in_perc is not None and pwm_min_dc_in_perc < 1:  # noqa: E501
+            raise ValueError("Invalid value for `pwm_min_dc_in_perc`, must be a value greater than or equal to `1`")  # noqa: E501
 
-        self._pwm_min_dcin_perc = pwm_min_dcin_perc
+        self._pwm_min_dc_in_perc = pwm_min_dc_in_perc

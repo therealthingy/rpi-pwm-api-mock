@@ -15,26 +15,26 @@ class AppFanCurveSeriesPoint(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, temp_in_cels=None, fan_dcin_perc=None):  # noqa: E501
+    def __init__(self, temp_in_cels=None, fan_dc_in_perc=None):  # noqa: E501
         """AppFanCurveSeriesPoint - a model defined in OpenAPI
 
         :param temp_in_cels: The temp_in_cels of this AppFanCurveSeriesPoint.  # noqa: E501
         :type temp_in_cels: int
-        :param fan_dcin_perc: The fan_dcin_perc of this AppFanCurveSeriesPoint.  # noqa: E501
-        :type fan_dcin_perc: int
+        :param fan_dc_in_perc: The fan_dc_in_perc of this AppFanCurveSeriesPoint.  # noqa: E501
+        :type fan_dc_in_perc: int
         """
         self.openapi_types = {
             'temp_in_cels': int,
-            'fan_dcin_perc': int
+            'fan_dc_in_perc': int
         }
 
         self.attribute_map = {
             'temp_in_cels': 'tempInCels',
-            'fan_dcin_perc': 'fanDCInPerc'
+            'fan_dc_in_perc': 'fanDcInPerc'
         }
 
         self._temp_in_cels = temp_in_cels
-        self._fan_dcin_perc = fan_dcin_perc
+        self._fan_dc_in_perc = fan_dc_in_perc
 
     @classmethod
     def from_dict(cls, dikt) -> 'AppFanCurveSeriesPoint':
@@ -51,7 +51,7 @@ class AppFanCurveSeriesPoint(Model):
     def temp_in_cels(self):
         """Gets the temp_in_cels of this AppFanCurveSeriesPoint.
 
-        The temperature in Celsius for specified `fanDCInPerc`  # noqa: E501
+        The temperature in Celsius for specified `fanDcInPerc`  # noqa: E501
 
         :return: The temp_in_cels of this AppFanCurveSeriesPoint.
         :rtype: int
@@ -62,7 +62,7 @@ class AppFanCurveSeriesPoint(Model):
     def temp_in_cels(self, temp_in_cels):
         """Sets the temp_in_cels of this AppFanCurveSeriesPoint.
 
-        The temperature in Celsius for specified `fanDCInPerc`  # noqa: E501
+        The temperature in Celsius for specified `fanDcInPerc`  # noqa: E501
 
         :param temp_in_cels: The temp_in_cels of this AppFanCurveSeriesPoint.
         :type temp_in_cels: int
@@ -77,30 +77,30 @@ class AppFanCurveSeriesPoint(Model):
         self._temp_in_cels = temp_in_cels
 
     @property
-    def fan_dcin_perc(self):
-        """Gets the fan_dcin_perc of this AppFanCurveSeriesPoint.
+    def fan_dc_in_perc(self):
+        """Gets the fan_dc_in_perc of this AppFanCurveSeriesPoint.
 
         The fan speed for specified `tempInCels` in percent  # noqa: E501
 
-        :return: The fan_dcin_perc of this AppFanCurveSeriesPoint.
+        :return: The fan_dc_in_perc of this AppFanCurveSeriesPoint.
         :rtype: int
         """
-        return self._fan_dcin_perc
+        return self._fan_dc_in_perc
 
-    @fan_dcin_perc.setter
-    def fan_dcin_perc(self, fan_dcin_perc):
-        """Sets the fan_dcin_perc of this AppFanCurveSeriesPoint.
+    @fan_dc_in_perc.setter
+    def fan_dc_in_perc(self, fan_dc_in_perc):
+        """Sets the fan_dc_in_perc of this AppFanCurveSeriesPoint.
 
         The fan speed for specified `tempInCels` in percent  # noqa: E501
 
-        :param fan_dcin_perc: The fan_dcin_perc of this AppFanCurveSeriesPoint.
-        :type fan_dcin_perc: int
+        :param fan_dc_in_perc: The fan_dc_in_perc of this AppFanCurveSeriesPoint.
+        :type fan_dc_in_perc: int
         """
-        if fan_dcin_perc is None:
-            raise ValueError("Invalid value for `fan_dcin_perc`, must not be `None`")  # noqa: E501
-        if fan_dcin_perc is not None and fan_dcin_perc > 100:  # noqa: E501
-            raise ValueError("Invalid value for `fan_dcin_perc`, must be a value less than or equal to `100`")  # noqa: E501
-        if fan_dcin_perc is not None and fan_dcin_perc < 0:  # noqa: E501
-            raise ValueError("Invalid value for `fan_dcin_perc`, must be a value greater than or equal to `0`")  # noqa: E501
+        if fan_dc_in_perc is None:
+            raise ValueError("Invalid value for `fan_dc_in_perc`, must not be `None`")  # noqa: E501
+        if fan_dc_in_perc is not None and fan_dc_in_perc > 100:  # noqa: E501
+            raise ValueError("Invalid value for `fan_dc_in_perc`, must be a value less than or equal to `100`")  # noqa: E501
+        if fan_dc_in_perc is not None and fan_dc_in_perc < 0:  # noqa: E501
+            raise ValueError("Invalid value for `fan_dc_in_perc`, must be a value greater than or equal to `0`")  # noqa: E501
 
-        self._fan_dcin_perc = fan_dcin_perc
+        self._fan_dc_in_perc = fan_dc_in_perc

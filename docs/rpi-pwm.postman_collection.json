@@ -42,18 +42,18 @@
 			"response": []
 		},
 		{
-			"name": "/app/tempDCHistory",
+			"name": "/app/tempDcHistory",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{DEV_SERVER_URL}}/app/tempDCHistory",
+					"raw": "{{DEV_SERVER_URL}}/app/tempDcHistory",
 					"host": [
 						"{{DEV_SERVER_URL}}"
 					],
 					"path": [
 						"app",
-						"tempDCHistory"
+						"tempDcHistory"
 					]
 				}
 			},
@@ -165,13 +165,13 @@
 				"header": [
 					{
 						"key": "If-Match",
-						"value": "asfdasfdasfd",
+						"value": "287a36bd444fbeab408809bfea011e0207d2a480",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"fanCurveSeries\": [\n    {\n      \"fanDCInPerc\": 66,\n      \"tempInCels\": 60\n    },\n    {\n      \"fanDCInPerc\": 42,\n      \"tempInCels\": 44\n    },\n    {\n      \"fanDCInPerc\": 56,\n      \"tempInCels\": 66\n    }\n  ],\n  \"name\": \"old_Default\"\n}",
+					"raw": "{\n  \"fanCurveSeries\": [\n    {\n      \"fanDcInPerc\": 66,\n      \"tempInCels\": 60\n    },\n    {\n      \"fanDcInPerc\": 42,\n      \"tempInCels\": 44\n    },\n    {\n      \"fanDcInPerc\": 56,\n      \"tempInCels\": 66\n    }\n  ],\n  \"name\": \"old_Default\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -218,13 +218,13 @@
 				"header": [
 					{
 						"key": "If-Match",
-						"value": "asdfasdf",
+						"value": "b5f2dea87693cf768fd40ff5cd619b85c5895319",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"fanOn\": false,\n    \"loggingEnabled\": true,\n    \"loggingLevel\": \"WARN\",\n    \"DCUpdateIntervalInSec\": 3,\n    \"selectedFanCurve\": {\n        \"did\": \"1c5a8579-ab76-4089-af15-97fc1f4358ab\",\n        \"name\": \"Quiet\",\n        \"fanCurveSeries\": [\n            {\n                \"tempInCels\": 30,\n                \"fanDCInPerc\": 40\n            },\n            {\n                \"tempInCels\": 35,\n                \"fanDCInPerc\": 54\n            }\n        ]\n    },\n    \"pwmGpioPin\": 12,\n    \"pwmInvertSignal\": true,\n    \"pwmMinDCInPerc\": 20,\n    \"pwmMaxDCInPerc\": 95\n}",
+					"raw": "{\n    \"fanOn\": false,\n    \"loggingEnabled\": false,\n    \"loggingLevel\": \"DEBUG\",\n    \"dcUpdateIntervalInSec\": 1,\n    \"selectedFanCurve\": {\n        \"did\": \"56bba42b-c808-4d61-bd34-9306d0ad58ee\",\n        \"name\": \"adfasdfasdf\",\n        \"fanCurveSeries\": [\n            {\n                \"tempInCels\": 30,\n                \"fanDcInPerc\": 40\n            },\n            {\n                \"tempInCels\": 35,\n                \"fanDcInPerc\": 54\n            },\n            {\n                \"tempInCels\": 35,\n                \"fanDcInPerc\": 66\n            }\n        ]\n    },\n    \"pwmGpioPin\": 125,\n    \"pwmInvertSignal\": false,\n    \"pwmMinDcInPerc\": 64,\n    \"pwmMaxDcInPerc\": 66\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -251,7 +251,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Quiet-1\",\n    \"fanCurveSeries\": [\n        {\n            \"tempInCels\": 30,\n            \"fanDCInPerc\": 40\n        },\n        {\n            \"tempInCels\": 35,\n            \"fanDCInPerc\": 50\n        }\n    ]\n}",
+					"raw": "{\n    \"name\": \"Quiet-1\",\n    \"fanCurveSeries\": [\n        {\n            \"tempInCels\": 30,\n            \"fanDcInPerc\": 40\n        },\n        {\n            \"tempInCels\": 35,\n            \"fanDcInPerc\": 50\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"

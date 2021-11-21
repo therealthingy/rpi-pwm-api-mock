@@ -45,6 +45,9 @@ class ConfigRepo:
 
     @staticmethod
     def update_config(config):
+        if config.pwm_min_dc_in_perc >= config.pwm_max_dc_in_perc:
+            raise ValueError("max value for pwm has to be greater than the min value")
+
         found_selected_fan_curve = FanCurveRepo.find_by_id(config.selected_fan_curve.did)
         if found_selected_fan_curve is None:
             raise ValueError("Provided `selectedFanCurve` doesn't exist")

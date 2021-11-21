@@ -10,7 +10,7 @@ from app.web.api.models.app_config import AppConfig  # noqa: E501
 from app.web.api.models.app_fan_curve import AppFanCurve  # noqa: E501
 from app.web.api.models.app_fan_curve_base import AppFanCurveBase  # noqa: E501
 from app.web.api.models.app_log_entry import AppLogEntry  # noqa: E501
-from app.web.api.models.app_temp_dc_history_entry import AppTempDCHistoryEntry  # noqa: E501
+from app.web.api.models.app_temp_dc_history_entry import AppTempDcHistoryEntry  # noqa: E501
 from app.web.api.models.system_info import SystemInfo  # noqa: E501
 from app.web.api.models.system_process import SystemProcess  # noqa: E501
 from app.web.api.test import BaseTestCase
@@ -43,22 +43,22 @@ class TestDefaultController(BaseTestCase):
   "fanOn" : true,
   "loggingEnabled" : true,
   "loggingLevel" : "WARN",
-  "DCUpdateIntervalInSec" : 3,
+  "dcUpdateIntervalInSec" : 3,
   "selectedFanCurve" : {
     "did" : "916CD0EB-A755-4663-8410-461431039F74",
     "name" : "Quiet",
     "fanCurveSeries" : [ {
       "tempInCels" : 30,
-      "fanDCInPerc" : 40
+      "fanDcInPerc" : 40
     }, {
       "tempInCels" : 35,
-      "fanDCInPerc" : 50
+      "fanDcInPerc" : 50
     } ]
   },
   "pwmGpioPin" : 12,
   "pwmInvertSignal" : true,
-  "pwmMinDCInPerc" : 20,
-  "pwmMaxDCInPerc" : 95
+  "pwmMinDcInPerc" : 20,
+  "pwmMaxDcInPerc" : 95
 }
         headers = { 
             'if_match': 'b5395865858689cfcb718a8fbf84e128771f6975',
@@ -112,10 +112,10 @@ class TestDefaultController(BaseTestCase):
   "name" : "Quiet",
   "fanCurveSeries" : [ {
     "tempInCels" : 30,
-    "fanDCInPerc" : 40
+    "fanDcInPerc" : 40
   }, {
     "tempInCels" : 35,
-    "fanDCInPerc" : 50
+    "fanDcInPerc" : 50
   } ]
 }
         headers = { 
@@ -157,10 +157,10 @@ class TestDefaultController(BaseTestCase):
   "name" : "Quiet",
   "fanCurveSeries" : [ {
     "tempInCels" : 30,
-    "fanDCInPerc" : 40
+    "fanDcInPerc" : 40
   }, {
     "tempInCels" : 35,
-    "fanDCInPerc" : 50
+    "fanDcInPerc" : 50
   } ]
 }
         query_string = [('name', 'Quiet-')]
@@ -201,7 +201,7 @@ class TestDefaultController(BaseTestCase):
             'Authorization': 'Basic Zm9vOmJhcg==',
         }
         response = self.client.open(
-            '/api/v1/app/tempDCHistory',
+            '/api/v1/app/tempDcHistory',
             method='GET',
             headers=headers)
         self.assert200(response,
