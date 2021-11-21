@@ -3,7 +3,7 @@ Backend which is run in an dedicated Thread
 '''
 from app.core.envflags import api_swagger_ui_enabled, api_server_port
 from connexion import App as ConnexionApp
-import app.web.api.encoder as encoder
+# import app.web.api.encoder as encoder
 from app.web.persistence.db import db
 
 from flask_marshmallow import Marshmallow
@@ -18,9 +18,10 @@ ma = Marshmallow()
 # -- Functions --
 def new_launchable_backend():
     # -- API config --
-    connex_app = ConnexionApp(__name__, specification_dir='./api/openapi/',
+    connex_app = ConnexionApp(__name__,
+                              specification_dir='./api/openapi/',
                               options={"swagger_ui": api_swagger_ui_enabled})
-    connex_app.app.json_encoder = encoder.JSONEncoder
+    # connex_app.app.json_encoder = encoder.JSONEncoder
     connex_app.add_api('openapi.yaml',
                        arguments={'title': 'rpi-pwm'},
                        pythonic_params=True)
