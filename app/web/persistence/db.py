@@ -6,10 +6,39 @@ from sqlalchemy import event
 import enum
 import uuid
 
+
+# -- Globals --
 db = SQLAlchemy()
 
 
+# -- Decorators --
+def _obj_vars_to_str(obj):
+    return ', '.join(f'{name}={value}' for (name, value) in sorted(vars(obj).items()) if not name.startswith("_"))
+
+
+def auto_str(cls):
+    def __str__(self): return f'{type(self).__name__}({_obj_vars_to_str(self)})'
+    cls.__str__ = __str__
+    return cls
+
+
+def auto_repr(cls):
+    def __repr__(self): return f'{type(self).__name__}({_obj_vars_to_str(self)})'
+    cls.__repr__ = __repr__
+    return cls
+
+
+# def auto_iter(cls):
+#     def __iter__(self):
+#         for attr in dir(self):
+#             if not attr.startswith("__"):
+#                 yield attr
+#     cls.__iter__ = __iter__
+#     return cls
+
+
 # ------ ------ ------ ------ ------ ------ ------ Entities + Events ------ ------ ------ ------ ------ ------ ------
+@auto_repr           # Required for ETag
 class FanCurve(db.Model):
     __tablename__ = "fan_curve"
 
@@ -18,10 +47,6 @@ class FanCurve(db.Model):
     fan_curve_series = db.relationship("FanCurveSeriesPoint", backref="fan_curve",
                                        lazy=False, cascade="all, delete-orphan")  # One-To-Many unidirectional `FanCurve` -> `FanCurveSeriesPoint`
 
-    # def __iter__(self):                 # Required when deserializing objects of type `Config` (otherwise TypeError b/c FanCurve not iterable)
-    #     for attr in dir(self):
-    #         if not attr.startswith("__"):
-    #             yield attr
 
 @event.listens_for(FanCurve.__table__, 'after_create')
 def after_create_fancurve_table(target, connection, **kw):
@@ -29,6 +54,7 @@ def after_create_fancurve_table(target, connection, **kw):
         'INSERT INTO fan_curve (did, name) VALUES ("1c5a8579-ab76-4089-af15-97fc1f4358ab", "Default");')
 
 
+@auto_repr           # Required for ETag
 class FanCurveSeriesPoint(db.Model):
     __tablename__ = "fan_curve_point"
 
@@ -36,6 +62,7 @@ class FanCurveSeriesPoint(db.Model):
     fan_dcin_perc = db.Column(db.Integer, nullable=False)  # TODO: min = 0, max = 100
     temp_in_cels = db.Column(db.Integer, nullable=False)
     fan_curve_did = db.Column(db.String(255), db.ForeignKey('fan_curve.did'))
+
 
 @event.listens_for(FanCurveSeriesPoint.__table__, 'after_create')
 def after_create_fancurvepoint_table(target, connection, **kw):
@@ -58,7 +85,11 @@ class LoggingLevel(enum.Enum):
     def __str__(self):
         return self.name            # Required for deserialization -> otherwise `str()` returns e.g., `LoggingLevel.WARN` instead of just `WARN`
 
+    def __repr(self):
+        return f'{self.__name__}.{self.value}'
 
+
+@auto_repr           # Required for ETag
 class Config(db.Model):
     __tablename__ = "config"
 
@@ -75,10 +106,6 @@ class Config(db.Model):
     pwm_max_dcin_perc = db.Column(db.Integer, nullable=False)
     pwm_min_dcin_perc = db.Column(db.Integer, nullable=False)
 
-    # def __iter__(self):             # Required when deserializing object (otherwise TypeError b/c FanCurve not iterable)
-    #     for attr in dir(self):
-    #         if not attr.startswith("__"):
-    #             yield attr
 
 @event.listens_for(Config.__table__, 'after_create')
 def after_create_config_table(target, connection, **kw):

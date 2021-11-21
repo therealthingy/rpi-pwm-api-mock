@@ -21,6 +21,8 @@ api_swagger_ui_enabled = strtobool(os.getenv('API_SWAGGER_UI_ENABLED', str(DEFAU
 api_auth_user = os.getenv('API_AUTH_USER', DEFAULT_API_AUTH_USER)
 api_auth_pass = os.getenv('API_AUTH_PASS', DEFAULT_API_AUTH_PASS)
 
+# TODO: Add disable `system` endpoint flag (after presentation of mock)
+
 
 # TODO: Use logger (instead of print) ...
 print(f"Derived settings from env-vars.: {api_enabled=}, {api_server_port=}, {api_swagger_ui_enabled=}, {api_auth_user=}, {api_auth_pass=}")

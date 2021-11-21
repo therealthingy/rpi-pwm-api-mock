@@ -18,26 +18,30 @@ from app.web.api.types_mapper import logic_to_apimodel, api_to_logicmodel
 from app.web.logic.sysinfo import SysStatsMock as SysStats
 from app.web.logic.history import AppHistoryMock as AppHistory
 
+from flask import Response, current_app as app
+import hashlib
 
-# TODO: Add disable `system` endppoint flag (after presentation of mock)
 
-# -- Globals
+# -- Globals --
 sys_stats = SysStats()
 app_history = AppHistory()
 
 
 # -- Errors + Responses --
+_not_found_error = HTTPError(404, "Not Found", 0, "API Error", None)
+_not_found_response = (_not_found_error, _not_found_error.http_status_code)
+_optimistic_locking_error = HTTPError(409, "Conflict", 0, "API Error - Requested resource has been most likely updated in the meantime", None)
+_optimistic_locking_response = (_optimistic_locking_error, _optimistic_locking_error.http_status_code)
 _unsupported_media_type_error = HTTPError(415, "Unsupported Media Type", 0, "API Error", None)     # Note: Already handeled by Flask (only for code completion)
 _unsupported_media_type_response = (_unsupported_media_type_error, _unsupported_media_type_error.http_status_code)
 _locked_resource_error = HTTPError(423, "Locked", 0, "API Error - Requested resource cannot be deleted b/c its currently used", None)
 _locked_resource_response = (_locked_resource_error, _locked_resource_error.http_status_code)
-_not_found_error = HTTPError(404, "Not Found", 0, "API Error", None)
-_not_found_response = (_not_found_error, _not_found_error.http_status_code)
-_not_implemented_yet_error = HTTPError(501, "Not Implemented", 0, "API Error - Functionality accessible via API isn't implemented yet", None)
-_not_implemented_yet_response = (_not_implemented_yet_error, _not_implemented_yet_error.http_status_code)
 
 
-# !! TODO: ADD ETAG EVERYWHERE !!
+# !! TODO: ADD HATEOAS EVERYWHERE !!
+# -- Helpers --
+def calc_etag(db_entity):
+    return hashlib.sha1(repr(db_entity).encode()).hexdigest()
 
 
 # -- Handlers --
@@ -49,7 +53,8 @@ def app_config_get():  # noqa: E501
 
     :rtype: AppConfig
     """
-    return logic_to_apimodel(ConfigRepo.fetch_config())
+    cur_config = ConfigRepo.fetch_config()
+    return logic_to_apimodel(cur_config), {'ETag': calc_etag(cur_config)}
 
 
 def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
@@ -65,10 +70,11 @@ def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
     :rtype: AppConfig
     """
     if connexion.request.is_json:
-        # TODO: CHECK If-Match; Locking ?
-        print(connexion.request.if_match)
-
         app_config = AppConfig.from_dict(connexion.request.get_json())  # noqa: E501
+
+        current_config_entity = ConfigRepo.fetch_config()
+        if calc_etag(current_config_entity) != str(connexion.request.if_match)[1:-1]:
+            return _optimistic_locking_response
 
         new_app_config = api_to_logicmodel(app_config)
         try: ConfigRepo.update_config(new_app_config)
@@ -76,7 +82,7 @@ def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
 
         return logic_to_apimodel(new_app_config)                                  # Note: `entity_to_model` defaults to 200
 
-    return _unsupported_media_type_response
+    return _unsupported_media_type_response     # Note: Actually already before caught
 
 
 def app_fan_curves_did_delete(did):  # noqa: E501
@@ -104,8 +110,8 @@ def app_fan_curves_did_get(did):  # noqa: E501
     :rtype: AppFanCurve
     """
     found_fan_curve = FanCurveRepo.find_by_id(did)
-    return logic_to_apimodel(found_fan_curve) if found_fan_curve is not None \
-        else (_not_found_error, _not_found_error.http_status_code)              # Note: `entity_to_model` defaults to 200
+    return (logic_to_apimodel(found_fan_curve), {'ETag': calc_etag(found_fan_curve)}) if found_fan_curve is not None \
+        else (_not_found_error, _not_found_error.http_status_code)         # Note: `entity_to_model` defaults to 200
 
 
 def app_fan_curves_did_put(did, body):  # noqa: E501        # $$ OG: `did, if_match, app_fan_curve_base` $$
@@ -122,20 +128,22 @@ def app_fan_curves_did_put(did, body):  # noqa: E501        # $$ OG: `did, if_ma
 
     :rtype: AppFanCurve
     """
-    # TODO: CHECK If-Match
-    print(connexion.request.if_match)
-
     if connexion.request.is_json:
         app_fan_curve_base = AppFanCurveBase.from_dict(connexion.request.get_json())  # noqa: E501
         found_fan_curve_entity = FanCurveRepo.find_by_id(did)
-        if found_fan_curve_entity is not None:
-            updated_fan_curve_entity = api_to_logicmodel(app_fan_curve_base)
-            updated_fan_curve_entity.did = did
-            FanCurveRepo.update(updated_fan_curve_entity)
-            return logic_to_apimodel(updated_fan_curve_entity)                    # Note: `entity_to_model` defaults to 200
-        return _not_found_response
 
-    return _unsupported_media_type_response
+        if found_fan_curve_entity is None:
+            return _not_found_response
+
+        if calc_etag(found_fan_curve_entity) != str(connexion.request.if_match)[1:-1]:
+            return _optimistic_locking_response
+
+        updated_fan_curve_entity = api_to_logicmodel(app_fan_curve_base)
+        updated_fan_curve_entity.did = did
+        FanCurveRepo.update(updated_fan_curve_entity)
+        return logic_to_apimodel(updated_fan_curve_entity)                    # Note: `entity_to_model` defaults to 200
+
+    return _unsupported_media_type_response     # Note: Actually already before caught
 
 
 def app_fan_curves_get(name=None):  # noqa: E501
@@ -169,7 +177,7 @@ def app_fan_curves_post(body):  # noqa: E501        # $$ OG: `app_fan_curve_base
         FanCurveRepo.create(new_fancurve)
         return logic_to_apimodel(new_fancurve)
 
-    return _unsupported_media_type_response
+    return _unsupported_media_type_response     # Note: Actually already before caught
 
 
 def app_logs_get():  # noqa: E501
