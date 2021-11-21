@@ -14,7 +14,6 @@ from app.web.api.controllers.utils import calc_etag
 
 
 # -- Globals --
-# !! TODO: ADD HATEOAS EVERYWHERE !!
 config_schema = ConfigSchema()
 fan_curve_schema = FanCurveSchema()
 fan_curve_list_schema = FanCurveSchema(many=True)

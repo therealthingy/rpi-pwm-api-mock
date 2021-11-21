@@ -67,7 +67,7 @@ paths:
                 type: string
               style: simple
       summary: Returns current config flags
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     put:
       description: Updates config flags
       operationId: app_config_put
@@ -150,7 +150,7 @@ paths:
           description: 'Optimistic locking: Requested resource has been most likely
             updated in the meantime'
       summary: Updates config flags
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     summary: Allows user to view config of app
   /app/fanCurves:
     description: Collection resource for fan curves
@@ -205,7 +205,7 @@ paths:
                 type: array
           description: Multiple fan curves
       summary: Returns list of all available fan curves
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     post:
       description: Adds new fan curve
       operationId: app_fan_curves_post
@@ -265,7 +265,7 @@ paths:
         "400":
           description: The request failed due to a malformed request body
       summary: Adds new fan curve
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     summary: Enables user to view all fan curves or to add a new one (up to 10 max)
   /app/fanCurves/{did}:
     delete:
@@ -292,7 +292,7 @@ paths:
           description: Fan curve corresponding to `did` cannot be deleted since fan
             curve is currently in use
       summary: Deletes fan curve whose id correspond to specified "did"
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     description: Singleton resource for fan curves
     get:
       description: Returns requested fan curve whose id corresponds to specified `did`
@@ -338,7 +338,7 @@ paths:
         "404":
           description: Requested fan curve w/ `did` doesn't exist
       summary: Returns requested fan curve whose id corresponds to specified "did"
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     put:
       description: Updates requested fan curve whose id corresponds to specified `did`
       operationId: app_fan_curves_did_put
@@ -416,7 +416,7 @@ paths:
           description: 'Optimistic locking: Requested resource has been most likely
             updated in the meantime'
       summary: Updates requested fan curve whose id corresponds to specified "did"
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     summary: Allows user to view, update or delete fan curve corresponding to specified
       "did"
   /app/logs/:
@@ -462,7 +462,7 @@ paths:
                 type: array
           description: Log
       summary: Returns list of all available fan curves
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     summary: 'Enables user to view app logs (Note: Might return nothing if logging
       was disabled via config flag "loggingEnabled")'
   /app/tempDcHistory:
@@ -498,7 +498,7 @@ paths:
                 type: array
           description: Temperature- / DC history
       summary: Returns temperature- & fan history over last 10 min.
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     summary: 'Returns temperature- & fan history over last 10 min. Note: Time delta
       b/w each item depends on config-flag "dcUpdateIntervalInSec"'
   /system/info:
@@ -523,7 +523,7 @@ paths:
                 $ref: '#/components/schemas/SystemInfo'
           description: System info
       summary: Returns information about used system (SW & HW)
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     summary: Allows user to obtain information about the currently used SW & HW
   /system/topTenProcesses:
     description: 'Collection resource for top 10 processes (dynamically aggregated;
@@ -584,7 +584,7 @@ paths:
                 type: array
           description: Top ten processes
       summary: Returns list of top 10 processes using the most CPU time
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     summary: Allows user to view the top 10 processes which utilize the majority of
       CPU time (dynamically aggregated)
   /system/topTenProcesses/{nr}:
@@ -625,7 +625,7 @@ paths:
           description: Requested process corresponding to `nr` doesn't exist
       summary: Returns requested process whose current CPU utilization corresponds
         to specified nr in ranking
-      x-openapi-router-controller: app.web.api.controllers.default_controller
+      x-openapi-router-controller: app.web.api.controllers.api_controller
     summary: Allows user to view process w/ nr highest CPU utilization at current
       moment
 components:
