@@ -146,6 +146,9 @@ paths:
               style: simple
         "400":
           description: The request failed due to a malformed request body
+        "409":
+          description: 'Optimistic locking: Requested resource has been most likely
+            updated in the meantime'
       summary: Updates config flags
       x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: Allows user to view config of app
@@ -409,6 +412,9 @@ paths:
           description: The request failed due to a malformed request body
         "404":
           description: Requested fan curve w/ `did` doesn't exist
+        "409":
+          description: 'Optimistic locking: Requested resource has been most likely
+            updated in the meantime'
       summary: Updates requested fan curve whose id corresponds to specified "did"
       x-openapi-router-controller: app.web.api.controllers.default_controller
     summary: Allows user to view, update or delete fan curve corresponding to specified

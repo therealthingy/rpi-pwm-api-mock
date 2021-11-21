@@ -80,9 +80,9 @@ def app_config_put(body):  # noqa: E501     # $$ OG: if_match, app_config $$
         try: ConfigRepo.update_config(new_app_config)
         except ValueError: return HTTPError(400, "Bad request", 0, "API Error - Selected fan curve doesn't exist", None), 400
 
-        return logic_to_apimodel(new_app_config)                                  # Note: `entity_to_model` defaults to 200
+        return logic_to_apimodel(new_app_config)
 
-    return _unsupported_media_type_response     # Note: Actually already before caught
+    return _unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
 
 def app_fan_curves_did_delete(did):  # noqa: E501
@@ -95,7 +95,7 @@ def app_fan_curves_did_delete(did):  # noqa: E501
 
     :rtype: None
     """
-    try: return None if FanCurveRepo.delete(did) else _not_found_response        # Note: `None` defaults to 204
+    try: return None if FanCurveRepo.delete(did) else _not_found_response
     except ValueError: return _locked_resource_response
 
 
@@ -141,9 +141,9 @@ def app_fan_curves_did_put(did, body):  # noqa: E501        # $$ OG: `did, if_ma
         updated_fan_curve_entity = api_to_logicmodel(app_fan_curve_base)
         updated_fan_curve_entity.did = did
         FanCurveRepo.update(updated_fan_curve_entity)
-        return logic_to_apimodel(updated_fan_curve_entity)                    # Note: `entity_to_model` defaults to 200
+        return logic_to_apimodel(updated_fan_curve_entity)
 
-    return _unsupported_media_type_response     # Note: Actually already before caught
+    return _unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
 
 def app_fan_curves_get(name=None):  # noqa: E501
@@ -177,7 +177,7 @@ def app_fan_curves_post(body):  # noqa: E501        # $$ OG: `app_fan_curve_base
         FanCurveRepo.create(new_fancurve)
         return logic_to_apimodel(new_fancurve)
 
-    return _unsupported_media_type_response     # Note: Actually already before caught
+    return _unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
 
 def app_logs_get():  # noqa: E501
