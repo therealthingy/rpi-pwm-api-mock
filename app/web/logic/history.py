@@ -1,8 +1,12 @@
+"""
+Functionality for retrieving historic data pertaining the app (logs & fan-temp history)
+"""
 import datetime
 
 from app.web.persistence.db import LoggingLevel
 
 
+# -- Models --
 class AppLogEntry:
     def __init__(self, date, level, message, uuid):
         self.date = date
@@ -18,6 +22,7 @@ class AppTempDCHistoryEntry:
         self.temp_in_cels = temp_in_cels
 
 
+# -- --
 class _AppHistoryBase:
     def __init__(self):
         if type(self) is _AppHistoryBase:

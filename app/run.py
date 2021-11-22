@@ -6,7 +6,7 @@
 
 if __name__ == '__main__':
     import app.web.backend as backend
-    api = backend.new_launchable_backend()
+    api = backend.new_runnable_backend()
     api()
 
     # TODO

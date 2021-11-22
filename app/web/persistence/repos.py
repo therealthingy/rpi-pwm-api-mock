@@ -1,3 +1,6 @@
+"""
+Used for performing CRUD operations on db through ORM
+"""
 from app.web.persistence.db import db, FanCurve, Config
 from typing import List
 

@@ -32,10 +32,6 @@ sys_stats = SysStats()
 app_history = AppHistory()
 
 
-# -- Errors + Responses --
-
-
-
 # -- Handlers --
 def app_config_get():
     """Returns current config flags

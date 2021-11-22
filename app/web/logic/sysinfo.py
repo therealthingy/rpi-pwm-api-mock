@@ -1,12 +1,12 @@
 """
-Gathers stats + information about system
+Functionality for gathering stats + information about system
 """
-
 # import os
 
 # _exec_os_shell_cmd = lambda shell_cmd: os.popen(shell_cmd).readline()
 
 
+# -- Models --
 class SysStatsOSProcess:
     def __init__(self, cpu_util_in_perc, name, pid, ppid):
         self.cpu_util_in_perc = cpu_util_in_perc
@@ -25,6 +25,7 @@ class SysStatsSystemInfo:
         self.os_kernel = os_kernel
 
 
+# -- --
 class _SysStatsBase:
     def __init__(self):
         if type(self) is _SysStatsBase:

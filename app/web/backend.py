@@ -16,7 +16,7 @@ ma = Marshmallow()
 
 
 # -- Functions --
-def new_launchable_backend():
+def new_runnable_backend():
     # -- API config --
     connex_app = ConnexionApp(__name__,
                               specification_dir='./api/',
@@ -43,5 +43,5 @@ def new_launchable_backend():
 
 def launch_as_new_thread():
     import threading
-    app_backend = new_launchable_backend()
+    app_backend = new_runnable_backend()
     return lambda: threading.Thread(target=app_backend, daemon=True).start()        # Note: Deamon threads exit automatically as soon as main thread exits
