@@ -3,10 +3,12 @@ Backend serving the API
     -> Must be run in separate thread
 """
 from app.core.envflags import api_swagger_ui_enabled, api_server_port
-from connexion import App as ConnexionApp
+from app.web.api.controllers.responses import semantic_validation_failed
 from app.web.persistence.db import db
 
+from connexion import App as ConnexionApp
 from flask_marshmallow import Marshmallow
+from marshmallow.exceptions import ValidationError
 
 
 # -- Glboals --
@@ -15,9 +17,7 @@ _DB_FILE_PATH = "/tmp/rpi-pwm.db"
 ma = Marshmallow()
 
 
-# -- Functions --
-def new_runnable_backend():
-    # -- API config --
+def _new_connex_app():
     connex_app = ConnexionApp(__name__,
                               specification_dir='./api/',
                               options={"swagger_ui": api_swagger_ui_enabled})
@@ -25,18 +25,36 @@ def new_runnable_backend():
                        arguments={'title': 'rpi-pwm'},
                        pythonic_params=True)
 
-    # -- Logging config --
-    # app.
+    return connex_app
 
-    # -- Setup app (mainly db config) --
-    connex_app.app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + _DB_FILE_PATH
-    connex_app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    connex_app.app.config['PROPAGATE_EXCEPTIONS'] = True
 
-    with connex_app.app.app_context():
-        db.init_app(connex_app.app)
+def _init_db(app):
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + _DB_FILE_PATH
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['PROPAGATE_EXCEPTIONS'] = True
+
+    with app.app_context():
+        db.init_app(app)
         db.create_all()
-        ma.init_app(connex_app.app)
+
+
+def _init_marshmallow(app):
+    with app.app_context():
+        ma.init_app(app)
+
+    @app.errorhandler(ValidationError)
+    def register_validation_error(error):           # Would be otherwise a 500
+        return semantic_validation_failed
+
+
+# -- Functions --
+def new_runnable_backend():
+    connex_app = _new_connex_app()
+
+    _init_db(connex_app.app)
+    _init_marshmallow(connex_app.app)
+
+    # TODO: Logging
 
     return lambda: connex_app.run(port=api_server_port)
 

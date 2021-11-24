@@ -15,3 +15,6 @@ unsupported_media_type = (_unsupported_media_type_error, _unsupported_media_type
 
 _locked_resource_error = HTTPError(423, "Locked", 0, "API Error - Requested resource cannot be deleted b/c its currently used", None)
 locked_resource = (_locked_resource_error, _locked_resource_error.http_status_code)
+
+_semantic_error = HTTPError(422, "Unprocessable Entity", 0, "API Error - Sent entity is semantically incorrect", None)
+semantic_validation_failed = (_semantic_error, _semantic_error.http_status_code)
