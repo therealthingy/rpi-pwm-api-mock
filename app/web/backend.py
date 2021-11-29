@@ -2,7 +2,7 @@
 Backend serving the API
     -> Must be run in separate thread
 """
-from app.core.envflags import api_swagger_ui_enabled, api_server_port
+from app.core.envflags import app_debug_mode, api_swagger_ui_enabled, api_server_port
 from app.web.api.controllers.responses import semantic_validation_failed
 from app.web.persistence.db import db
 
@@ -32,6 +32,8 @@ def _init_db(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + _DB_FILE_PATH
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['PROPAGATE_EXCEPTIONS'] = True
+    if app_debug_mode:
+        app.config['SQLALCHEMY_ECHO'] = True
 
     with app.app_context():
         db.init_app(app)
