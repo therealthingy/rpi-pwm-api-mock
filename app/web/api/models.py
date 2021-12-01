@@ -1,7 +1,7 @@
 # coding: utf-8
 
 class HTTPError(dict):      # By default, `dict`s are JSON serializable
-    def __init__(self, http_status_code, http_status_description, app_error_code, app_error_description, log_uuid):  # noqa: E501
+    def __init__(self, http_status_code, http_status_description, app_error_code, app_error_description, log_uuid=None):  # noqa: E501
         """HTTPError - a model defined in OpenAPI
 
         :param http_status_code: The http_status_code of this HTTPError.  # noqa: E501

@@ -28,7 +28,7 @@ class FanCurveRepo:
             raise ValueError("The to be deleted fan curve is currently being used")
 
         fan_curve = db.session.query(FanCurve).filter_by(did=did).first()
-        if fan_curve is not None:
+        if not (fan_curve is None):
             db.session.delete(fan_curve)
             db.session.commit()
             return True

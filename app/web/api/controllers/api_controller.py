@@ -13,7 +13,7 @@ from app.web.api.models import HTTPError
 from app.web.api.controllers.responses import not_found as not_found_response, \
     optimistic_locking as optimistic_locking_response, \
     unsupported_media_type as unsupported_media_type_response, \
-    locked_resource as locked_resource_response
+    del_used_fancurve as del_used_fancurve_response
 
 from app.web.api.controllers.utils import calc_etag
 
@@ -38,22 +38,16 @@ def app_config_get():
 
     Returns current config flags
 
-
     :rtype: AppConfig
     """
     current_config = ConfigRepo.fetch_config()
     return config_schema.dump(current_config), {'ETag': calc_etag(current_config)}
 
 
-def app_config_put(body):
+def app_config_put():
     """Updates config flags
 
     Updates config flags
-
-    :param if_match: Current hash of to be updated config -&gt; used for optimistic locking
-    :type if_match: str
-    :param app_config: Config flags consisting of app and pwm config
-    :type app_config: dict | bytes
 
     :rtype: AppConfig
     """
@@ -65,7 +59,7 @@ def app_config_put(body):
             return optimistic_locking_response
 
         try: ConfigRepo.update_config(updated_config)
-        except ValueError as ex: return HTTPError(400, "Bad request", 0, "API Error - " + str(ex), None), 400
+        except ValueError as ex: return HTTPError(400, "Bad request", 0, str(ex)), 400
         return config_schema.dump(updated_config)
 
     return unsupported_media_type_response     # Note: Actually already caught before (by flask)
@@ -82,7 +76,7 @@ def app_fan_curves_did_delete(did):
     :rtype: None
     """
     try: return None if FanCurveRepo.delete(did) else not_found_response
-    except ValueError: return locked_resource_response
+    except ValueError: return del_used_fancurve_response
 
 
 def app_fan_curves_did_get(did):
@@ -96,21 +90,17 @@ def app_fan_curves_did_get(did):
     :rtype: AppFanCurve
     """
     found_fan_curve = FanCurveRepo.find_by_id(did)
-    return (fan_curve_schema.dump(found_fan_curve), {'ETag': calc_etag(found_fan_curve)}) if found_fan_curve is not None \
-        else not_found_response
+    return (fan_curve_schema.dump(found_fan_curve), {'ETag': calc_etag(found_fan_curve)}) \
+        if not (found_fan_curve is None) else not_found_response
 
 
-def app_fan_curves_did_put(did, body):
+def app_fan_curves_did_put(did):
     """Updates requested fan curve whose id corresponds to specified \&quot;did\&quot;
 
     Updates requested fan curve whose id corresponds to specified &#x60;did&#x60;
 
     :param did: Id of the fan curve (generated, i.e., surrogate key)
     :type did: str
-    :param if_match: Current hash of to be updated fan curve -&gt; used for optimistic locking
-    :type if_match: str
-    :param app_fan_curve_base: Must contain the the updated fan curve corresponding to &#x60;did&#x60;
-    :type app_fan_curve_base: dict | bytes
 
     :rtype: AppFanCurve
     """
@@ -144,15 +134,10 @@ def app_fan_curves_get(name=None):
     return fan_curve_list_schema.dump(FanCurveRepo.find_all(name))
 
 
-def app_fan_curves_post(body):
+def app_fan_curves_post():
     """Adds new fan curve
 
     Adds new fan curve
-
-    :param app_fan_curve_base: 
-    :type app_fan_curve_base: dict | bytes
-    :param name: Filter for fan curves whose name is similar to &#x60;name&#x60;
-    :type name: str
 
     :rtype: AppFanCurve
     """
@@ -169,7 +154,6 @@ def app_logs_get():
 
     Returns list of all available fan curves
 
-
     :rtype: List[AppLogEntry]
     """
     return stats_log_entry_list_schema.dump(app_history.get_logs())
@@ -179,7 +163,6 @@ def app_temp_dc_history_get():
     """Returns temperature- &amp; fan history over last 10 min.
 
     Returns temperature- &amp; fan history over last 10 min.
-
 
     :rtype: List[AppTempDCHistoryEntry]
     """
@@ -191,7 +174,6 @@ def system_info_get():
 
     Returns information about used system (SW &amp; HW)
 
-
     :rtype: SystemInfo
     """
     return stats_os_system_info_schema.dump(sys_stats.get_system_info())
@@ -201,7 +183,6 @@ def system_top_ten_processes_get():
     """Returns list of top 10 processes using the most CPU time
 
     Returns list of top 10 processes using the most CPU time
-
 
     :rtype: List[SystemProcess]
     """
@@ -223,4 +204,4 @@ def system_top_ten_processes_nr_get(nr):
         if index_nr < 0: raise IndexError("Negative indices are not allowed")
         return stats_os_process_schema.dump(sys_stats.get_system_processes()[index_nr])
     except IndexError:
-        return HTTPError(400, "Bad request", 0, "Invalid value for `nr`", None), 400
+        return HTTPError(400, "Bad request", 0, "Invalid value for `nr`"), 400

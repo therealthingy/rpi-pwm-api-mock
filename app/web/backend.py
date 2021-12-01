@@ -3,7 +3,7 @@ Backend serving the API
     -> Must be run in separate thread
 """
 from app.core.envflags import app_debug_mode, api_swagger_ui_enabled, api_server_port
-from app.web.api.controllers.responses import semantic_validation_failed
+from app.web.api.controllers.responses import new_semantic_validation_failed_response
 from app.web.persistence.db import db
 
 from connexion import App as ConnexionApp
@@ -49,7 +49,7 @@ def _init_marshmallow(app):
 
     @app.errorhandler(ValidationError)
     def register_validation_error(error):           # Would be otherwise a 500
-        return semantic_validation_failed
+        return new_semantic_validation_failed_response(error)
 
 
 # -- Functions --
