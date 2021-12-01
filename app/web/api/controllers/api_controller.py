@@ -9,11 +9,11 @@ from app.web.api.schemas import FanCurveSchema, ConfigSchema, \
     SysStatsSystemInfoSchema, SysStatsOSProcessSchema, \
     AppLogEntrySchema, AppTempDCHistoryEntrySchema
 
-from app.web.api.models import HTTPError
-from app.web.api.controllers.responses import not_found as not_found_response, \
-    optimistic_locking as optimistic_locking_response, \
-    unsupported_media_type as unsupported_media_type_response, \
-    del_used_fancurve as del_used_fancurve_response
+from app.web.api.controllers.responses import not_found_response, \
+    optimistic_locking_response, \
+    unsupported_media_type_response, \
+    del_used_fancurve_response, \
+    new_bad_request_response
 
 from app.web.api.controllers.utils import calc_etag
 
@@ -59,7 +59,7 @@ def app_config_put():
             return optimistic_locking_response
 
         try: ConfigRepo.update_config(updated_config)
-        except ValueError as ex: return HTTPError(400, "Bad request", 0, str(ex)), 400
+        except ValueError as ex: return new_bad_request_response(str(ex))
         return config_schema.dump(updated_config)
 
     return unsupported_media_type_response     # Note: Actually already caught before (by flask)
@@ -204,4 +204,4 @@ def system_top_ten_processes_nr_get(nr):
         if index_nr < 0: raise IndexError("Negative indices are not allowed")
         return stats_os_process_schema.dump(sys_stats.get_system_processes()[index_nr])
     except IndexError:
-        return HTTPError(400, "Bad request", 0, "Invalid value for `nr`"), 400
+        return new_bad_request_response("Invalid value for `nr`")
