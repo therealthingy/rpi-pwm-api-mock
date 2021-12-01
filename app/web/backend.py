@@ -11,8 +11,8 @@ from flask_marshmallow import Marshmallow
 from marshmallow.exceptions import ValidationError
 
 
-# -- Glboals --
-_DB_FILE_PATH = "/tmp/rpi-pwm.db"
+# -- Globals --
+_DB_FILE_PATH = "/var/lib/rpi-pwm/config.db"        # Path in Docker container (should be a mapped Docker volume)
 
 ma = Marshmallow()
 
@@ -29,11 +29,14 @@ def _new_connex_app():
 
 
 def _init_db(app):
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + _DB_FILE_PATH
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['PROPAGATE_EXCEPTIONS'] = True
     if app_debug_mode:
+        app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///:memory:"
         app.config['SQLALCHEMY_ECHO'] = True
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + _DB_FILE_PATH
+
 
     with app.app_context():
         db.init_app(app)
