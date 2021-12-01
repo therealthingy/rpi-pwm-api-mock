@@ -1,5 +1,8 @@
 """
 Collection of standard HTTP responses (used across controllers)
+
+Note: `appErrorCode`: are consecutively numbered for backend (500 type) errors, client errors are always 0
+            -> Mock currently does NOT have any (intentional) 500 type errors
 """
 from app.web.api.models import HTTPError
 
@@ -8,7 +11,7 @@ from app.web.api.models import HTTPError
 new_bad_request_response = lambda error_msg: (
         HTTPError(400, f"Bad Request ({error_msg})", 0, "N/A (Client error)"), 400)
 
-_not_found_error = HTTPError(404, "Not Found", 0, "N/A (Client error)")
+_not_found_error = HTTPError(404, "Not Found (Requested resource couldn't be found)", 0, "N/A (Client error)")
 not_found_response = (_not_found_error, _not_found_error.http_status_code)
 
 _optimistic_locking_error = HTTPError(409, "Conflict (Optimistic locking violation: Requested resource has "
