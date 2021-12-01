@@ -158,7 +158,7 @@ def app_logs_get():
 
     :rtype: List[AppLogEntry]
     """
-    sorted_logs = sorted(app_history.get_logs(), key=attrgetter('date'), reverse=True)
+    sorted_logs = sorted(app_history.get_logs(), key=attrgetter('date'), reverse=True)  # Latest shall be first
     return stats_log_entry_list_schema.dump(sorted_logs)
 
 
@@ -169,7 +169,9 @@ def app_temp_dc_history_get():
 
     :rtype: List[AppTempDCHistoryEntry]
     """
-    return stats_temp_dc_entry_list_schema.dump(app_history.get_temp_dc_history())
+    sorted_history = sorted(app_history.get_temp_dc_history(),
+                            key=attrgetter('date'), reverse=True)  # Latest shall be first
+    return stats_temp_dc_entry_list_schema.dump(sorted_history)
 
 
 def system_info_get():
