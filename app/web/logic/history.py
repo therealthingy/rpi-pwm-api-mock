@@ -39,13 +39,15 @@ class AppHistoryMock(_AppHistoryBase):
     # TODO: Actual impl. -> Log handler in memory ??
     def get_logs(self):
         from uuid import uuid4
-        mock_messages = ["Changed max fan dc", "Changed fan curve"] * 6 + ["Init completed"]
-        return [AppLogEntry(datetime.datetime.now(), LoggingLevel.DEBUG, message, uuid4())
-                for message in mock_messages]
+        mock_msgs_dbg = [AppLogEntry(datetime.datetime.now(), LoggingLevel.DEBUG, message, uuid4())
+                         for message in ["Init completed"] + ["Changed max fan dc", "Changed fan curve"] * 6]
+        mock_msgs_warn = [AppLogEntry(datetime.datetime.now(), LoggingLevel.WARN, message, uuid4())
+                          for message in ["cat /proc/cpuinfo failed",
+                                          "Invalid value (123) for max_dc, using default (100)"]] * 3
+        return mock_msgs_dbg + mock_msgs_warn
 
     # TODO: Actual impl. -> share state w/ pwm thread through timed dict (map) ??
     def get_temp_dc_history(self):
         import random
         return [AppTempDCHistoryEntry(datetime.datetime.now(), random.randint(0, 100), random.randint(20, 68))
                 for i in range(50)]
-

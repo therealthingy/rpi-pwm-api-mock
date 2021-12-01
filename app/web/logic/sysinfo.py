@@ -54,14 +54,14 @@ class SysStatsMock(_SysStatsBase):
 
     def get_system_processes(self) -> list[SysStatsOSProcess]:
         import random
-        from operator import itemgetter, attrgetter
+        from operator import attrgetter
 
         mock_pnames = ["pihole", "sh", "backupd", "bluetoothd", "dockerd", "shred", "watch", "logd",
-                              "transmission", "dd"]
+                       "transmission", "dd"]
         mock_pids = [5424, 5426, 3, 654, 9546, 326, 3236, 3436, 3236, 322]
         mock_ppids = [5434, 5434, 1, 1, 435, 435, 435, 434, 435, 435]
 
         mock_processes = [SysStatsOSProcess(random.uniform(15.5, 80.5), pname, pid, ppid) for (pname, pid, ppid) in
-                zip(mock_pnames, mock_pids, mock_ppids)]
+                          zip(mock_pnames, mock_pids, mock_ppids)]
 
         return sorted(mock_processes, key=attrgetter('cpu_util_in_perc'), reverse=True)

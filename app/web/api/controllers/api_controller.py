@@ -17,6 +17,8 @@ from app.web.api.controllers.responses import not_found_response, \
 
 from app.web.api.controllers.utils import calc_etag
 
+from operator import attrgetter
+
 
 # -- Globals --
 config_schema = ConfigSchema()
@@ -156,7 +158,8 @@ def app_logs_get():
 
     :rtype: List[AppLogEntry]
     """
-    return stats_log_entry_list_schema.dump(app_history.get_logs())
+    sorted_logs = sorted(app_history.get_logs(), key=attrgetter('date'), reverse=True)
+    return stats_log_entry_list_schema.dump(sorted_logs)
 
 
 def app_temp_dc_history_get():
