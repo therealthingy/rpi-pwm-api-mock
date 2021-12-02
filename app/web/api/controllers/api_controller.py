@@ -123,7 +123,7 @@ def app_fan_curves_did_put(did):
     return unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
 
-def app_fan_curves_get(name=None):
+def app_fan_curves_get(name=None, sort=None):
     """Returns list of all available fan curves
 
     Returns list of all available fan curves
@@ -151,15 +151,15 @@ def app_fan_curves_post():
     return unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
 
-def app_logs_get():
+def app_logs_get(sort=None, level=None):
     """Returns list of all available fan curves
 
     Returns list of all available fan curves
 
     :rtype: List[AppLogEntry]
     """
-    sorted_logs = sorted(app_history.get_logs(), key=attrgetter('date'), reverse=True)  # Latest shall be first
-    return stats_log_entry_list_schema.dump(sorted_logs)
+    default_sorted_logs = sorted(app_history.get_logs(), key=attrgetter('date'), reverse=True)  # Latest shall be first
+    return stats_log_entry_list_schema.dump(default_sorted_logs)
 
 
 def app_temp_dc_history_get():
