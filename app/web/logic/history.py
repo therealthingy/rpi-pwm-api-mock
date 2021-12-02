@@ -38,10 +38,10 @@ class _AppHistoryBase:
 class AppHistoryMock(_AppHistoryBase):
     # TODO: Actual impl. -> Log handler in memory ??
     def get_logs(self):
-        from uuid import uuid4
-        mock_msgs_dbg = [AppLogEntry(datetime.datetime.now(), LoggingLevel.DEBUG, message, uuid4())
+        from app.core.utils.logger import generate_log_uuid
+        mock_msgs_dbg = [AppLogEntry(datetime.datetime.now(), LoggingLevel.DEBUG, message, generate_log_uuid())
                          for message in ["Init completed"] + ["Changed max fan dc", "Changed fan curve"] * 6]
-        mock_msgs_warn = [AppLogEntry(datetime.datetime.now(), LoggingLevel.WARN, message, uuid4())
+        mock_msgs_warn = [AppLogEntry(datetime.datetime.now(), LoggingLevel.WARN, message, generate_log_uuid())
                           for message in ["cat /proc/cpuinfo failed",
                                           "Invalid value (123) for max_dc, using default (100)"]] * 3
         return mock_msgs_dbg + mock_msgs_warn

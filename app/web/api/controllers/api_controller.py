@@ -70,7 +70,7 @@ def app_config_put():
 
 
 # - `{SERVER_BASE_URL}/app/fanCurves` -
-@enable_sort_post_db_fetch(clz_sortable_args=["name", "did"])
+@enable_sort_post_db_fetch(clz_sortable_args=["did", "name"])
 def app_fan_curves_get(name=None, **kwargs):
     """Returns list of all available fan curves
 

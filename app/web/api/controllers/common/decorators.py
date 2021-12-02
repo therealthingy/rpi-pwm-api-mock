@@ -1,9 +1,8 @@
-from uuid import uuid4
-
-from operator import attrgetter
 from app.web.api.controllers.common.responses import new_bad_request_response, \
     new_internal_server_err_response, \
     new_not_supported_yet_feature_response
+
+from app.core.utils.logger import generate_log_uuid
 
 
 class SortArg:
@@ -57,7 +56,7 @@ def enable_sort_post_db_fetch(*, clz_sortable_args, default=None):
             elif default:
                 try: sort_args = SortArg.from_str(default, clz_sortable_args)
                 except ValueError as ex:
-                    log_uuid = uuid4()
+                    log_uuid = generate_log_uuid()
                     # TODO: LOG ERROR AS ERROR
                     return new_internal_server_err_response(101, "Malformed default sort expression", log_uuid)
 
@@ -68,7 +67,7 @@ def enable_sort_post_db_fetch(*, clz_sortable_args, default=None):
             try: return sorted(result, key=lambda d: d[sort_args[0].attribute],
                                reverse= not sort_args[0].asc) if sort_args else result
             except KeyError as ex:
-                log_uuid = uuid4()
+                log_uuid = generate_log_uuid()
                 # TODO: LOG ERROR AS ERROR
                 return new_internal_server_err_response(101, "Defined sortable attribute doesn't exist", log_uuid)
 
