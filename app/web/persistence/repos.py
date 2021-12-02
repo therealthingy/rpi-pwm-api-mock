@@ -2,15 +2,12 @@
 Used for performing CRUD operations on db through ORM
 """
 from app.web.persistence.db import db, FanCurve, Config
+from sqlalchemy.exc import IntegrityError
+
 from typing import List
 
 
 class FanCurveRepo:
-    @staticmethod
-    def create(fan_curve):
-        db.session.add(fan_curve)
-        db.session.commit()
-
     @staticmethod
     def find_by_id(did) -> FanCurve:
         return db.session.query(FanCurve).filter_by(did=did).first()
@@ -19,6 +16,20 @@ class FanCurveRepo:
     def find_all(name=None) -> List[FanCurve]:
         return db.session.query(FanCurve).all() if name is None else \
             db.session.query(FanCurve).filter(FanCurve.name.startswith(name)).all()
+
+    @staticmethod
+    def create(fan_curve):
+        try:
+            db.session.add(fan_curve)
+            db.session.commit()
+        except IntegrityError: raise ValueError("Fan curve w/ same name exists already")
+
+    @staticmethod
+    def update(fan_curve):
+        try:
+            db.session.merge(fan_curve)
+            db.session.commit()
+        except IntegrityError: raise ValueError("Fan curve w/ same name exists already")
 
     @staticmethod
     def delete(did) -> bool:
@@ -34,11 +45,6 @@ class FanCurveRepo:
             return True
         else:
             return False
-
-    @staticmethod
-    def update(fan_curve):
-        db.session.merge(fan_curve)
-        db.session.commit()
 
 
 class ConfigRepo:

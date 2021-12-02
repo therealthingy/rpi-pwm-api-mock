@@ -96,8 +96,11 @@ def app_fan_curves_post():
     """
     if request.is_json:
         new_fan_curve = fan_curve_schema.load(request.get_json(), transient=True)
-        FanCurveRepo.create(new_fan_curve)
-        return fan_curve_schema.dump(new_fan_curve)
+        try:
+            FanCurveRepo.create(new_fan_curve)
+            return fan_curve_schema.dump(new_fan_curve)
+        except ValueError as ex:
+            return new_bad_request_response(str(ex))
 
     return unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
@@ -139,8 +142,11 @@ def app_fan_curves_did_put(did):
             return optimistic_locking_response
 
         updated_fan_curve.did = did
-        FanCurveRepo.update(updated_fan_curve)
-        return fan_curve_schema.dump(updated_fan_curve)
+        try:
+            FanCurveRepo.update(updated_fan_curve)
+            return fan_curve_schema.dump(updated_fan_curve)
+        except ValueError as ex:
+            return new_bad_request_response(str(ex))
 
     return unsupported_media_type_response     # Note: Actually already caught before (by flask)
 

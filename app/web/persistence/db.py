@@ -21,7 +21,7 @@ class FanCurve(db.Model):
     __tablename__ = "fan_curve"
 
     did = db.Column(db.String(255), primary_key=True, default=lambda: str(uuid.uuid4()))
-    name = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255), nullable=False, unique=True)
     fan_curve_series = db.relationship("FanCurveSeriesPoint", backref="fan_curve",
                                        lazy=False, cascade="all, delete-orphan")  # One-To-Many unidirectional `FanCurve` -> `FanCurveSeriesPoint`
 
@@ -29,7 +29,11 @@ class FanCurve(db.Model):
 @event.listens_for(FanCurve.__table__, 'after_create')
 def after_create_fancurve_table(target, connection, **kw):
     connection.execute(
-        'INSERT INTO fan_curve (did, name) VALUES ("1c5a8579-ab76-4089-af15-97fc1f4358ab", "Default");')
+        """INSERT INTO fan_curve (did, name) 
+            VALUES 
+                ("b0ca8f56-fef8-4dca-858e-34d1a2d96cbc", "Quiet"),
+                ("2b02dd70-15f6-4ca6-8715-44d63032ea87", "Medium"),
+                ("1c5a8579-ab76-4089-af15-97fc1f4358ab", "Loud");""")
 
 
 # @auto_iter(exclude_vars=None)
@@ -38,7 +42,7 @@ def after_create_fancurve_table(target, connection, **kw):
 class FanCurveSeriesPoint(db.Model):
     __tablename__ = "fan_curve_point"
 
-    did = db.Column(db.Integer, db.Sequence('fan_curve_point_seq', start=4, increment=1), primary_key=True)
+    did = db.Column(db.Integer, db.Sequence('fan_curve_point_seq', start=9, increment=1), primary_key=True)
     fan_dc_in_perc = db.Column(db.Integer, nullable=False)  # TODO: min = 0, max = 100
     temp_in_cels = db.Column(db.Integer, nullable=False)
     fan_curve_did = db.Column(db.String(255), db.ForeignKey('fan_curve.did'))
@@ -47,12 +51,19 @@ class FanCurveSeriesPoint(db.Model):
 @event.listens_for(FanCurveSeriesPoint.__table__, 'after_create')
 def after_create_fancurvepoint_table(target, connection, **kw):
     connection.execute(
-        """INSERT INTO fan_curve_point (did, fan_dc_in_perc, temp_in_cels, fan_curve_did)
-            VALUES
-                (0,  0, 45, "1c5a8579-ab76-4089-af15-97fc1f4358ab"),
-                (1,  30, 46, "1c5a8579-ab76-4089-af15-97fc1f4358ab"),
-                (2, 50, 60, "1c5a8579-ab76-4089-af15-97fc1f4358ab"),
-                (3, 60, 100, "1c5a8579-ab76-4089-af15-97fc1f4358ab");""")
+        """INSERT INTO fan_curve_point (did, temp_in_cels, fan_dc_in_perc, fan_curve_did)
+            VALUES                
+                (0, 60, 0,  "b0ca8f56-fef8-4dca-858e-34d1a2d96cbc"),
+                (1, 61, 40, "b0ca8f56-fef8-4dca-858e-34d1a2d96cbc"),
+                
+                (2, 44, 0,  "2b02dd70-15f6-4ca6-8715-44d63032ea87"),
+                (3, 45, 40, "2b02dd70-15f6-4ca6-8715-44d63032ea87"),
+                (4, 60, 70, "2b02dd70-15f6-4ca6-8715-44d63032ea87"),
+                
+                (5, 45,  0,  "1c5a8579-ab76-4089-af15-97fc1f4358ab"),
+                (6, 46,  30, "1c5a8579-ab76-4089-af15-97fc1f4358ab"),
+                (7, 60,  50, "1c5a8579-ab76-4089-af15-97fc1f4358ab"),
+                (8, 100, 60, "1c5a8579-ab76-4089-af15-97fc1f4358ab");""")
 
 
 class LoggingLevel(str, Enum):
@@ -93,4 +104,4 @@ def after_create_config_table(target, connection, **kw):
     connection.execute(
         """INSERT INTO config (did, dc_update_interval_in_sec, fan_on, logging_enabled, logging_level, pwm_gpio_pin,
                                pwm_invert_signal, pwm_max_dc_in_perc, pwm_min_dc_in_perc, selected_fancurve_did)
-           VALUES (0, 3, 0, 1, "WARN", 12, 0, 100, 0, "1c5a8579-ab76-4089-af15-97fc1f4358ab");""")
+           VALUES (0, 3, 0, 1, "WARN", 12, 0, 100, 0, "2b02dd70-15f6-4ca6-8715-44d63032ea87");""")
