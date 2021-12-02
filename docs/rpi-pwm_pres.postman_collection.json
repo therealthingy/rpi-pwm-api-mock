@@ -1,0 +1,357 @@
+{
+	"info": {
+		"_postman_id": "fe29e9cf-4e75-4c28-b123-1748eed43641",
+		"name": "rpi-pwm_pres",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/app/fanCurves",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves?name=Quiet&sort=%2Dname",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"fanCurves"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Quiet",
+							"description": "Fitler by `name`"
+						},
+						{
+							"key": "sort",
+							"value": "%2Dname",
+							"description": "Sort by `name` OR `did`;       `%2B` = + /  `%2D` = -"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/fanCurves",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Quiet\",\n    \"fanCurveSeries\": [\n        {\n            \"tempInCels\": null,\n            \"fanDcInPerc\": 40\n        },\n        {\n            \"tempInCels\": 35,\n            \"fanDcInPerc\": 50\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"fanCurves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/fanCurves/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"fanCurves",
+						"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/fanCurves/{id}",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "If-Match",
+						"value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"did\": \"7aad5f5f-7b93-4962-847d-0baec950f850\",\n    \"fanCurveSeries\": [\n        {\n            \"fanDcInPerc\": 40,\n            \"tempInCels\": 30\n        },\n        {\n            \"fanDcInPerc\": 50,\n            \"tempInCels\": 35\n        }\n    ],\n    \"name\": \"Quiet-12\",\n    \"adfs\": \"asdf\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"fanCurves",
+						"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/fanCurves/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/fanCurves/2b02dd70-15f6-4ca6-8715-44d63032ea87",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"fanCurves",
+						"2b02dd70-15f6-4ca6-8715-44d63032ea87"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/config",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/config",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/config",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "If-Match",
+						"value": "e74be3be22369cf586eb784a7a2b36e29d79c8d1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fanOn\": false,\n    \"loggingEnabled\": false,\n    \"loggingLevel\": \"ERROR\",\n    \"dcUpdateIntervalInSec\": 1,\n    \"selectedFanCurve\": {\n        \"did\": \"2b02dd70-15f6-4ca6-8715-44d63032ea87\",\n        \"name\": \"adfasdfasdf\",\n        \"fanCurveSeries\": [\n            {\n                \"tempInCels\": 30,\n                \"fanDcInPerc\": 40\n            },\n            {\n                \"tempInCels\": 35,\n                \"fanDcInPerc\": 54\n            },\n            {\n                \"tempInCels\": 35,\n                \"fanDcInPerc\": 66\n            }\n        ]\n    },\n    \"pwmGpioPin\": 125,\n    \"pwmInvertSignal\": false,\n    \"pwmMinDcInPerc\": 64,\n    \"pwmMaxDcInPerc\": 66\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/config",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/logs",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"logs"
+					],
+					"query": [
+						{
+							"key": "level",
+							"value": "WARN",
+							"description": "Fitler by `level`     [`DEBUG`, `INFO`, `WARN`, `ERROR`, `CRITICAL`]",
+							"disabled": true
+						},
+						{
+							"key": "sort",
+							"value": "%2Bdate",
+							"description": "Sort by `date` OR `level`;       `%2B` = + /  `%2D` = -",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/logs/{uuid}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/logs/b1195406-c17c-4989-8827-f8ecd7e8ca6a",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"logs",
+						"b1195406-c17c-4989-8827-f8ecd7e8ca6a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/app/tempDcHistory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/app/tempDcHistory",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"app",
+						"tempDcHistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/system/info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/system/info",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"system",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/system/topTenProcesses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/system/topTenProcesses",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"system",
+						"topTenProcesses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/system/topTenProcesses/{nr}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DEV_SERVER_URL}}/system/topTenProcesses/6",
+					"host": [
+						"{{DEV_SERVER_URL}}"
+					],
+					"path": [
+						"system",
+						"topTenProcesses",
+						"6"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "DEV_SERVER_URL",
+			"value": "http://127.0.0.1:8080/api/v1"
+		}
+	]
+}
