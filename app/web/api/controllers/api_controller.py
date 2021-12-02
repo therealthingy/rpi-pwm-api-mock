@@ -44,7 +44,7 @@ def app_config_get():
 
     :rtype: AppConfig
     """
-    current_config = ConfigRepo.fetch_config()
+    current_config = ConfigRepo.fetch()
     return config_schema.dump(current_config), {'ETag': calc_etag(current_config)}
 
 
@@ -58,11 +58,11 @@ def app_config_put():
     if request.is_json:
         updated_config = config_schema.load(request.get_json(), transient=True)
 
-        current_config = ConfigRepo.fetch_config()
+        current_config = ConfigRepo.fetch()
         if calc_etag(current_config) != str(request.if_match)[1:-1]:
             return optimistic_locking_response
 
-        try: ConfigRepo.update_config(updated_config)
+        try: ConfigRepo.update(updated_config)
         except ValueError as ex: return new_bad_request_response(str(ex))
         return config_schema.dump(updated_config)
 

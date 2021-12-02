@@ -34,7 +34,7 @@ class FanCurveRepo:
     @staticmethod
     def delete(did) -> bool:
         config_repo = ConfigRepo()
-        current_config = config_repo.fetch_config()
+        current_config = config_repo.fetch()
         if current_config.selected_fancurve_did == did:
             raise ValueError("The to be deleted fan curve is currently being used")
 
@@ -49,11 +49,11 @@ class FanCurveRepo:
 
 class ConfigRepo:
     @staticmethod
-    def fetch_config() -> Config:
+    def fetch() -> Config:
         return db.session.query(Config).filter_by(did=0).first()
 
     @staticmethod
-    def update_config(config):
+    def update(config):
         if config.pwm_min_dc_in_perc >= config.pwm_max_dc_in_perc:
             raise ValueError("max value for pwm has to be greater than the min value")
 
