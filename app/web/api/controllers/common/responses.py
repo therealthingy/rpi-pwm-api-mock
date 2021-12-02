@@ -1,8 +1,12 @@
 """
 Collection of standard HTTP responses (used across controllers)
 
-Note: `appErrorCode`: are consecutively numbered for backend (500 type) errors, client errors are always 0
-            -> Mock currently does NOT have any (intentional) 500 type errors
+Note: `appErrorCode`: are consecutively numbered for backend (500 type) errors,
+            - client errors are always 0
+            - server errors:
+                - 1xx = API errors (e.g., parsing of args)
+                - 2xx = PWM errors
+                - 3xx = Misc.
 """
 from app.web.api.models import HTTPError
 
@@ -26,8 +30,11 @@ del_used_fancurve_response = (_del_used_fancurve_error, _del_used_fancurve_error
 _unsupported_media_type_error = HTTPError(415, "Unsupported Media Type", 0, "N/A (Client error)")
 unsupported_media_type_response = (_unsupported_media_type_error, _unsupported_media_type_error.http_status_code)
 
+new_internal_server_err_response = lambda app_err_num, app_err_msg, log_uuid: (
+    HTTPError(500, "Internal Server Error", app_err_num, app_err_msg, log_uuid), 500)
+
 new_not_supported_yet_feature_response = lambda feature: (
-        HTTPError(501, "Not Implemented", 0, f"{feature} is not (yet) supported"), 501)
+        HTTPError(501, "Not Implemented", 100, f"{feature} is not (yet) supported"), 501)
 
 
 # -- Flask registered error handler responses --

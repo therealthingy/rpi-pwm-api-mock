@@ -70,7 +70,8 @@ def app_config_put():
 
 
 # - `{SERVER_BASE_URL}/app/fanCurves` -
-def app_fan_curves_get(name=None, sort=None):
+@enable_sort_post_db_fetch(clz_sortable_args=["name", "did"])
+def app_fan_curves_get(name=None, **kwargs):
     """Returns list of all available fan curves
 
     Returns list of all available fan curves
@@ -159,7 +160,8 @@ def app_fan_curves_did_delete(did):
 
 
 # - `{SERVER_BASE_URL}/app/logs` -
-def app_logs_get(sort=None, level=None):
+@enable_sort_post_db_fetch(clz_sortable_args=["date", "level"], default="-date")
+def app_logs_get(level=None, **kwargs):
     """Returns list of all available fan curves
 
     Returns list of all available fan curves
@@ -174,7 +176,6 @@ def app_logs_get(sort=None, level=None):
     """
     all_logs = filter(lambda x: x.level == level, app_history.get_logs()) if level \
         else app_history.get_logs()
-    # default_sorted_logs = sorted(app_history.get_logs(), key=attrgetter('date'), reverse=True)  # Latest shall be first
     return stats_log_entry_list_schema.dump(all_logs)
 
 
