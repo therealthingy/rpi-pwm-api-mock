@@ -60,9 +60,11 @@ def app_config_put():
     if calc_etag(current_config) != str(request.if_match)[1:-1]:
         return optimistic_locking_response
 
-    try: ConfigRepo.update(updated_config)
-    except ValueError as ex: return new_bad_request_response(str(ex))
-    return config_schema.dump(updated_config)
+    try:
+        ConfigRepo.update(updated_config)
+        return config_schema.dump(updated_config)
+    except ValueError as ex:
+        return new_bad_request_response(str(ex))
 
 
 # - `{SERVER_BASE_URL}/app/fanCurves` -
