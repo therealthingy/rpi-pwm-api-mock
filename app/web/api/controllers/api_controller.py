@@ -35,6 +35,7 @@ app_history = AppHistory()
 
 
 # -- Handlers --
+# - `{SERVER_BASE_URL}/app/config` -
 def app_config_get():
     """Returns current config flags
 
@@ -67,20 +68,36 @@ def app_config_put():
     return unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
 
-def app_fan_curves_did_delete(did):
-    """Deletes fan curve whose id correspond to specified \&quot;did\&quot;
+# - `{SERVER_BASE_URL}/app/fanCurves` -
+def app_fan_curves_get(name=None, sort=None):
+    """Returns list of all available fan curves
 
-    Deletes fan curve whose id correspond to specified &#x60;did&#x60;
+    Returns list of all available fan curves
 
-    :param did: Id of the fan curve (generated, i.e., surrogate key)
-    :type did: str
+    :param name: Filter for fan curves whose name is similar to &#x60;name&#x60;
+    :type name: str
 
-    :rtype: None
+    :rtype: List[AppFanCurve]
     """
-    try: return None if FanCurveRepo.delete(did) else not_found_response
-    except ValueError: return del_used_fancurve_response
+    return fan_curve_list_schema.dump(FanCurveRepo.find_all(name))
 
 
+def app_fan_curves_post():
+    """Adds new fan curve
+
+    Adds new fan curve
+
+    :rtype: AppFanCurve
+    """
+    if request.is_json:
+        new_fan_curve = fan_curve_schema.load(request.get_json(), transient=True)
+        FanCurveRepo.create(new_fan_curve)
+        return fan_curve_schema.dump(new_fan_curve)
+
+    return unsupported_media_type_response     # Note: Actually already caught before (by flask)
+
+
+# - `{SERVER_BASE_URL}/app/fanCurves/{id}` -
 def app_fan_curves_did_get(did):
     """Returns requested fan curve whose id corresponds to specified \&quot;did\&quot;
 
@@ -123,34 +140,21 @@ def app_fan_curves_did_put(did):
     return unsupported_media_type_response     # Note: Actually already caught before (by flask)
 
 
-def app_fan_curves_get(name=None, sort=None):
-    """Returns list of all available fan curves
+def app_fan_curves_did_delete(did):
+    """Deletes fan curve whose id correspond to specified \&quot;did\&quot;
 
-    Returns list of all available fan curves
+    Deletes fan curve whose id correspond to specified &#x60;did&#x60;
 
-    :param name: Filter for fan curves whose name is similar to &#x60;name&#x60;
-    :type name: str
+    :param did: Id of the fan curve (generated, i.e., surrogate key)
+    :type did: str
 
-    :rtype: List[AppFanCurve]
+    :rtype: None
     """
-    return fan_curve_list_schema.dump(FanCurveRepo.find_all(name))
+    try: return None if FanCurveRepo.delete(did) else not_found_response
+    except ValueError: return del_used_fancurve_response
 
 
-def app_fan_curves_post():
-    """Adds new fan curve
-
-    Adds new fan curve
-
-    :rtype: AppFanCurve
-    """
-    if request.is_json:
-        new_fan_curve = fan_curve_schema.load(request.get_json(), transient=True)
-        FanCurveRepo.create(new_fan_curve)
-        return fan_curve_schema.dump(new_fan_curve)
-
-    return unsupported_media_type_response     # Note: Actually already caught before (by flask)
-
-
+# - `{SERVER_BASE_URL}/app/logs` -
 def app_logs_get(sort=None, level=None):
     """Returns list of all available fan curves
 
@@ -162,6 +166,7 @@ def app_logs_get(sort=None, level=None):
     return stats_log_entry_list_schema.dump(default_sorted_logs)
 
 
+# - `{SERVER_BASE_URL}/app/tempDcHistory` -
 def app_temp_dc_history_get():
     """Returns temperature- &amp; fan history over last 10 min.
 
@@ -174,6 +179,7 @@ def app_temp_dc_history_get():
     return stats_temp_dc_entry_list_schema.dump(sorted_history)
 
 
+# - `{SERVER_BASE_URL}/system/info` -
 def system_info_get():
     """Returns information about used system (SW &amp; HW)
 
@@ -184,6 +190,7 @@ def system_info_get():
     return stats_os_system_info_schema.dump(sys_stats.get_system_info())
 
 
+# - `{SERVER_BASE_URL}/system/topTenProcesses` -
 def system_top_ten_processes_get():
     """Returns list of top 10 processes using the most CPU time
 
@@ -194,6 +201,7 @@ def system_top_ten_processes_get():
     return stats_os_process_list_schema.dump(sys_stats.get_system_processes()[:10])
 
 
+# - `{SERVER_BASE_URL}/system/topTenProcesses/{nr}` -
 def system_top_ten_processes_nr_get(nr):
     """Returns requested process whose current CPU utilization corresponds to specified nr in ranking
 
