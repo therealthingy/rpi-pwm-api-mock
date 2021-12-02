@@ -9,13 +9,13 @@ from app.web.api.schemas import FanCurveSchema, ConfigSchema, \
     SysStatsSystemInfoSchema, SysStatsOSProcessSchema, \
     AppLogEntrySchema, AppTempDCHistoryEntrySchema
 
-from app.web.api.controllers.responses import not_found_response, \
+from app.web.api.controllers.common.responses import not_found_response, \
     optimistic_locking_response, \
     unsupported_media_type_response, \
     del_used_fancurve_response, \
     new_bad_request_response
 
-from app.web.api.controllers.utils import calc_etag
+from app.web.api.controllers.common.utils import calc_etag
 
 from operator import attrgetter
 

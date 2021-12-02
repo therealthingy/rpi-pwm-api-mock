@@ -3,7 +3,7 @@ Backend serving the API
     -> Must be run in separate thread
 """
 from app.core.envflags import app_debug_mode, api_swagger_ui_enabled, api_server_port
-from app.web.api.controllers.responses import new_semantic_validation_failed_response
+from app.web.api.controllers.common.responses import new_semantic_validation_failed_response
 from app.web.persistence.db import db
 
 from connexion import App as ConnexionApp
