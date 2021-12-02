@@ -26,6 +26,9 @@ del_used_fancurve_response = (_del_used_fancurve_error, _del_used_fancurve_error
 _unsupported_media_type_error = HTTPError(415, "Unsupported Media Type", 0, "N/A (Client error)")
 unsupported_media_type_response = (_unsupported_media_type_error, _unsupported_media_type_error.http_status_code)
 
+new_not_supported_yet_feature_response = lambda feature: (
+        HTTPError(501, "Not Implemented", 0, f"{feature} is not (yet) supported"), 501)
+
 
 # -- Flask registered error handler responses --
 new_semantic_validation_failed_response = lambda error_msg="semantic error": (
