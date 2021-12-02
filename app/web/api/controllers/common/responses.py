@@ -26,10 +26,6 @@ _del_used_fancurve_error = HTTPError(423, "Locked (Requested fan curve cannot be
                                           "currently used)", 0, "N/A (Client error)")
 del_used_fancurve_response = (_del_used_fancurve_error, _del_used_fancurve_error.http_status_code)
 
-# - Already handled by Flask (only for code completion) -
-_unsupported_media_type_error = HTTPError(415, "Unsupported Media Type", 0, "N/A (Client error)")
-unsupported_media_type_response = (_unsupported_media_type_error, _unsupported_media_type_error.http_status_code)
-
 new_internal_server_err_response = lambda app_err_num, app_err_msg, log_uuid: (
     HTTPError(500, "Internal Server Error", app_err_num, app_err_msg, log_uuid), 500)
 

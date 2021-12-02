@@ -11,7 +11,6 @@ from app.web.api.schemas import FanCurveSchema, ConfigSchema, \
 
 from app.web.api.controllers.common.responses import not_found_response, \
     optimistic_locking_response, \
-    unsupported_media_type_response, \
     del_used_fancurve_response, \
     new_bad_request_response
 
@@ -55,18 +54,15 @@ def app_config_put():
 
     :rtype: AppConfig
     """
-    if request.is_json:
-        updated_config = config_schema.load(request.get_json(), transient=True)
+    updated_config = config_schema.load(request.get_json(), transient=True)
 
-        current_config = ConfigRepo.fetch()
-        if calc_etag(current_config) != str(request.if_match)[1:-1]:
-            return optimistic_locking_response
+    current_config = ConfigRepo.fetch()
+    if calc_etag(current_config) != str(request.if_match)[1:-1]:
+        return optimistic_locking_response
 
-        try: ConfigRepo.update(updated_config)
-        except ValueError as ex: return new_bad_request_response(str(ex))
-        return config_schema.dump(updated_config)
-
-    return unsupported_media_type_response     # Note: Actually already caught before (by flask)
+    try: ConfigRepo.update(updated_config)
+    except ValueError as ex: return new_bad_request_response(str(ex))
+    return config_schema.dump(updated_config)
 
 
 # - `{SERVER_BASE_URL}/app/fanCurves` -
@@ -94,15 +90,12 @@ def app_fan_curves_post():
 
     :rtype: AppFanCurve
     """
-    if request.is_json:
-        new_fan_curve = fan_curve_schema.load(request.get_json(), transient=True)
-        try:
-            FanCurveRepo.create(new_fan_curve)
-            return fan_curve_schema.dump(new_fan_curve)
-        except ValueError as ex:
-            return new_bad_request_response(str(ex))
-
-    return unsupported_media_type_response     # Note: Actually already caught before (by flask)
+    new_fan_curve = fan_curve_schema.load(request.get_json(), transient=True)
+    try:
+        FanCurveRepo.create(new_fan_curve)
+        return fan_curve_schema.dump(new_fan_curve)
+    except ValueError as ex:
+        return new_bad_request_response(str(ex))
 
 
 # - `{SERVER_BASE_URL}/app/fanCurves/{id}` -
@@ -131,24 +124,21 @@ def app_fan_curves_did_put(did):
 
     :rtype: AppFanCurve
     """
-    if request.is_json:
-        updated_fan_curve = fan_curve_schema.load(request.get_json(), transient=True)
-        found_fan_curve_entity = FanCurveRepo.find_by_id(did)
+    updated_fan_curve = fan_curve_schema.load(request.get_json(), transient=True)
+    found_fan_curve_entity = FanCurveRepo.find_by_id(did)
 
-        if found_fan_curve_entity is None:
-            return not_found_response
+    if found_fan_curve_entity is None:
+        return not_found_response
 
-        if calc_etag(found_fan_curve_entity) != str(request.if_match)[1:-1]:
-            return optimistic_locking_response
+    if calc_etag(found_fan_curve_entity) != str(request.if_match)[1:-1]:
+        return optimistic_locking_response
 
-        updated_fan_curve.did = did
-        try:
-            FanCurveRepo.update(updated_fan_curve)
-            return fan_curve_schema.dump(updated_fan_curve)
-        except ValueError as ex:
-            return new_bad_request_response(str(ex))
-
-    return unsupported_media_type_response     # Note: Actually already caught before (by flask)
+    updated_fan_curve.did = did
+    try:
+        FanCurveRepo.update(updated_fan_curve)
+        return fan_curve_schema.dump(updated_fan_curve)
+    except ValueError as ex:
+        return new_bad_request_response(str(ex))
 
 
 def app_fan_curves_did_delete(did):
