@@ -10,7 +10,7 @@ from app.web.api.schemas import FanCurveSchema, ConfigSchema, \
     AppLogEntrySchema, AppTempDCHistoryEntrySchema
 
 from app.web.api.controllers.common.responses import not_found_response, \
-    optimistic_locking_response, \
+    new_exists_already_response, optimistic_locking_response, \
     del_used_fancurve_response, \
     new_bad_request_response
 
@@ -96,9 +96,9 @@ def app_fan_curves_post():
     new_fan_curve = fan_curve_schema.load(request.get_json(), transient=True)
     try:
         FanCurveRepo.create(new_fan_curve)
-        return fan_curve_schema.dump(new_fan_curve)
+        return fan_curve_schema.dump(new_fan_curve), 201
     except ValueError as ex:
-        return new_bad_request_response(str(ex))
+        return new_exists_already_response(str(ex))
 
 
 # - `{SERVER_BASE_URL}/app/fanCurves/{id}` -
@@ -141,7 +141,7 @@ def app_fan_curves_did_put(did):
         FanCurveRepo.update(updated_fan_curve)
         return fan_curve_schema.dump(updated_fan_curve)
     except ValueError as ex:
-        return new_bad_request_response(str(ex))
+        return new_exists_already_response(str(ex))
 
 
 def app_fan_curves_did_delete(did):

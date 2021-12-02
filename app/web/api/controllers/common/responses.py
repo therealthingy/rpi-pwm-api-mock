@@ -22,6 +22,9 @@ _optimistic_locking_error = HTTPError(409, "Conflict (Optimistic locking violati
                                            "been updated in the meantime)", 0, "N/A (Client error)")
 optimistic_locking_response = (_optimistic_locking_error, _optimistic_locking_error.http_status_code)
 
+new_exists_already_response = lambda error_msg: (
+        HTTPError(409, f"Conflict ({error_msg})", 0, "N/A (Client error)"), 409)
+
 _del_used_fancurve_error = HTTPError(423, "Locked (Requested fan curve cannot be deleted b/c it's "
                                           "currently used)", 0, "N/A (Client error)")
 del_used_fancurve_response = (_del_used_fancurve_error, _del_used_fancurve_error.http_status_code)
