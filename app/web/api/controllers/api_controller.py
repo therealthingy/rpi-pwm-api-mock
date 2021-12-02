@@ -16,6 +16,7 @@ from app.web.api.controllers.common.responses import not_found_response, \
     new_bad_request_response
 
 from app.web.api.controllers.common.utils import calc_etag
+from app.web.api.controllers.common.decorators import enable_sort_post_db_fetch
 
 from operator import attrgetter
 
@@ -76,6 +77,9 @@ def app_fan_curves_get(name=None, sort=None):
 
     :param name: Filter for fan curves whose name is similar to &#x60;name&#x60;
     :type name: str
+
+    :param sort: Specifies how the result set may be sorted
+    :type sort: str
 
     :rtype: List[AppFanCurve]
     """
@@ -160,10 +164,18 @@ def app_logs_get(sort=None, level=None):
 
     Returns list of all available fan curves
 
+    :param sort: Specifies how the result set may be sorted
+    :type sort: str
+
+    :param level: Filter for log entries whose level is &#x60;level&#x60;
+    :type level: str
+
     :rtype: List[AppLogEntry]
     """
-    default_sorted_logs = sorted(app_history.get_logs(), key=attrgetter('date'), reverse=True)  # Latest shall be first
-    return stats_log_entry_list_schema.dump(default_sorted_logs)
+    all_logs = filter(lambda x: x.level == level, app_history.get_logs()) if level \
+        else app_history.get_logs()
+    # default_sorted_logs = sorted(app_history.get_logs(), key=attrgetter('date'), reverse=True)  # Latest shall be first
+    return stats_log_entry_list_schema.dump(all_logs)
 
 
 # - `{SERVER_BASE_URL}/app/tempDcHistory` -
