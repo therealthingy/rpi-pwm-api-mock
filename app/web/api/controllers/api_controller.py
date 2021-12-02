@@ -27,6 +27,7 @@ fan_curve_list_schema = FanCurveSchema(many=True)
 stats_os_system_info_schema = SysStatsSystemInfoSchema()
 stats_os_process_schema = SysStatsOSProcessSchema()
 stats_os_process_list_schema = SysStatsOSProcessSchema(many=True)
+stats_log_entry_schema = AppLogEntrySchema()
 stats_log_entry_list_schema = AppLogEntrySchema(many=True)
 stats_temp_dc_entry_list_schema = AppTempDCHistoryEntrySchema(many=True)
 
@@ -175,6 +176,22 @@ def app_logs_get(level=None, **kwargs):
     all_logs = filter(lambda x: x.level == level, app_history.get_logs()) if level \
         else app_history.get_logs()
     return stats_log_entry_list_schema.dump(all_logs)
+
+
+# - `{SERVER_BASE_URL}/app/logs/{uuid}` -
+def app_logs_uuid_get(uuid):
+    """Returns requested log entry whose uuid corresponds to specified \&quot;uuid\&quot;
+
+    Returns requested log entry whose uuid corresponds to specified &#x60;uuid&#x60; # noqa: E501
+
+    :param uuid: Id of the log entry
+    :type uuid: str
+
+    :rtype: AppLogEntry
+    """
+    for log_entry in app_logs_get():
+        if log_entry['uuid'] == uuid: return log_entry      # TODO: Revise (Workaround for mock data)
+    return not_found_response
 
 
 # - `{SERVER_BASE_URL}/app/tempDcHistory` -

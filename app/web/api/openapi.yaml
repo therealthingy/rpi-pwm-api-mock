@@ -318,6 +318,30 @@ paths:
         type: integer
       in: path
       required: true
+  /app/logs/{uuid}:
+    summary: Allows user to view log entry corresponding to specified "uuid"
+    description: Singleton resource for logs
+    get:
+      responses:
+        "200":
+          $ref: '#/components/responses/app-logs_singleton'
+        "404":
+          description: Requested log entry w/ `uuid` doesn't exist
+      operationId: app_logs_uuid_get
+      summary: Returns requested log entry whose uuid corresponds to specified "uuid"
+      description: Returns requested log entry whose uuid corresponds to specified
+        `uuid`
+      x-openapi-router-controller: app.web.api.controllers.api_controller
+    parameters:
+    - examples:
+        uuid:
+          value: 6808e842-453b-11ec-af70-c75dcdc17c9e
+      name: uuid
+      description: Id of the log entry
+      schema:
+        type: string
+      in: path
+      required: true
 components:
   schemas:
     SystemStats:
@@ -896,7 +920,7 @@ components:
                 level: DEBUG
                 message: "Current temp: 40.200000 ℃, calc. fan dutycycle: 25.000000,\
                   \ applied dutycycle: 40.000000"
-      description: Log
+      description: Multiple log entries
     app-fanCurves_collection:
       content:
         application/json:
@@ -986,6 +1010,20 @@ components:
                 pwmMinDcInPerc: 20
                 pwmMaxDcInPerc: 95
       description: Config of app
+    app-logs_singleton:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AppLogEntry'
+          examples:
+            log_singleton:
+              value:
+                uuid: 6808e842-453b-11ec-af70-c75dcdc17c9e
+                date: 2021-11-14T10:14:25.000Z
+                level: DEBUG
+                message: "Current temp: 45.200000 ℃, calc. fan dutycycle: 30.000000,\
+                  \ applied dutycycle: 45.000000"
+      description: Log entry
   securitySchemes:
     api-security:
       scheme: basic

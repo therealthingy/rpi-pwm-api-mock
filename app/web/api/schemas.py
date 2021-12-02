@@ -98,7 +98,7 @@ class SysStatsOSProcessSchema(Schema):
     )
 
 
-@with_camel_case(excluded_fields=None)
+@with_camel_case(excluded_fields=["_links"])
 class AppLogEntrySchema(Schema):
     class Meta:
         model = AppLogEntry
@@ -108,6 +108,15 @@ class AppLogEntrySchema(Schema):
     level = fields.String()
     message = fields.String()
     uuid = fields.String()
+
+    # Smart hyperlinking
+    _links = ma.Hyperlinks(
+        {
+            "self": ma.URLFor("/api/v1.app_web_api_controllers_api_controller_app_logs_uuid_get",
+                              values=dict(uuid="<uuid>")),
+            "collection": ma.URLFor("/api/v1.app_web_api_controllers_api_controller_app_logs_get")
+        }
+    )
 
 
 @with_camel_case(excluded_fields=None)

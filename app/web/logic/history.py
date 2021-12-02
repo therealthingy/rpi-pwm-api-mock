@@ -42,6 +42,7 @@ class AppHistoryMock(_AppHistoryBase):
                  for message in ["Init completed"] + ["Changed max fan dc", "Changed fan curve"] * 6] + \
                 [AppLogEntry(datetime.datetime.now(), LoggingLevel.WARN, message, generate_log_uuid())
                  for message in ["cat /proc/cpuinfo failed", "Invalid value (123) for max_dc, using default (100)"] * 3]
+    mock_msgs[0].uuid = "b1195406-c17c-4989-8827-f8ecd7e8ca6a"
 
     # TODO: Actual impl. -> Log handler in memory ??
     def get_logs(self):
